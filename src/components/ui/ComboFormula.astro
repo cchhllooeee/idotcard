@@ -1,0 +1,37 @@
+---
+/** 搭卡公式：主卡 ＋ 補位卡 ＝ 你的搭卡組合（愛搭卡的核心概念） */
+import { LABS_URL } from '@/lib/site';
+import { url } from '@/lib/urls';
+interface Props { headingLevel?: 'h2' | 'h3' }
+const { headingLevel = 'h2' } = Astro.props;
+const H = headingLevel;
+---
+
+<section class="section" aria-labelledby="combo-title">
+  <H id="combo-title" style="margin-bottom:6px">搭卡公式：一張不夠，兩張剛好</H>
+  <p class="muted" style="margin-bottom:16px">沒有一張卡什麼都最強。先選一張日常無腦刷的主卡，再用一張補位卡補你最常花錢的通路。</p>
+  <div class="combo">
+    <div class="combo-card">
+      <span class="k">Main card</span>
+      <strong>主卡</strong>
+      <p>一般消費回饋高、上限寬，不用記通路，什麼都刷它。</p>
+    </div>
+    <span class="combo-op" aria-hidden="true">＋</span>
+    <div class="combo-card">
+      <span class="k">Backup card</span>
+      <strong>補位卡</strong>
+      <p>專攻你花最多的通路：外送、網購、海外或交通卡儲值，加碼刷到上限就換回主卡。</p>
+    </div>
+    <span class="combo-op" aria-hidden="true">＝</span>
+    <div class="combo-card result">
+      <span class="k">i dot CARD</span>
+      <strong>你的搭卡組合</strong>
+      <p>每筆都刷在回饋最高的那張，一年多拿的回饋，比你想的多。</p>
+    </div>
+  </div>
+  <div class="combo-actions">
+    <a class="btn" href={url.tool('rewards-calculator')}>試算我的回饋</a>
+    <a class="btn ghost" href={`${LABS_URL}island/`}>去回饋島玩搭卡</a>
+    <a class="btn ghost" href={`${LABS_URL}metro/`}>看回饋路線圖</a>
+  </div>
+</section>

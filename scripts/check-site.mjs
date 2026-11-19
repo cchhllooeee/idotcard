@@ -20,6 +20,8 @@ const DIST = new URL(`../${process.env.SITE_DIST ?? 'dist'}/`, import.meta.url).
 const MIN_INBOUND_WARN = 3;
 const UTILITY = new Set(['/', '/404/', '/search/', '/sitemap/']);
 const PRODUCTION = process.env.PRODUCTION === '1';
+// 實驗室（好玩版原型）不經 Astro 建置，部署時才放進網站；連到這裡的連結不算斷鏈
+const EXTERNAL_PREFIXES = ['/labs/', process.env.LABS_URL].filter(Boolean);
 
 const errors = [];
 const warnings = [];
@@ -95,7 +97,7 @@ for (const p of pages.values()) {
   }
   for (const href of p.allLinks) {
     const path = internalPath(href);
-    if (!path || path.startsWith('/pagefind/')) continue;
+    if (!path || path.startsWith('/pagefind/') || EXTERNAL_PREFIXES.some((p) => path.startsWith(p))) continue;
     if (!routes.has(path)) errors.push(`${p.route} 斷鏈 → ${href}`);
   }
   for (const href of new Set(p.links)) {

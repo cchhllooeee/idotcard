@@ -9,13 +9,16 @@
 import { readdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
-const [dir, baseArg, origin] = process.argv.slice(2);
+const [dir, baseArg, origin, rootArg] = process.argv.slice(2);
 if (!dir || !baseArg || !origin) {
   console.error('用法：node scripts/rewrite-base.mjs <dist> </base/> <https://origin>');
   process.exit(1);
 }
 const base = `/${baseArg.replace(/^\/+|\/+$/g, '')}/`;
 const originNoSlash = origin.replace(/\/+$/, '');
+// 已含站台根子路徑（例如 /idotcard/labs/）的連結不再加前綴
+const root = rootArg ? rootArg.replace(/^\/+|\/+$/g, '') + '/' : null;
+const escapeRe = (x) => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 async function walk(d) {
   const out = [];
@@ -34,7 +37,10 @@ for (const file of await walk(dir)) {
   // 1. 絕對網址：https://origin/xxx → https://origin/base/xxx（canonical、og:url、JSON-LD、sitemap、RSS、robots、llms.txt）
   s = s.split(`${originNoSlash}/`).join(`${originNoSlash}${base}`).split(`${originNoSlash}${base}${base.slice(1)}`).join(`${originNoSlash}${base}`);
   // 2. HTML 屬性中的根路徑：href="/x"、src="/x"、action="/x"（排除 // 開頭的協定相對網址）
-  if (file.endsWith('.html')) s = s.replace(/(\s(?:href|src|action|poster)=["'])\/(?!\/)/g, `$1${base}`);
+  if (file.endsWith('.html')) {
+    const attr = new RegExp(`(\\s(?:href|src|action|poster)=["'])\\/(?!\\/${root ? '|' + escapeRe(root) : ''})`, 'g');
+    s = s.replace(attr, `$1${base}`);
+  }
   if (s !== before) { await writeFile(file, s); count++; }
 }
 console.log(`[rewrite-base] ${dir}：${count} 個檔案加上 ${base} 前綴`);

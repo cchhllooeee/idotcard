@@ -21,7 +21,7 @@ interface Props {
 const { title, description, path, noindex = false, jsonLd, ogType = 'website', publishedAt, updatedAt, image } = Astro.props;
 const site = Astro.site!;
 const canonical = absolute(path, site);
-const fullTitle = path === '/' ? `${SITE.name}｜${SITE.description.split('，')[0]}` : `${title}｜${SITE.name}`;
+const fullTitle = path === '/' ? SITE.homeTitle : `${title}｜${SITE.name}`;
 const ogImage = image ? absolute(image, site) : undefined;
 const robots = noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large, max-snippet:-1';
 // Demo 站（DEMO_NOINDEX=1）全站 noindex；原本的設定保留在 data-original，供 check-site 檢查一般規則
@@ -35,6 +35,10 @@ const demo = import.meta.env.DEMO_NOINDEX === '1';
 <link rel="canonical" href={canonical} />
 {demo ? <meta name="robots" content="noindex, nofollow" data-original={robots} /> : <meta name="robots" content={robots} />}
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<!-- 只載入拉丁字型 Jost（字標用，體積小）；中文用系統字型以保住 LCP -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600&display=swap" />
 <link rel="alternate" type="application/rss+xml" title={`${SITE.name} 最新內容`} href="/rss.xml" />
 <link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
 

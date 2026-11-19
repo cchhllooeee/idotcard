@@ -16,7 +16,7 @@ const { items, current, total } = Astro.props;
 const site = Astro.site!;
 const path = url.articles(current);
 const title = `全部信用卡文章${current > 1 ? `（第 ${current} 頁）` : ''}`;
-const description = 'idotcard 全部信用卡文章，依更新時間排序，涵蓋回饋比較、用卡教學與卡片評測。';
+const description = '愛搭卡全部信用卡文章，依更新時間排序，涵蓋回饋比較、用卡教學與卡片評測。';
 const crumbs = [{ name: '首頁', href: '/' }, { name: '文章', href: url.articles() }];
 const jsonLd = graph(site, webPageNode(site, { path, title, description, crumbs, type: 'CollectionPage' }));
 ---

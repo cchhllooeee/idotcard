@@ -1,9 +1,10 @@
 ---
 import SeoHead from '@/components/seo/SeoHead.astro';
 import Breadcrumbs from '@/components/layout/Breadcrumbs.astro';
-import { NAV, SITE, TRUST_LINKS } from '@/lib/site';
+import { LABS_URL, NAV, SITE, TRUST_LINKS } from '@/lib/site';
 import type { Crumb } from '@/lib/seo';
 import MagHeader from '@/components/magazine/MagHeader.astro';
+import BrandLogo from '@/components/layout/BrandLogo.astro';
 import { isMagazine } from '@/lib/variant';
 import '@/styles/global.css';
 import '@/styles/magazine.css';
@@ -40,10 +41,7 @@ const year = new Date().getFullYear();
     {isMagazine ? <MagHeader current={currentTopic} /> : (
     <header class="site-header" data-pagefind-ignore>
       <div class="wrap header-inner">
-        <a class="logo" href="/" aria-label={`${SITE.name} 首頁`}>
-          <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="var(--accent)"/><rect x="6" y="10" width="20" height="13" rx="2.5" fill="none" stroke="#fff" stroke-width="2"/><path d="M6 14.5h20" stroke="#fff" stroke-width="2"/></svg>
-          {SITE.name}
-        </a>
+        <BrandLogo />
         <nav aria-label="主選單">
           <ul>
             {NAV.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
@@ -87,11 +85,13 @@ const year = new Date().getFullYear();
             <ul>
               {TRUST_LINKS.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
               <li><a href="/authors/">編輯團隊</a></li>
+              <li><a href={LABS_URL}>愛搭卡實驗室（好玩版）</a></li>
               <li><a href="/sitemap/">網站地圖</a></li>
               <li><a href="/rss.xml">RSS</a></li>
             </ul>
           </nav>
         </div>
+        <p class="meme" aria-label="i don’t care，少打幾個字，變成 i dot CARD"><span>i do<s>n’</s>t car<s>e</s></span><svg viewBox="0 0 30 12" aria-hidden="true"><path d="M0 6H28M22 1l6 5-6 5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><b>i dot CARD</b></p>
         <p class="muted">本站內容僅供參考，不構成任何金融建議；各項權益以銀行官方公告為準。© {year} {SITE.name}</p>
       </div>
     </footer>

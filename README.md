@@ -1,4 +1,4 @@
-# idotcard
+# 愛搭卡 i dot CARD（idotcard）
 
 台灣信用卡資訊網站。純靜態 Astro 7，內容由 Agent 產初稿、人工審稿後發布。
 

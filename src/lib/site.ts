@@ -1,7 +1,11 @@
 export const SITE = {
-  name: 'idotcard',
-  alternateName: 'idotcard 信用卡資訊',
-  description: '台灣信用卡權益、回饋比較與用卡知識，每張卡附官方來源與資料核對日期。',
+  name: '愛搭卡',
+  alternateName: 'i dot CARD',
+  /** 迷因由來：i don't care → 少打幾個字 → i dot CARD */
+  tagline: '什麼都可以 i don’t care，刷卡回饋一定要ㄎㄟˊ起來',
+  /** 首頁 <title> */
+  homeTitle: '愛搭卡 i dot CARD｜信用卡回饋比較與搭卡攻略',
+  description: '愛搭卡幫你搭出一張主卡、一張補位卡：信用卡回饋比較、通路攻略與用卡知識，每張卡附官方來源與資料核對日期。',
   locale: 'zh-Hant-TW',
   ogLocale: 'zh_TW',
   timeZone: 'Asia/Taipei',
@@ -27,6 +31,9 @@ export const TRUST_LINKS = [
   { href: '/corrections/', label: '更正紀錄' },
   { href: '/contact/', label: '聯絡我們' },
 ] as const;
+
+/** 好玩版實驗室（獨立原型，不經 Astro）。GitHub Pages 部署時由 LABS_URL 覆寫成含子路徑的網址 */
+export const LABS_URL = import.meta.env.LABS_URL || '/labs/';
 
 /** 列表每頁項目數 */
 export const PAGE_SIZE = 24;

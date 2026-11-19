@@ -10,7 +10,7 @@ const counts = await tagArticleCounts();
 const site = Astro.site!;
 const path = url.tags();
 const title = '信用卡文章標籤';
-const description = '依行動支付、通路、族群與活動類型等標籤瀏覽 idotcard 的信用卡文章。';
+const description = '依行動支付、通路、族群與活動類型等標籤瀏覽 愛搭卡的信用卡文章。';
 const crumbs = [{ name: '首頁', href: '/' }, { name: '標籤', href: path }];
 const jsonLd = graph(site, webPageNode(site, { path, title, description, crumbs, type: 'CollectionPage' }));
 ---

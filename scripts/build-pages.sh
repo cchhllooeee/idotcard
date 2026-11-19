@@ -6,20 +6,20 @@ ORIGIN="${1:?缺少 origin，例如 https://帳號.github.io}"
 BASE="/${2#/}"; BASE="${BASE%/}/"
 OUT="${PAGES_OUT:-_site}"
 
-export SITE_URL="$ORIGIN" DEMO_NOINDEX=1
+export SITE_URL="$ORIGIN" DEMO_NOINDEX=1 LABS_URL="${BASE}labs/"
 rm -rf "$OUT"
 
 echo "▶ normal 版"
 npx astro build
 npx pagefind --site dist
 node scripts/check-site.mjs
-node scripts/rewrite-base.mjs dist "$BASE" "$ORIGIN"
+node scripts/rewrite-base.mjs dist "$BASE" "$ORIGIN" "$BASE"
 
 echo "▶ magazine 版"
 SITE_VARIANT=magazine npx astro build
 npx pagefind --site dist-magazine
 SITE_DIST=dist-magazine node scripts/check-site.mjs
-node scripts/rewrite-base.mjs dist-magazine "${BASE}magazine/" "$ORIGIN"
+node scripts/rewrite-base.mjs dist-magazine "${BASE}magazine/" "$ORIGIN" "$BASE"
 
 mkdir -p "$OUT"
 cp -R dist/. "$OUT/"

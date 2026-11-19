@@ -18,6 +18,7 @@ import SectionHead from '@/components/ui/SectionHead.astro';
 import TopicTile from '@/components/ui/TopicTile.astro';
 import CardTile from '@/components/ui/CardTile.astro';
 import CardArt from '@/components/ui/CardArt.astro';
+import ComboFormula from '@/components/ui/ComboFormula.astro';
 import RankCard from '@/components/ui/RankCard.astro';
 import ArticleCard from '@/components/ui/ArticleCard.astro';
 import { ARTICLE_TYPE_LABEL, byUpdatedDesc, daysUntil, displayDate, isOfferActive, published, readingMinutes } from '@/lib/content';
@@ -53,11 +54,12 @@ const quick = ['cashback', 'overseas', 'no-annual-fee', 'new-customer', 'mobile-
 <BaseLayout {title} {description} {path} {jsonLd} width="wide">
   <section class="hero">
     <div>
-      <h1>刷對卡，<br />每一筆都多拿一點</h1>
-      <p class="lead">{SITE.description}</p>
+      <p class="meme" aria-label="i don’t care，少打幾個字，變成 i dot CARD"><span>i do<s>n’</s>t car<s>e</s></span><svg viewBox="0 0 30 12" aria-hidden="true"><path d="M0 6H28M22 1l6 5-6 5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><b>i dot CARD</b></p>
+      <h1>什麼都可以 <span class="lat">i don’t care</span>，<br />刷卡回饋一定要ㄎㄟˊ起來</h1>
+      <p class="lead">愛搭卡幫你搭出一張主卡、一張補位卡。每張卡的回饋、上限與期限都對照銀行官網，附資料核對日期。</p>
       <form class="search-box" action="/search/" method="get" role="search">
         <label class="sr-only" for="q">搜尋信用卡、銀行或問題</label>
-        <input id="q" name="q" type="search" placeholder="例如：超市刷什麼卡、免年費" />
+        <input id="q" name="q" type="search" placeholder="例如：日本刷哪張、外送用什麼卡" />
         <button class="btn" type="submit">搜尋</button>
       </form>
       <ul class="chips" aria-label="常見需求">
@@ -69,8 +71,10 @@ const quick = ['cashback', 'overseas', 'no-annual-fee', 'new-customer', 'mobile-
     </div>
   </section>
 
+  <ComboFormula />
+
   <section class="section" aria-labelledby="by-need">
-    <SectionHead id="by-need" title="依需求找卡" desc="從你最在意的回饋類型開始" moreHref={url.topics()} moreLabel="全部主題" />
+    <SectionHead id="by-need" title="你最常把錢花在哪？" desc="從消費場景開始找主卡與補位卡" moreHref={url.topics()} moreLabel="全部主題" />
     <ul class="grid cols-5">
       {sortedTopics.map((t) => <li><TopicTile id={t.id} name={t.data.name} description={t.data.description.split('，')[0]} count={countByTopic(t.id)} /></li>)}
     </ul>
@@ -131,7 +135,7 @@ const quick = ['cashback', 'overseas', 'no-annual-fee', 'new-customer', 'mobile-
   <section class="section">
     <div class="cta-band">
       <div>
-        <h2>不確定哪張卡最划算？</h2>
+        <h2>懶得算？交給試算器</h2>
         <p>輸入你的月消費，直接算出每張卡在回饋上限內的實拿金額。</p>
       </div>
       <a class="btn" href={url.tool('rewards-calculator')}>開始試算</a>
@@ -139,7 +143,7 @@ const quick = ['cashback', 'overseas', 'no-annual-fee', 'new-customer', 'mobile-
   </section>
 
   <section class="section" aria-labelledby="trust">
-    <SectionHead id="trust" title="為什麼可以相信 idotcard" />
+    <SectionHead id="trust" title="嘴巴很迷因，數字很認真" />
     <ul class="trust-strip">
       <li><strong>每項權益附官方來源</strong><p>卡片資料逐項對照銀行公告，並標示資料核對日期。</p></li>
       <li><strong>具名編輯與審稿</strong><p>每篇內容都有負責的編輯與審稿人。<a href={url.authors()}>認識團隊</a></p></li>

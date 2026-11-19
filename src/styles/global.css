@@ -1,43 +1,49 @@
 /* =========================================================
-   idotcard 視覺系統
+   愛搭卡 i dot CARD 視覺系統
    - 系統字型優先：中文 web font 動輒數 MB，會拖慢 LCP
    - 顏色全部走 token，深色模式只改 token
    ========================================================= */
 :root {
+  /* 愛搭卡品牌色：暖棕墨色 + 橘色卡片（與實驗室好玩版一致） */
   --font: -apple-system, BlinkMacSystemFont, 'PingFang TC', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
+  --font-latin: 'Jost', 'Futura', 'Avenir Next', -apple-system, sans-serif;
   --bg: #ffffff;
-  --surface: #f5f7fa;
-  --surface-2: #edf1f6;
-  --text: #0f1729;
-  --muted: #5b6678;
-  --line: #e2e7ee;
-  --accent: #2453d4;
-  --accent-ink: #1a3ea6;
-  --accent-soft: #eaf0ff;
-  --good: #0f7a4f;
-  --good-soft: #e6f5ee;
-  --warn: #a15c00;
+  --surface: #fff6f3;
+  --surface-2: #fbe9e5;
+  --text: #3a2f2c;
+  --muted: #6f625e;
+  --line: #f0dcd4;
+  --brand: #e0501b;        /* 字標、裝飾用 */
+  --accent: #c24515;       /* 文字連結與按鈕（對白底對比 ≥ 4.5） */
+  --accent-ink: #9a3510;
+  --accent-soft: #fde9e1;
+  --sky: #b9cdee;
+  --good: #2f7a4f;
+  --good-soft: #e7f4ec;
+  --warn: #9a5b00;
   --warn-soft: #fff4e0;
   --radius: 12px;
   --radius-sm: 8px;
-  --shadow: 0 1px 2px rgb(15 23 41 / 6%), 0 4px 16px rgb(15 23 41 / 6%);
+  --shadow: 0 1px 2px rgb(58 47 44 / 6%), 0 4px 16px rgb(58 47 44 / 7%);
   --wide: 1120px;
   --read: 760px;
   color-scheme: light dark;
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #0d1117;
-    --surface: #161b23;
-    --surface-2: #1d2430;
-    --text: #e6e9ef;
-    --muted: #9aa4b5;
-    --line: #2a3240;
-    --accent: #7aa2ff;
-    --accent-ink: #a9c1ff;
-    --accent-soft: #1a2540;
-    --good: #4fd19a;
-    --good-soft: #12291f;
+    --bg: #1b1513;
+    --surface: #251c19;
+    --surface-2: #2e2320;
+    --text: #f3e7e2;
+    --muted: #bba9a2;
+    --line: #43302b;
+    --brand: #ff7443;
+    --accent: #ff8a5c;
+    --accent-ink: #ffb393;
+    --accent-soft: #3a2420;
+    --sky: #6d88b3;
+    --good: #6fd19d;
+    --good-soft: #15291d;
     --warn: #f2b45c;
     --warn-soft: #2d2112;
     --shadow: none;
@@ -92,7 +98,7 @@ a.badge:hover { border-color: var(--accent); color: var(--accent); }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 0; list-style: none; }
 .chips a { display: inline-block; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg); color: var(--text); text-decoration: none; font-size: 0.9rem; }
 .chips a:hover { border-color: var(--accent); color: var(--accent); }
-.btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 18px; border-radius: 999px; background: var(--accent); color: #fff; text-decoration: none; font-weight: 600; font-size: 0.95rem; border: 0; cursor: pointer; }
+.btn { font-family: inherit; display: inline-flex; align-items: center; gap: 6px; padding: 10px 18px; border-radius: 999px; background: var(--accent); color: #fff; text-decoration: none; font-weight: 600; font-size: 0.95rem; border: 0; cursor: pointer; }
 .btn:hover { background: var(--accent-ink); color: #fff; }
 .btn.ghost { background: transparent; color: var(--accent); border: 1px solid var(--line); }
 .more { font-size: 0.9rem; font-weight: 600; text-decoration: none; white-space: nowrap; }
@@ -298,3 +304,33 @@ tr.expired { opacity: 0.55; }
   .rows li { grid-template-columns: 1fr; }
   .rows .side { grid-row: auto; grid-column: 1; }
 }
+
+/* ---------- 愛搭卡字標 ---------- */
+.brand-logo { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
+.brand-logo .wm { font-family: var(--font-latin); font-weight: 600; font-size: 24px; line-height: 1; display: inline-flex; align-items: baseline; white-space: nowrap; }
+.brand-logo .ii { position: relative; display: inline-block; }
+.brand-logo .tittle { position: absolute; left: 50%; top: -0.04em; width: 0.46em; height: 0.31em; transform: translateX(-50%) rotate(-14deg); background: var(--brand); border-radius: 2px; }
+.brand-logo .tittle::after { content: ''; position: absolute; left: 18%; top: 28%; width: 28%; height: 34%; border-radius: 1px; background: var(--sky); }
+.brand-logo .dot { font-weight: 500; font-size: 0.6em; color: var(--muted); margin: 0 0.22em 0 0.14em; }
+.brand-logo .cd { color: var(--brand); letter-spacing: 0.05em; }
+.brand-logo .zh { font-weight: 900; font-size: 14px; letter-spacing: 0.16em; border-left: 1.5px solid var(--line); padding-left: 10px; }
+.brand-logo.is-light, .brand-logo.is-light .dot { color: #fff6f3; }
+.brand-logo.is-light .zh { border-left-color: rgb(255 255 255 / 30%); }
+
+/* ---------- 迷因條與搭卡模組 ---------- */
+.meme { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 0 0 12px; font-family: var(--font-latin); font-size: 1.05rem; color: var(--muted); }
+.meme s { color: var(--brand); text-decoration-thickness: 2px; }
+.meme svg { width: 30px; height: 12px; flex: none; color: var(--brand); }
+.meme b { color: var(--brand); font-weight: 600; letter-spacing: 0.04em; }
+.hero h1 .lat { font-family: var(--font-latin); font-weight: 600; white-space: nowrap; }
+.combo { display: grid; grid-template-columns: 1fr auto 1fr auto 1.2fr; gap: 14px; align-items: center; background: var(--surface); border: 1.5px solid var(--line); border-radius: 18px; padding: 22px; }
+.combo-card { background: var(--bg); border: 1.5px solid var(--line); border-radius: 14px; padding: 16px; height: 100%; }
+.combo-card .k { font-family: var(--font-latin); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; color: var(--brand); text-transform: uppercase; }
+.combo-card strong { display: block; font-size: 1.15rem; margin: 2px 0 4px; }
+.combo-card p { margin: 0; font-size: 0.875rem; color: var(--muted); }
+.combo-card.result { background: var(--text); border-color: var(--text); color: var(--bg); }
+.combo-card.result .k { color: var(--brand); }
+.combo-card.result p { color: color-mix(in srgb, var(--bg) 75%, transparent); }
+.combo-op { font-family: var(--font-latin); font-size: 1.75rem; font-weight: 600; color: var(--brand); text-align: center; }
+.combo-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+@media (max-width: 760px) { .combo { grid-template-columns: 1fr; } .combo-op { line-height: 1; } }

@@ -3,9 +3,11 @@
    所有規則都限定在 body.v-mag 底下，不影響 normal 版
    ========================================================= */
 .v-mag {
-  --mz-brand: #1d4ed8;
-  --mz-brand-ink: #1e3a8a;
-  --mz-brand-soft: #e8eefc;
+  /* magazine 版：頁首用暖棕墨色、強調色用品牌橘，避免與參考站的橘色頁首相似 */
+  --mz-bar: #3a2f2c;
+  --mz-brand: #c24515;
+  --mz-brand-ink: #9a3510;
+  --mz-brand-soft: #fde9e1;
   --mz-highlight: #fff7df;
   --mz-highlight-line: #f1cf6b;
   --mz-radius: 14px;
@@ -13,14 +15,14 @@
   background: var(--surface);
 }
 @media (prefers-color-scheme: dark) {
-  .v-mag { --mz-brand: #3b6cf0; --mz-brand-ink: #a9c1ff; --mz-brand-soft: #1a2540; --mz-highlight: #2a2412; --mz-highlight-line: #8a6d1d; }
+  .v-mag { --mz-bar: #120d0c; --mz-brand: #ff8a5c; --mz-brand-ink: #ffb393; --mz-brand-soft: #3a2420; --mz-highlight: #2a2412; --mz-highlight-line: #8a6d1d; }
 }
 .v-mag .mz-wrap { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
 .v-mag main.wrap.wide { max-width: 1232px; }
 
 /* ---------- 頁首 ---------- */
 .mz-header { position: sticky; top: 0; z-index: 10; }
-.mz-bar { background: var(--mz-brand); color: #fff; }
+.mz-bar { background: var(--mz-bar); color: #fff6f3; border-bottom: 3px solid var(--brand); }
 .mz-bar-inner { display: flex; align-items: center; gap: 24px; min-height: 60px; }
 .mz-logo { display: inline-flex; align-items: center; gap: 8px; color: #fff; text-decoration: none; font-weight: 800; font-size: 1.2rem; letter-spacing: 0.02em; }
 .mz-logo svg { width: 28px; height: 28px; }
@@ -29,7 +31,7 @@
 .mz-main a { color: #fff; text-decoration: none; font-size: 0.95rem; font-weight: 600; opacity: 0.92; }
 .mz-main a:hover { opacity: 1; color: #fff; text-decoration: underline; }
 .mz-search { margin-left: auto; }
-.mz-search input { font: inherit; font-size: 0.9rem; width: 240px; padding: 8px 14px; border: 0; border-radius: 999px; background: #fff; color: #0f1729; }
+.mz-search input { font: inherit; font-size: 0.9rem; width: 240px; padding: 8px 14px; border: 0; border-radius: 999px; background: #fff6f3; color: #3a2f2c; }
 .mz-cats { background: var(--bg); border-bottom: 1px solid var(--line); }
 .mz-cats ul { display: flex; gap: 4px; list-style: none; margin: 0 auto; padding-top: 6px; padding-bottom: 6px; overflow-x: auto; scrollbar-width: none; }
 .mz-cats ul::-webkit-scrollbar { display: none; }
@@ -234,3 +236,4 @@
   .mz-sort { margin-left: 0; }
   .mz-cats a { min-width: 64px; font-size: 0.75rem; }
 }
+.mz-panel > .section:first-child { margin-top: 0; }

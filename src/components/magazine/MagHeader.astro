@@ -2,6 +2,7 @@
 /** magazine 版頁首：品牌色橫條（Logo、搜尋、主選單）＋ 主題圖示分類列 */
 import { getCollection } from 'astro:content';
 import TopicIcon from './TopicIcon.astro';
+import BrandLogo from '@/components/layout/BrandLogo.astro';
 import { SITE } from '@/lib/site';
 import { url } from '@/lib/urls';
 interface Props { current?: string }
@@ -19,10 +20,7 @@ const main = [
 <header class="mz-header" data-pagefind-ignore>
   <div class="mz-bar">
     <div class="mz-wrap mz-bar-inner">
-      <a class="mz-logo" href="/" aria-label={`${SITE.name} 首頁`}>
-        <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#fff"/><rect x="6" y="10" width="20" height="13" rx="2.5" fill="none" stroke="var(--mz-brand)" stroke-width="2"/><path d="M6 14.5h20" stroke="var(--mz-brand)" stroke-width="2"/></svg>
-        <span>{SITE.name}</span>
-      </a>
+      <BrandLogo tone="light" />
       <nav class="mz-main" aria-label="主選單">
         <ul>{main.map((m) => <li><a href={m.href}>{m.label}</a></li>)}</ul>
       </nav>

@@ -1,8 +1,8 @@
 ---
 title: 更正紀錄
-description: idotcard 公開的內容更正紀錄與錯誤回報方式。
+description: 愛搭卡公開的內容更正紀錄與錯誤回報方式。
 pageType: WebPage
 updatedAt: 2026-11-19
 ---
 
-> 待撰寫：idotcard 公開的內容更正紀錄與錯誤回報方式。
+> 待撰寫：愛搭卡公開的內容更正紀錄與錯誤回報方式。

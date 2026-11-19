@@ -6,7 +6,7 @@ import { graph, webPageNode } from '@/lib/seo';
 const site = Astro.site!;
 const path = '/search/';
 const title = '站內搜尋';
-const description = '搜尋 idotcard 的信用卡、文章、優惠與詞彙。';
+const description = '搜尋愛搭卡的信用卡、文章、優惠與詞彙。';
 const jsonLd = graph(site, webPageNode(site, { path, title, description }));
 ---
 
@@ -20,7 +20,7 @@ const jsonLd = graph(site, webPageNode(site, { path, title, description }));
       // 部署在子路徑時（如 GitHub Pages），從腳本網址推算 baseUrl
       const src = document.querySelector('script[src$="pagefind/pagefind-ui.js"]').getAttribute('src');
       const baseUrl = src.replace(/pagefind\/pagefind-ui\.js$/, '') || '/';
-      const ui = new PagefindUI({ element: '#search', baseUrl, showSubResults: true, translations: { placeholder: '輸入卡名、銀行或問題' } });
+      const ui = new PagefindUI({ element: '#search', baseUrl, showSubResults: true, translations: { placeholder: '輸入卡名、銀行或問題，例如：日本刷哪張' } });
       const q = new URLSearchParams(location.search).get('q');
       if (q) ui.triggerSearch(q);
     });

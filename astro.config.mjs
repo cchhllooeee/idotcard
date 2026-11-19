@@ -15,6 +15,7 @@ export default defineConfig({
     define: {
       'import.meta.env.SITE_VARIANT': JSON.stringify(variant),
       'import.meta.env.DEMO_NOINDEX': JSON.stringify(process.env.DEMO_NOINDEX ?? ''),
+      'import.meta.env.LABS_URL': JSON.stringify(process.env.LABS_URL ?? ''),
     },
   },
   trailingSlash: 'always',

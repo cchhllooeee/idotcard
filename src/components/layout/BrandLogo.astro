@@ -1,0 +1,14 @@
+---
+/**
+ * 愛搭卡字標：「ı」上面的點是一張斜放的小卡片（i dot CARD 的 dot）
+ * 與實驗室好玩版的字標一致
+ */
+import { SITE } from '@/lib/site';
+interface Props { tone?: 'default' | 'light' }
+const { tone = 'default' } = Astro.props;
+---
+
+<a class:list={['brand-logo', tone === 'light' && 'is-light']} href="/" aria-label={`${SITE.name} ${SITE.alternateName} 首頁`}>
+  <span class="wm" aria-hidden="true"><span class="ii">ı<i class="tittle"></i></span><span class="dot">dot</span><span class="cd">CARD</span></span>
+  <span class="zh">{SITE.name}</span>
+</a>
