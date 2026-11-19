@@ -1,0 +1,487 @@
+<title>愛搭卡搭卡實驗室</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="愛搭卡 i dot CARD 搭卡實驗室：把刷卡場景做成元素週期表，挑兩個元素放進燒杯反應出新元素，實驗報告告訴你這組消費該怎麼搭卡。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600&family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@600;700&display=swap">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","name":"愛搭卡","alternateName":"i dot CARD"},{"@type":"Organization","name":"愛搭卡 i dot CARD"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"信用卡的回饋上限是什麼？","acceptedAnswer":{"@type":"Answer","text":"加碼回饋多半設有每月或每期上限。超過上限的消費只剩基本回饋，所以月花費高的類別，要看上限換算的「回饋滿額消費金額」，不能只看回饋率。"}},{"@type":"Question","name":"一個人該辦幾張信用卡？","acceptedAnswer":{"@type":"Answer","text":"依消費分布決定。先找出花最多的兩個類別，用一張主卡吃最大的一區，再用一張補位卡補第二區或一般消費。卡越多，年費、帳單和登錄活動越難管理。"}},{"@type":"Question","name":"行動支付綁信用卡，回饋怎麼算？","acceptedAnswer":{"@type":"Answer","text":"綁定後的消費多半依信用卡條款計算回饋，但電子支付儲值、轉帳常被列為排除項目。綁卡前先看發卡銀行公告的排除清單。"}},{"@type":"Question","name":"在海外網站刷卡會被收手續費嗎？","acceptedAnswer":{"@type":"Answer","text":"以外幣計價或在海外清算的交易，多數會收約 1.5% 國外交易服務費，即使結帳畫面顯示台幣也可能被收。訂閱服務和海外電商都要把這筆算進去。"}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首頁"},{"@type":"ListItem","position":2,"name":"信用卡"},{"@type":"ListItem","position":3,"name":"搭卡實驗室"}]}]}</script>
+<style>
+/* Layout: 上方主張＋實驗進度與安全守則；中段左＝回饋元素週期表與新元素圖鑑，右＝燒杯實驗台與實驗報告（黏住）；下方快速解答與 FAQ。 */
+:root{
+  --bg:#ffffff;
+  --ink:#3a2f2c;
+  --ink-soft:#6f625e;
+  --accent:#e0501b;
+  --accent-ink:#ffffff;
+  --surface:#fff6f3;
+  --paper:#fffdfa;
+  --paperline:#f3e6df;
+  --glass:#3a2f2c;
+  --rule:#f0d6ce;
+  --sky:#b9cdee;
+  --f-display:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  --f-label:"Noto Serif TC","Songti TC","PMingLiU",serif;
+  --f-latin:"Jost","Futura","Avenir Next",system-ui,sans-serif;
+  --f-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#1b1513;--ink:#f3e7e2;--ink-soft:#bba9a2;--accent:#ff7443;--accent-ink:#1b1513;--surface:#251c19;
+  --paper:#201917;--paperline:#2e2421;--glass:#e9dcd6;--rule:#43302b;--sky:#6d88b3;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#1b1513;--ink:#f3e7e2;--ink-soft:#bba9a2;--accent:#ff7443;--accent-ink:#1b1513;--surface:#251c19;
+  --paper:#201917;--paperline:#2e2421;--glass:#e9dcd6;--rule:#43302b;--sky:#6d88b3;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.7;overflow-x:hidden}
+a{color:inherit}
+[hidden]{display:none!important}
+.wrap{max-width:1280px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.topline{height:2px;background:var(--accent)}
+header.bar{display:flex;align-items:center;justify-content:space-between;padding-block:18px;gap:12px;flex-wrap:wrap}
+nav.crumbs{font-size:13px;color:var(--ink-soft)}
+nav.crumbs a{text-decoration:none}
+.logo{display:inline-flex;align-items:center;gap:12px;text-decoration:none}
+.wm{font-family:var(--f-latin);font-weight:600;font-size:26px;line-height:1;color:var(--ink);display:inline-flex;align-items:baseline;white-space:nowrap}
+.wm .ii{position:relative;display:inline-block}
+.wm .tittle{position:absolute;left:50%;top:-.04em;width:.46em;height:.31em;transform:translateX(-50%) rotate(-14deg);background:var(--accent);border-radius:2px}
+.wm .tittle::after{content:"";position:absolute;left:18%;top:28%;width:28%;height:34%;border-radius:1px;background:var(--sky)}
+.wm .dot{font-weight:500;font-size:.6em;color:var(--ink-soft);margin:0 .22em 0 .14em}
+.wm .cd{color:var(--accent);letter-spacing:.05em}
+.logo .zh{font-family:var(--f-display);font-weight:900;font-size:15px;color:var(--ink);letter-spacing:.16em;border-left:1.5px solid var(--rule);padding-left:12px}
+
+.hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:40px;align-items:center;padding-block:28px 12px}
+.lead{min-width:0}
+.meme{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 14px;font-family:var(--f-latin);font-size:18px;color:var(--ink-soft)}
+.meme s{color:var(--accent);text-decoration-thickness:2px}
+.meme svg{width:30px;height:12px;flex:none;color:var(--accent)}
+.meme b{color:var(--accent);font-weight:600;letter-spacing:.04em}
+h1{font-family:var(--f-display);font-weight:900;color:var(--accent);font-size:clamp(28px,3.5vw,42px);line-height:1.25;margin:0;letter-spacing:.02em;text-wrap:balance;position:relative;display:inline-block;padding-bottom:12px}
+h1 .lat{font-family:var(--f-latin);font-weight:600;letter-spacing:0}
+h1::after{content:"";position:absolute;right:0;bottom:0;height:9px;width:200vw;background:repeating-linear-gradient(115deg,var(--accent) 0 1.5px,transparent 1.5px 6px);opacity:.75}
+.sub{margin:20px 0 0;color:var(--ink-soft);max-width:33em}
+.cta{display:inline-flex;align-items:center;gap:22px;margin-top:28px;padding:16px 34px 16px 44px;border:2px solid var(--accent);border-radius:999px;color:var(--accent);background:var(--bg);text-decoration:none;font-family:var(--f-display);font-weight:900;font-size:19px;letter-spacing:.3em;box-shadow:7px 8px 0 var(--accent);transition:transform .15s,box-shadow .15s}
+.cta svg{width:40px;height:16px;flex:none}
+.cta:hover{transform:translate(3px,4px);box-shadow:4px 4px 0 var(--accent)}
+.cta:focus-visible{outline:3px solid var(--sky);outline-offset:4px}
+.side{display:grid;gap:14px;min-width:0}
+.progress{border:1.5px solid var(--rule);border-radius:14px;padding:16px 18px;background:var(--paper)}
+.progress .k{font-family:var(--f-latin);font-size:12px;letter-spacing:.3em;color:var(--accent);text-transform:uppercase}
+.progress .v{font-family:var(--f-display);font-weight:900;font-size:30px;line-height:1.2;margin-top:4px}
+.progress .v small{font-size:15px;color:var(--ink-soft);font-weight:500;margin-left:6px}
+.pbar{height:10px;border-radius:5px;background:var(--surface);margin-top:10px;overflow:hidden;border:1px solid var(--rule)}
+.pbar i{display:block;height:100%;background:repeating-linear-gradient(115deg,var(--accent) 0 8px,color-mix(in srgb,var(--accent) 75%,var(--bg)) 8px 16px);transition:width .4s}
+.safety{border:2px dashed var(--accent);border-radius:14px;padding:14px 18px}
+.safety b{font-family:var(--f-display);font-weight:900;color:var(--accent);letter-spacing:.1em}
+.safety ol{margin:6px 0 0;padding-left:1.3em;color:var(--ink-soft);font-size:14px}
+
+/* lab */
+.lab{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:28px;align-items:start;padding-block:20px 8px}
+.tablecard{min-width:0}
+.sec-k{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:0 0 10px}
+.sec-k h2{font-family:var(--f-display);font-weight:900;font-size:22px;margin:0}
+.sec-k span{font-family:var(--f-latin);letter-spacing:.3em;font-size:12px;color:var(--accent);text-transform:uppercase}
+.scroller{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:6px}
+.pt{display:grid;grid-template-columns:repeat(10,minmax(66px,1fr));grid-template-rows:auto repeat(7,auto);gap:6px;min-width:700px}
+.fam{align-self:end;font-size:12px;font-weight:700;color:var(--c);display:flex;flex-direction:column;gap:3px;padding:0 2px 2px}
+.fam i{display:block;height:4px;border-radius:2px;background:var(--c)}
+.el{position:relative;aspect-ratio:1/1.05;border:1.5px solid var(--c);background:color-mix(in srgb,var(--c) 11%,var(--bg));border-radius:8px;padding:5px 6px 4px;display:grid;grid-template-rows:auto 1fr auto;cursor:pointer;text-align:left;font:inherit;color:var(--ink);transition:transform .12s,box-shadow .12s,background .15s}
+.el .no{font-family:var(--f-latin);font-size:10.5px;line-height:1;color:var(--ink-soft)}
+.el .sym{font-family:var(--f-latin);font-weight:600;font-size:24px;line-height:1;color:var(--c);align-self:center}
+.el .nm{font-size:11.5px;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.el:hover{transform:translateY(-2px);box-shadow:0 4px 0 var(--c)}
+.el:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
+.el.in{background:var(--c);color:#fff}
+.el.in .sym,.el.in .no{color:#fff}
+.el.in::after{content:attr(data-slot);position:absolute;right:4px;top:3px;font-family:var(--f-latin);font-size:11px;font-weight:600;background:#fff;color:var(--c);border-radius:4px;padding:0 4px;line-height:1.4}
+.cmp-h{margin-top:22px}
+.cmp{display:grid;grid-template-columns:repeat(13,minmax(50px,1fr));gap:6px;min-width:700px}
+.cp{aspect-ratio:1/1.05;border-radius:8px;border:1.5px dashed var(--rule);display:grid;place-items:center;font-family:var(--f-latin);color:var(--ink-soft);font-size:18px;background:var(--paper);padding:3px;text-align:center;font:inherit}
+.cp.got{border:0;background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;cursor:pointer;grid-template-rows:1fr auto}
+.cp.got .sym{font-family:var(--f-latin);font-weight:600;font-size:20px;line-height:1;align-self:end}
+.cp.got .nm{font-size:10.5px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.cp.new{animation:pop .6s ease}
+@keyframes pop{0%{transform:scale(.3)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
+.cp:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
+.legend-note{font-size:12px;color:var(--ink-soft);margin:8px 0 0}
+
+/* bench */
+.bench{position:sticky;top:max(16px,env(safe-area-inset-top,0px));display:grid;gap:14px;min-width:0}
+.table-top{border-radius:16px;background:var(--surface);border:1.5px solid var(--rule);padding:16px 14px 12px}
+.glassware{display:grid;grid-template-columns:1fr auto 1fr auto 1.15fr;align-items:end;gap:6px}
+.op{font-family:var(--f-latin);font-size:24px;font-weight:600;color:var(--ink-soft);padding-bottom:40px}
+.vessel{display:grid;justify-items:center;gap:6px}
+.vessel small{font-family:var(--f-latin);font-size:11px;letter-spacing:.2em;color:var(--ink-soft)}
+.beaker{position:relative;width:78px;height:92px;border:3px solid var(--glass);border-top:0;border-radius:0 0 14px 14px;overflow:hidden;background:color-mix(in srgb,var(--sky) 12%,transparent)}
+.beaker::before{content:"";position:absolute;left:-8px;top:0;width:14px;height:3px;background:var(--glass)}
+.liquid{position:absolute;left:0;right:0;bottom:0;height:0;background:var(--lc,#ccc);transition:height .45s ease,background .45s}
+.beaker.full .liquid{height:52%}
+.beaker .tag,.flask .tag{position:absolute;left:0;right:0;top:18px;text-align:center;font-family:var(--f-latin);font-weight:600;font-size:26px;color:var(--ink);z-index:2}
+.beaker.full .tag{color:var(--ink)}
+.bubbles span{position:absolute;bottom:4px;width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.85);opacity:0}
+.reacting .bubbles span{animation:bub 1s ease-in infinite}
+.bubbles span:nth-child(1){left:18%;animation-delay:0s}
+.bubbles span:nth-child(2){left:45%;animation-delay:.25s;width:9px;height:9px}
+.bubbles span:nth-child(3){left:70%;animation-delay:.5s}
+.bubbles span:nth-child(4){left:32%;animation-delay:.7s;width:5px;height:5px}
+@keyframes bub{0%{transform:translateY(0);opacity:0}20%{opacity:1}100%{transform:translateY(-60px);opacity:0}}
+.flask{position:relative;width:100px;height:112px}
+.flask .neck{position:absolute;left:38px;top:0;width:24px;height:34px;border:3px solid var(--glass);border-bottom:0;border-top:0;z-index:1;background:var(--bg)}
+.flask .body{position:absolute;left:0;top:28px;width:100px;height:84px;border:3px solid var(--glass);border-radius:50%;overflow:hidden;background:color-mix(in srgb,var(--sky) 12%,var(--bg))}
+.flask .liquid{border-radius:0}
+.flask.full .liquid{height:58%;background:linear-gradient(90deg,var(--c1,#ccc),var(--c2,#ccc))}
+.flask .tag{top:52px;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.35)}
+.flask:not(.full) .tag{color:var(--ink-soft);text-shadow:none}
+.reacting .flask{animation:shake .5s ease 2}
+@keyframes shake{25%{transform:rotate(-6deg)}75%{transform:rotate(6deg)}}
+.bench-actions{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap}
+.bench-actions p{margin:0;font-size:13px;color:var(--ink-soft)}
+.btn{border:1.5px solid var(--accent);background:var(--bg);color:var(--accent);border-radius:999px;padding:5px 14px;font:inherit;font-size:13.5px;font-weight:700;cursor:pointer}
+.btn:hover{background:var(--surface)}
+.btn:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
+
+.report{border-radius:14px;border:1.5px solid var(--rule);background:var(--paper) repeating-linear-gradient(0deg,transparent 0 27px,var(--paperline) 27px 28px);padding:16px 18px 14px;min-width:0}
+.rp-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;border-bottom:2px solid var(--accent);padding-bottom:6px}
+.rp-h b{font-family:var(--f-label);font-size:20px;letter-spacing:.08em}
+.rp-h span{font-family:var(--f-latin);font-size:12px;letter-spacing:.15em;color:var(--ink-soft)}
+.eq{font-family:var(--f-latin);font-size:17px;margin:12px 0 2px;line-height:1.6}
+.eq .s{font-weight:600;padding:0 6px;border-radius:4px;color:#fff}
+.eq small{font-family:var(--f-body);font-size:13px;color:var(--ink-soft)}
+.rtype{display:inline-block;font-size:12px;font-weight:700;color:var(--accent);border:1.5px solid var(--accent);border-radius:999px;padding:0 9px;margin-top:4px}
+.rp-sec{margin-top:12px}
+.rp-sec h3{font-size:12.5px;letter-spacing:.14em;color:var(--accent);margin:0 0 3px;font-weight:700}
+.rp-sec p{margin:0}
+.rp-sec ul{margin:0;padding-left:1.1em;color:var(--ink-soft);font-size:14px}
+.combo{display:flex;flex-direction:column;gap:7px}
+.combo span{display:inline-flex;align-items:center;gap:9px;font-weight:500}
+.mini{width:40px;height:26px;border-radius:5px;flex:none;position:relative;border:1.5px solid var(--accent);background:var(--surface);display:inline-block}
+.mini::before{content:"";position:absolute;left:5px;top:7px;width:9px;height:7px;border-radius:2px;background:var(--sky)}
+.mini::after{content:"";position:absolute;left:5px;right:5px;bottom:4px;height:2px;background:var(--accent);opacity:.5}
+.mini.solid{background:var(--accent)}
+.mini.solid::after{background:var(--accent-ink)}
+.reads ol{list-style:none;padding:0;margin:0}
+.reads a{display:flex;justify-content:space-between;gap:12px;padding:5px 0;border-bottom:1px dashed var(--rule);text-decoration:none;font-size:14px}
+.reads a:hover{color:var(--accent)}
+.reads a span:last-child{color:var(--accent);flex:none}
+
+/* tray（手機）*/
+.tray{display:none}
+
+section.band{padding-block:52px 8px}
+.sec-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.sec-head h2{font-family:var(--f-display);font-weight:900;font-size:clamp(22px,2.6vw,30px);margin:0}
+.sec-head .en{font-family:var(--f-latin);letter-spacing:.3em;font-size:12px;color:var(--accent);text-transform:uppercase}
+.summary{font-size:17px;line-height:1.85;margin:0 0 22px;max-width:40em}
+.summary strong{color:var(--accent)}
+.rules{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;counter-reset:r}
+.rules li{counter-increment:r;display:grid;gap:8px;align-content:start}
+.rules li::before{content:counter(r);width:36px;height:36px;border-radius:50%;border:1.6px solid var(--accent);color:var(--accent);display:grid;place-items:center;font-family:var(--f-latin);font-weight:600}
+.rules b{display:block}
+.rules span{color:var(--ink-soft)}
+.faq{border-top:1px solid var(--rule);max-width:860px}
+.faq details{border-bottom:1px solid var(--rule)}
+.faq summary{cursor:pointer;list-style:none;padding:16px 36px 16px 0;font-weight:700;position:relative}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";position:absolute;right:6px;top:12px;font-family:var(--f-latin);font-size:24px;color:var(--accent);transition:transform .2s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{margin:0 0 16px;color:var(--ink-soft);max-width:60em}
+footer{margin-top:64px;border-top:2px solid var(--accent);padding-block:22px 40px;font-size:12.5px;color:var(--ink-soft);display:grid;gap:6px}
+footer .warn{font-family:var(--f-display);font-weight:900;color:var(--accent);font-size:15px;letter-spacing:.2em}
+
+@media (max-width:1000px){
+  .hero{grid-template-columns:minmax(0,1fr);gap:24px}
+  .lab{grid-template-columns:minmax(0,1fr)}
+  .bench{position:static}
+  .rules{grid-template-columns:minmax(0,1fr)}
+  .tray{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:20;gap:10px;align-items:center;justify-content:space-between;
+    background:var(--bg);border-top:2px solid var(--accent);padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+  .tray .slots{display:flex;align-items:center;gap:8px;font-family:var(--f-latin);font-weight:600;min-width:0}
+  .tray .slot{min-width:44px;height:36px;border-radius:7px;border:1.5px dashed var(--rule);display:grid;place-items:center;font-size:17px;padding:0 6px}
+  .tray .slot.on{border:0;background:var(--c);color:#fff}
+  body{padding-bottom:70px}
+}
+@media (max-width:560px){
+  .cta{font-size:16px;padding:14px 24px 14px 30px;gap:14px}
+  .glassware{grid-template-columns:1fr auto 1fr;row-gap:10px}
+  .glassware .op.to{display:none}
+  .glassware .vessel.out{grid-column:1/-1}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="topline"></div>
+<div class="wrap">
+  <header class="bar">
+    <a class="logo" href="#top" aria-label="愛搭卡 i dot CARD 首頁"><span class="wm" aria-hidden="true"><span class="ii">ı<i class="tittle"></i></span><span class="dot">dot</span><span class="cd">CARD</span></span><span class="zh">愛搭卡</span></a>
+    <nav class="crumbs" aria-label="麵包屑"><a href="#top">首頁</a> ／ <a href="#top">信用卡</a> ／ 搭卡實驗室</nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="lead">
+        <p class="meme" aria-label="i don’t care，少打幾個字，變成 i dot CARD"><span>i do<s>n’</s>t car<s>e</s></span><svg viewBox="0 0 30 12" aria-hidden="true"><path d="M0 6H28M22 1l6 5-6 5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><b>i dot CARD</b></p>
+        <h1>什麼都可以 <span class="lat">i don’t care</span><br>刷卡回饋一定要ㄎㄟˊ起來</h1>
+        <p class="sub">歡迎來到搭卡實驗室。每一種刷卡場景都是週期表上的一個元素，挑兩個丟進燒杯，看它們反應出什麼新元素。每次實驗都會附上一份實驗報告，告訴你這組消費該怎麼搭卡。</p>
+        <a class="cta" href="#lab">開始實驗<svg viewBox="0 0 44 16" aria-hidden="true"><path d="M0 8H42M34 1l8 7-8 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></a>
+      </div>
+      <div class="side">
+        <div class="progress" aria-live="polite">
+          <div class="k">Discovery</div>
+          <div class="v"><span id="got">0</span> / <span id="all">25</span><small>種新元素已發現</small></div>
+          <div class="pbar"><i id="bar" style="width:0%"></i></div>
+        </div>
+        <div class="safety">
+          <b>實驗室安全守則</b>
+          <ol>
+            <li>謹慎理財，信用至上。</li>
+            <li>循環信用利息很高，做實驗前先確認每期都能全額繳清。</li>
+            <li>反應結果僅供參考，實際回饋以各發卡銀行公告為準。</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="lab" id="lab">
+      <div class="tablecard">
+        <div class="sec-k"><h2>回饋元素週期表</h2><span>Periodic table of spending</span></div>
+        <div class="scroller"><div class="pt" id="pt" role="group" aria-label="回饋元素週期表：點兩個元素開始反應"></div></div>
+        <p class="legend-note">同一直欄是同一族消費。點一個元素放進 A 燒杯，再點一個放進 B 燒杯，就會開始反應。手機可以左右滑動表格。</p>
+        <div class="sec-k cmp-h"><h2>新元素圖鑑</h2><span>Discovered compounds</span></div>
+        <div class="scroller"><div class="cmp" id="cmp"></div></div>
+        <p class="legend-note">兩族消費有共同的刷卡眉角時，會合成新元素。同一族的兩個元素會變成同位素，沒有交集的組合則是混合物。</p>
+      </div>
+
+      <aside class="bench" id="bench">
+        <div class="table-top" id="tabletop">
+          <div class="glassware">
+            <div class="vessel"><div class="beaker" id="bkA"><div class="liquid"></div><div class="bubbles"><span></span><span></span><span></span><span></span></div><div class="tag" id="tagA">?</div></div><small>BEAKER A</small></div>
+            <div class="op">+</div>
+            <div class="vessel"><div class="beaker" id="bkB"><div class="liquid"></div><div class="bubbles"><span></span><span></span><span></span><span></span></div><div class="tag" id="tagB">?</div></div><small>BEAKER B</small></div>
+            <div class="op to">→</div>
+            <div class="vessel out"><div class="flask" id="flask"><div class="neck"></div><div class="body"><div class="liquid"></div><div class="bubbles"><span></span><span></span><span></span><span></span></div></div><div class="tag" id="tagR">?</div></div><small>RESULT</small></div>
+          </div>
+          <div class="bench-actions"><p id="hint">點週期表上的元素，放進 A 燒杯。</p><button type="button" class="btn" id="reset">清空燒杯</button></div>
+        </div>
+
+        <article class="report" id="report" aria-live="polite">
+          <div class="rp-h"><b id="rp-title">實驗報告</b><span id="rp-no">EXP-0000</span></div>
+          <div id="rp-body"></div>
+        </article>
+      </aside>
+    </section>
+
+    <section class="band" id="rules">
+      <div class="sec-head"><h2>信用卡怎麼挑才不會辦錯？</h2><span class="en">Quick answer</span></div>
+      <p class="summary">挑信用卡先找出<strong>自己最常發生的兩種消費反應</strong>，再比較那兩類的實拿回饋和上限。回饋率最高的卡，不一定是你拿最多的卡。</p>
+      <ol class="rules">
+        <li><div><b>先找出花最多的兩族</b><span>多數卡只在特定通路加碼。先看清楚錢花在網購、外送還是超市，再找對應的卡。</span></div></li>
+        <li><div><b>看實拿，不看最高</b><span>加碼常有上限、門檻和登錄。月花費超過上限的部分只剩基本回饋。</span></div></li>
+        <li><div><b>一張主卡加一張補位卡</b><span>主卡吃花最多的一族，補位卡補第二族或國內一般消費，管理起來也輕鬆。</span></div></li>
+      </ol>
+    </section>
+
+    <section class="band" id="faq">
+      <div class="sec-head"><h2>常見問題</h2><span class="en">FAQ</span></div>
+      <div class="faq">
+        <details open><summary>信用卡的回饋上限是什麼？</summary><p>加碼回饋多半設有每月或每期上限。超過上限的消費只剩基本回饋，所以月花費高的類別，要看上限換算的「回饋滿額消費金額」，不能只看回饋率。</p></details>
+        <details><summary>一個人該辦幾張信用卡？</summary><p>依消費分布決定。先找出花最多的兩個類別，用一張主卡吃最大的一區，再用一張補位卡補第二區或一般消費。卡越多，年費、帳單和登錄活動越難管理。</p></details>
+        <details><summary>行動支付綁信用卡，回饋怎麼算？</summary><p>綁定後的消費多半依信用卡條款計算回饋，但電子支付儲值、轉帳常被列為排除項目。綁卡前先看發卡銀行公告的排除清單。</p></details>
+        <details><summary>在海外網站刷卡會被收手續費嗎？</summary><p>以外幣計價或在海外清算的交易，多數會收約 1.5% 國外交易服務費，即使結帳畫面顯示台幣也可能被收。訂閱服務和海外電商都要把這筆算進去。</p></details>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <a class="logo" href="#top" aria-label="愛搭卡 i dot CARD 首頁"><span class="wm" aria-hidden="true"><span class="ii">ı<i class="tittle"></i></span><span class="dot">dot</span><span class="cd">CARD</span></span><span class="zh">愛搭卡</span></a>
+    <span>站名由來：網路迷因把「i don’t care」打成「i dot car」。我們幫它補上一個 D，變成 i dot CARD，中文叫愛搭卡。別的事可以不在乎，刷卡回饋要搭得剛剛好。</span>
+    <span class="warn">謹慎理財　信用至上</span>
+    <span>本頁為網站版型示意：元素、反應、卡型與文章標題皆為範例，實際權益與循環信用利率以各發卡銀行公告為準。</span>
+    <span>合作揭露：本站部分連結為合作推廣連結，透過連結申辦，本站可能獲得分潤，不影響你的申辦條件。</span>
+  </footer>
+</div>
+
+<div class="tray" id="tray" aria-live="polite">
+  <div class="slots"><span class="slot" id="trA">A</span>+<span class="slot" id="trB">B</span>→<span class="slot" id="trR">?</span></div>
+  <button type="button" class="btn" id="trGo">看實驗報告</button>
+</div>
+
+<script>
+/* ---------- 族（消費主題）：週期表的直欄 ---------- */
+const F={
+  travel:{n:"海外族",c:"#1f6fd1",cards:["海外一般消費無上限型","航空哩程聯名卡"]},
+  online:{n:"網購族",c:"#e0501b",cards:["網購指定通路加碼型","電商聯名卡"]},
+  delivery:{n:"外送族",c:"#d18a00",cards:["外送平台回饋型","行動支付綁定型"]},
+  dining:{n:"美食族",c:"#d6336c",cards:["餐飲通路加碼型","行動支付綁定型"]},
+  dept:{n:"百貨族",c:"#9c5fa0",cards:["百貨聯名卡","分期零利率型"]},
+  grocery:{n:"超市族",c:"#4c9a2a",cards:["量販超市聯名卡","國內一般消費無上限型"]},
+  transit:{n:"交通族",c:"#5b6676",cards:["加油聯名卡","交通通路加碼型"]},
+  bills:{n:"繳費族",c:"#a0522d",cards:["保費回饋型","分期零利率型"]},
+  subs:{n:"訂閱族",c:"#7a5af5",cards:["數位訂閱加碼型","海外一般消費無上限型"]},
+  mobile:{n:"行動支付族",c:"#0f9a8e",cards:["行動支付綁定型","電子支付聯名卡"]}
+};
+/* ---------- 元素（刷卡場景）：[符號, 名稱, 說明] ---------- */
+const E={
+  travel:[["Jp","日本","台灣旅客最常去的國家，指定通路加碼和一般海外回饋要分開看。"],["Kr","韓國","結帳時若被問要不要用台幣，記得選韓元。"],["Se","東南亞","小店現金比例高，大額的住宿和機票再交給回饋卡。"],["Eu","歐美","單筆金額大，海外無上限型的卡比較不怕撞到回饋上限。"],["Ft","機票","用哪張卡刷機票，通常決定旅平險跟著哪張卡。"],["Ht","訂房網站","外幣計價或海外清算時會被收國外交易手續費，結帳幣別要看清楚。"],["Df","免稅店","機場和市區免稅店常有銀行合作折扣，外幣結帳記得把手續費算進去。"]],
+  online:[["Sp","蝦皮購物","大促檔期常有銀行合作加碼，記得先看活動上限和是否要登錄。"],["Mo","momo購物網","有平台聯名卡，也常被列入網購加碼通路，兩種一起比實拿。"],["Pc","PChome 24h","3C、日用品大宗採購多，分期付款多半不計回饋。"],["Yh","Yahoo購物","滿額折扣和刷卡回饋常可疊加，回饋以折扣後金額計算。"],["Ku","酷澎","有會員訂閱方案，會員費、運費和刷卡回饋一起算才準。"],["Tb","淘寶","海外電商，以外幣計價或在海外清算時可能被收國外交易手續費。"]],
+  delivery:[["Ue","Uber Eats","常有平台會員方案，點越多越要把會員費和回饋一起算。"],["Fp","foodpanda","會員方案和銀行合作活動常一起出現，先看活動是否需要登錄。"],["Ub","Uber 叫車","叫車和外送可能被歸在同一個通路，加碼上限也可能共用。"]],
+  dining:[["Cf","咖啡廳","小額高頻，綁行動支付的卡常比直接刷卡回饋高。"],["Rs","餐廳","聚餐常由一人先刷，單筆金額大，先看回饋上限。"],["Bb","手搖飲","不少店只收行動支付或現金，先確認店家支援的付款方式。"],["Bf","飯店 Buffet","合作銀行的折扣常比回饋划算，訂位時就要報卡別。"],["Ff","速食","自助點餐機多可感應付款，回饋多半照一般消費計算。"]],
+  dept:[["Sk","新光三越","有百貨聯名卡，週年慶的滿額贈和刷卡回饋多半分開計算。"],["Sg","SOGO","週年慶檔期集中，先算好滿額門檻再決定拆單或合併結帳。"],["Fe","遠東百貨","會員點數、聯名卡回饋和銀行活動可能同時適用，看清楚疊加條件。"],["Bz","微風","精品比例高，單筆金額大，留意分期和回饋只能擇一的規定。"],["Ot","Outlet","折扣後的金額才是回饋計算基礎，回饋上限比較不容易用完。"]],
+  grocery:[["Pm","全聯","搭配 PX Pay 常有加碼，直接刷卡和綁支付的回饋可能不同。"],["Cr","家樂福","量販大宗採購，有聯名卡，也常被列入超市加碼通路。"],["Co","好市多","只收特定卡別，出門前先確認手上的卡能不能用。"],["Ms","美廉社","社區型超市，小額消費多，適合綁行動支付的卡。"],["Cv","便利商店","小額高頻，常見行動支付加碼，直接刷卡不一定有。"]],
+  transit:[["Cp","中油","加油聯名卡常是每公升折抵，要換算成回饋率再和現金回饋卡比。"],["Fo","台塑石化","加油站常有銀行合作，自助加油和人工加油的優惠可能不同。"],["Hs","高鐵","線上訂票刷卡，部分卡片把高鐵列入交通類加碼。"],["Mr","捷運","交通卡自動加值多半不計回饋，通勤要另外看交通加碼。"],["Pk","停車費","代收停車費、停車場繳費可能被排除在回饋之外。"]],
+  bills:[["In","保費","找有明列保費回饋，或提供保費分期零利率的卡。"],["Tx","繳稅","繳稅多半沒有回饋，部分卡片提供分期零利率。"],["Ut","水電瓦斯","代扣繳費常不計回饋，綁定前先看排除項目。"],["Te","電信費","部分卡片有電信費自動扣繳的回饋或優惠。"],["Tu","學費","金額大，部分學校可以刷卡繳費，留意是否計入回饋。"]],
+  subs:[["Ic","iCloud","透過 Apple 帳號扣款，綁哪張卡就照那張卡的條件計算。"],["Gp","ChatGPT","以美元計價，多數卡片會收國外交易手續費。"],["Yt","YouTube","透過 App 內購付款時，交易通路會變成應用程式商店。"],["Sf","Spotify","金額小但每月都扣，適合綁在有數位訂閱加碼的卡。"],["Nf","Netflix","每月固定扣款，部分卡片會把這類數位服務算成海外消費。"],["Dn","Disney+","年繳通常比月繳便宜，一次刷年費也比較容易吃到加碼。"]],
+  mobile:[["Lp","LINE Pay","綁卡付款時，平台點數活動和信用卡回饋要分開看。"],["Px","PX Pay","全聯的自家支付，在全聯綁卡付款常有加碼活動。"],["Tw","台灣 Pay","銀行端的掃碼支付，也能拿來繳費，常見發卡銀行自家加碼。"],["Qp","全支付","電子支付帳戶，綁卡付款和儲值的回饋規則不同。"],["Jk","街口支付","可綁卡或用帳戶餘額付款，儲值多半不計信用卡回饋。"],["Ap","Apple Pay","手機感應付款，回饋多半照該卡的一般消費計算。"]]
+};
+/* ---------- 合成配方：兩族 → 新元素 [符號, 名稱, 觀察] ---------- */
+const R={
+  "online+travel":["Cb","跨境網購","外幣計價或海外清算的網購，國外交易手續費要一起算進實拿回饋。"],
+  "mobile+online":["Mb","行動網購","在電商平台用行動支付結帳，平台、支付和信用卡三層加碼能不能疊加要先看清楚。"],
+  "dept+online":["Ed","線上百貨","百貨的線上購物館，可能被算成網購，也可能算百貨通路。"],
+  "grocery+online":["Os","線上超市","量販、超市的網路商店，常和實體店的加碼分開計算。"],
+  "online+subs":["Dg","數位生活","網購和訂閱都在線上完成，適合用同一張網路通路加碼卡。"],
+  "delivery+online":["Hm","宅經濟","不出門就能買和吃，網購和外送常被同一張網路加碼卡涵蓋。"],
+  "subs+travel":["Fs","外幣訂閱","以外幣扣款的訂閱服務，每個月都會多一筆國外交易手續費。"],
+  "bills+subs":["Tl","電信綁訂閱","串流方案綁在電信帳單上，回饋要看電信費的條件，不看串流平台。"],
+  "mobile+subs":["Ia","App 內購","透過應用程式商店付款，交易通路會變成 App Store 或 Google Play。"],
+  "transit+travel":["Ti","旅平險","多數旅平險要用該卡支付機票或團費才會生效，刷哪張卡就決定保障跟著哪張卡。"],
+  "dept+travel":["Dt","免稅購物","免稅店常有銀行合作折扣，外幣結帳記得把手續費算進去。"],
+  "dining+travel":["Gf","異國餐桌","海外用餐刷卡選當地貨幣，路邊小店現金比例高。"],
+  "delivery+dining":["Fd","外送美食","外送平台上點的餐，算外送通路，不算餐廳。"],
+  "delivery+grocery":["Fr","生鮮快送","量販、超市的快送服務，可能被歸類在超市通路而不是外送。"],
+  "delivery+transit":["Rh","叫車外送","叫車和外送可能被歸在同一個通路，加碼上限也可能共用。"],
+  "delivery+mobile":["Dm","外送綁支付","外送平台綁行動支付付款，支付端活動和信用卡回饋要分開看。"],
+  "dept+dining":["Fc","百貨美食街","可能被算成百貨通路，也可能算餐飲，依店家登記的類別而定。"],
+  "dining+mobile":["Tp","小額感應","咖啡、手搖飲這種小額高頻消費，綁行動支付的卡常比直接刷卡回饋高。"],
+  "bills+dept":["Iz","零利率分期","百貨大額消費和繳稅、保費常見分期零利率，但分期多半不計回饋。"],
+  "grocery+mobile":["Cs","超商支付","便利商店、超市常見行動支付加碼，直接刷卡不一定有。"],
+  "bills+mobile":["Qr","掃碼繳費","台灣 Pay 這類掃碼支付也能拿來繳費，常見發卡銀行自家加碼。"],
+  "mobile+transit":["Tc","感應乘車","部分交通工具開放信用卡或手機感應進站，回饋依交通類條件計算。"],
+  "bills+transit":["Ca","汽車族","加油、停車、牌照稅、汽車保險，養車的固定開銷可以一起規劃。"],
+  "bills+grocery":["Hh","家庭開銷","超市採購加上水電、保費，家庭固定開銷適合一張無上限卡打底。"],
+  "dept+grocery":["Bk","大採購","週年慶和量販大採購都是單筆大額，先算好滿額門檻再結帳。"]
+};
+const $=id=>document.getElementById(id);
+const FK=Object.keys(F),RK=Object.keys(R);
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const EL={};let no=1;
+FK.forEach(f=>E[f].forEach(([s,n,t])=>{EL[s]={s,n,t,f,no:no++};}));
+const pairKey=(a,b)=>[a,b].sort().join("+");
+RK.forEach(k=>{const [s,n,t]=R[k],[a,b]=k.split("+");R[k]={s,n,t,a,b,k};});
+
+/* ---------- 週期表 ---------- */
+const pt=$("pt");
+FK.forEach((f,ci)=>{
+  const list=E[f],n=list.length,c=F[f].c;
+  const h=document.createElement("div");h.className="fam";h.style.cssText=`--c:${c};grid-column:${ci+1};grid-row:${8-n}`;
+  h.innerHTML=`<i></i>${F[f].n}`;pt.appendChild(h);
+  list.forEach(([s],i)=>{
+    const e=EL[s],b=document.createElement("button");
+    b.type="button";b.className="el";b.dataset.s=s;b.style.cssText=`--c:${c};grid-column:${ci+1};grid-row:${9-n+i}`;
+    b.setAttribute("aria-label",`${e.n}（${s}，${F[f].n}）`);b.title=e.t;
+    b.innerHTML=`<span class="no">${e.no}</span><span class="sym">${s}</span><span class="nm">${e.n}</span>`;
+    b.addEventListener("click",()=>pick(s));
+    pt.appendChild(b);e.btn=b;
+  });
+});
+
+/* ---------- 新元素圖鑑（發現紀錄只存在這個瀏覽器） ---------- */
+let found=new Set();
+try{found=new Set(JSON.parse(localStorage.getItem("idotcard-lab")||"[]").filter(k=>R[k]));}catch(e){}
+const save=()=>{try{localStorage.setItem("idotcard-lab",JSON.stringify([...found]));}catch(e){}};
+const cmp=$("cmp");
+function drawCmp(newKey){
+  cmp.innerHTML="";
+  RK.forEach((k,i)=>{
+    const r=R[k],b=document.createElement("button");b.type="button";
+    if(found.has(k)){
+      b.className="cp got"+(k===newKey?" new":"");b.style.setProperty("--c1",F[r.a].c);b.style.setProperty("--c2",F[r.b].c);
+      b.innerHTML=`<span class="sym">${r.s}</span><span class="nm">${r.n}</span>`;b.setAttribute("aria-label",`新元素 ${r.n}（${r.s}）`);
+      b.addEventListener("click",()=>showCompound(k));
+    }else{b.className="cp";b.textContent="?";b.setAttribute("aria-label",`第 ${i+1} 號新元素，尚未發現`);b.disabled=true;}
+    cmp.appendChild(b);
+  });
+  $("got").textContent=found.size;$("all").textContent=RK.length;$("bar").style.width=(found.size/RK.length*100)+"%";
+}
+
+/* ---------- 實驗台 ---------- */
+let A=null,B=null,exp=0,timer=null;
+function setBeaker(id,s){
+  const bk=$(id),tag=bk.querySelector(".tag");
+  if(s){bk.classList.add("full");bk.style.setProperty("--lc",F[EL[s].f].c);tag.textContent=s;}
+  else{bk.classList.remove("full");tag.textContent="?";}
+}
+function setFlask(res){
+  const fl=$("flask");
+  if(res){fl.classList.add("full");fl.style.setProperty("--c1",res.c1);fl.style.setProperty("--c2",res.c2);$("tagR").textContent=res.s;}
+  else{fl.classList.remove("full");$("tagR").textContent="?";}
+}
+function marks(){
+  Object.values(EL).forEach(e=>{const sl=e.s===A?"A":e.s===B?"B":"";e.btn.classList.toggle("in",!!sl);if(sl)e.btn.dataset.slot=sl;});
+  const tr=(id,s)=>{const t=$(id);t.textContent=s||id.slice(-1);t.classList.toggle("on",!!s);if(s)t.style.setProperty("--c",F[EL[s].f].c);};
+  tr("trA",A);tr("trB",B);
+}
+function pick(s){
+  clearTimeout(timer);$("tabletop").classList.remove("reacting");
+  if(!A||(A&&B)){A=s;B=null;setFlask(null);setBeaker("bkB",null);$("trR").textContent="?";$("trR").classList.remove("on");}
+  else B=s;
+  setBeaker("bkA",A);setBeaker("bkB",B);marks();
+  if(!B){$("hint").textContent="再點一個元素，放進 B 燒杯。";elementCard(A);return;}
+  $("hint").textContent="反應中……";
+  if(reduce){react(true);return;}
+  $("tabletop").classList.add("reacting");
+  timer=setTimeout(()=>{$("tabletop").classList.remove("reacting");react(true);},1100);
+}
+function result(a,b){
+  const ea=EL[a],eb=EL[b];
+  if(ea.f===eb.f)return {type:"iso",s:ea.s===eb.s?ea.s+"₂":"Is",n:`${F[ea.f].n.replace("族","")}同位素`,c1:F[ea.f].c,c2:F[ea.f].c,
+    t:ea.s===eb.s?`同一個元素放兩次，還是${ea.n}。同一個通路只要一張卡吃滿上限就好。`:`${ea.n}和${eb.n}屬於同一族消費，性質很像。用一張主卡吃滿這一族的加碼，超過上限再換第二張接手。`};
+  const k=pairKey(ea.f,eb.f),r=R[k];
+  if(r)return {type:"cmp",k,s:r.s,n:r.n,t:r.t,c1:F[ea.f].c,c2:F[eb.f].c};
+  return {type:"mix",s:"Mx",n:"混合物",c1:F[ea.f].c,c2:F[eb.f].c,t:`${F[ea.f].n}和${F[eb.f].n}沒有共同的加碼通路，放在一起反應不明顯。兩張卡各管一族就好。`};
+}
+const TYPE={cmp:"化合反應：合成新元素",iso:"同位素：同一族消費",mix:"混合物：反應不明顯"};
+const sp=s=>`<span class="s" style="background:${F[EL[s].f].c}">${s}</span>`;
+function cardsFor(fa,fb,iso){
+  if(iso)return [F[fa].cards[0],F[fa].cards[1]];
+  const m=F[fa].cards[0];let s=F[fb].cards[0];if(s===m)s=F[fb].cards[1];return [m,s];
+}
+function react(animated){
+  const res=result(A,B),ea=EL[A],eb=EL[B];
+  setFlask(res);exp++;
+  const t=$("trR");t.textContent=res.s;t.classList.add("on");t.style.setProperty("--c",res.c1);
+  let isNew=false;if(res.type==="cmp"&&!found.has(res.k)){found.add(res.k);save();isNew=true;}
+  drawCmp(isNew?res.k:null);
+  $("hint").textContent=isNew?`發現新元素：${res.n}！`:res.type==="cmp"?`再次合成：${res.n}`:"反應完成，看看實驗報告。";
+  const [m,s]=cardsFor(ea.f,eb.f,res.type==="iso");
+  $("rp-title").textContent="實驗報告";$("rp-no").textContent="EXP-"+String(exp).padStart(4,"0");
+  $("rp-body").innerHTML=`
+    <p class="eq">${sp(A)} <small>${ea.n}</small> + ${sp(B)} <small>${eb.n}</small> → <span class="s" style="background:linear-gradient(90deg,${res.c1},${res.c2})">${res.s}</span> <small>${res.n}</small></p>
+    <span class="rtype">${TYPE[res.type]}${isNew?"・新發現":""}</span>
+    <div class="rp-sec"><h3>觀察</h3><p>${res.t}</p></div>
+    <div class="rp-sec"><h3>結論：愛搭卡建議搭法</h3><div class="combo"><span><i class="mini"></i>主卡：${m}</span><span><i class="mini solid"></i>補位：${s}</span></div></div>
+    <div class="rp-sec"><h3>注意事項</h3><ul><li>${ea.n}：${ea.t}</li>${ea.s!==eb.s?`<li>${eb.n}：${eb.t}</li>`:""}</ul></div>
+    <div class="rp-sec reads"><h3>延伸閱讀</h3><ol>${[`${ea.n}和${eb.n}一起刷，哪張卡最划算？`,`${res.n}：刷卡回饋怎麼算`,`${F[ea.f].n.replace("族","")}卡 × ${F[eb.f].n.replace("族","")}卡：兩張怎麼搭`].map(x=>`<li><a href="#faq"><span>${x}</span><span>→</span></a></li>`).join("")}</ol></div>`;
+  if(animated&&matchMedia("(max-width:1000px)").matches)$("report").scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});
+}
+function elementCard(s){
+  const e=EL[s];
+  $("rp-title").textContent="元素資料";$("rp-no").textContent=`No.${e.no}`;
+  $("rp-body").innerHTML=`<p class="eq">${sp(s)} <small>${e.n}・${F[e.f].n}</small></p>
+    <div class="rp-sec"><h3>性質</h3><p>${e.t}</p></div>
+    <div class="rp-sec"><h3>適合卡型</h3><div class="combo"><span><i class="mini"></i>${F[e.f].cards[0]}</span><span><i class="mini solid"></i>${F[e.f].cards[1]}</span></div></div>
+    <div class="rp-sec"><h3>下一步</h3><p>再挑一個元素放進 B 燒杯，看它們會反應出什麼。</p></div>`;
+}
+function showCompound(k){
+  const r=R[k];
+  $("rp-title").textContent="新元素圖鑑";$("rp-no").textContent=r.s;
+  $("rp-body").innerHTML=`<p class="eq"><span class="s" style="background:${F[r.a].c}">${F[r.a].n}</span> + <span class="s" style="background:${F[r.b].c}">${F[r.b].n}</span> → <span class="s" style="background:linear-gradient(90deg,${F[r.a].c},${F[r.b].c})">${r.s}</span> <small>${r.n}</small></p>
+    <div class="rp-sec"><h3>觀察</h3><p>${r.t}</p></div>
+    <div class="rp-sec"><h3>結論：愛搭卡建議搭法</h3><div class="combo">${cardsFor(r.a,r.b).map((c,i)=>`<span><i class="mini${i?" solid":""}"></i>${i?"補位":"主卡"}：${c}</span>`).join("")}</div></div>`;
+}
+$("reset").addEventListener("click",()=>{clearTimeout(timer);A=B=null;setBeaker("bkA",null);setBeaker("bkB",null);setFlask(null);marks();$("trR").textContent="?";$("trR").classList.remove("on");$("hint").textContent="點週期表上的元素，放進 A 燒杯。";
+  $("rp-title").textContent="實驗報告";$("rp-no").textContent="EXP-0000";$("rp-body").innerHTML=`<p class="rp-sec">燒杯已清空。點週期表上的任一元素開始新的實驗。</p>`;});
+$("trGo").addEventListener("click",()=>$("report").scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"}));
+
+/* ---------- 開場範例：便利商店 + LINE Pay ---------- */
+drawCmp(null);
+A="Cv";B="Lp";setBeaker("bkA",A);setBeaker("bkB",B);marks();react(false);
+$("hint").textContent="範例實驗。點任一元素開始你的實驗。";
+</script>
