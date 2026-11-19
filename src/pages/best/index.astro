@@ -1,0 +1,21 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import LinkList from '@/components/layout/LinkList.astro';
+import { published } from '@/lib/content';
+import { graph, itemListNode, webPageNode } from '@/lib/seo';
+import { url } from '@/lib/urls';
+
+const best = await published('best');
+const site = Astro.site!;
+const path = url.bestIndex();
+const title = '信用卡推薦排行：依需求挑選最適合的卡';
+const description = '依現金回饋、海外消費、免年費等需求整理的信用卡推薦排行，公開評選方法並定期更新。';
+const crumbs = [{ name: '首頁', href: '/' }, { name: '推薦排行', href: path }];
+const jsonLd = graph(site, [...webPageNode(site, { path, title, description, crumbs, type: 'CollectionPage' }), itemListNode(site, path, best.map((b) => ({ name: b.data.title, href: url.best(b.id) })))]);
+---
+
+<BaseLayout {title} {description} {path} {crumbs} {jsonLd}>
+  <h1>信用卡推薦排行</h1>
+  <p>{description} <a href="/methodology/">評選方法</a></p>
+  <LinkList items={best.map((b) => ({ href: url.best(b.id), title: b.data.title, note: b.data.summary, date: b.data.updatedAt }))} />
+</BaseLayout>

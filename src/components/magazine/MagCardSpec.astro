@@ -1,0 +1,43 @@
+---
+/**
+ * magazine 版的 <CardSpec>：卡面＋重點數字 → 適合／注意 → 完整規格（可展開）→ 導流按鈕
+ * 數字一樣來自 src/data/cards，與 normal 版共用資料
+ */
+import { getEntry } from 'astro:content';
+import Cover from './Cover.astro';
+import CardSpecTable from '@/components/content/CardSpecTable.astro';
+import { displayDate, feeShort, topRate } from '@/lib/content';
+import { url } from '@/lib/urls';
+interface Props { id: string }
+const card = await getEntry('cards', Astro.props.id);
+if (!card) throw new Error(`CardSpec：找不到卡片 id「${Astro.props.id}」`);
+const bank = (await getEntry('banks', card.data.bank.id))!;
+const top = topRate(card.data);
+const d = card.data;
+---
+
+<section class="mz-feature">
+  <div class="mz-feature-media">
+    <figure style="margin:0">
+      <Cover topicId={d.topics[0]?.id ?? 'cashback'} cards={[card]} />
+      <figcaption>{d.name}（卡面為示意圖）</figcaption>
+    </figure>
+    <dl class="mz-feature-facts">
+      <div><dt>{top.label}</dt><dd>{top.ratePercent}%</dd></div>
+      <div><dt>年費</dt><dd>{feeShort(d)}</dd></div>
+      <div><dt>發卡銀行</dt><dd><a href={url.bank(bank.id)}>{bank.data.shortName}</a></dd></div>
+      <div><dt>卡別</dt><dd>{d.networks.map((n) => n.toUpperCase()).join('、')}</dd></div>
+      <div class="wide"><dt>一句話結論</dt><dd>{d.summary}</dd></div>
+    </dl>
+  </div>
+  <div class="mz-reasons">
+    <strong>適合誰：</strong>
+    <ol>{d.bestFor.map((x) => <li>{x}</li>)}</ol>
+    {d.notFor.length > 0 && <><strong>要注意：</strong><ol>{d.notFor.map((x) => <li>{x}</li>)}</ol></>}
+  </div>
+  <details class="mz-spec-more">
+    <summary>完整回饋規格（資料核對日期 {displayDate(d.checkedAt)}）</summary>
+    <CardSpecTable card={card} caption={false} />
+  </details>
+  <a class="mz-btn block" href={url.card(card.id)}>看{d.name}完整權益與優惠</a>
+</section>

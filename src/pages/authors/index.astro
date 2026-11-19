@@ -1,0 +1,21 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import LinkList from '@/components/layout/LinkList.astro';
+import { graph, webPageNode } from '@/lib/seo';
+import { url } from '@/lib/urls';
+
+const authors = await getCollection('authors');
+const site = Astro.site!;
+const path = url.authors();
+const title = '作者與審稿團隊';
+const description = 'idotcard 的編輯與審稿團隊介紹，包含每位成員的專業背景與負責的內容範圍。';
+const crumbs = [{ name: '首頁', href: '/' }, { name: '作者與審稿團隊', href: path }];
+const jsonLd = graph(site, webPageNode(site, { path, title, description, crumbs, type: 'CollectionPage' }));
+---
+
+<BaseLayout {title} {description} {path} {crumbs} {jsonLd}>
+  <h1>作者與審稿團隊</h1>
+  <p>每篇內容都由具名編輯負責、審稿人核對。詳見<a href="/editorial-policy/">編輯政策</a>。</p>
+  <LinkList items={authors.map((a) => ({ href: url.author(a.id), title: a.data.name, note: a.data.jobTitle }))} />
+</BaseLayout>

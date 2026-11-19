@@ -1,0 +1,62 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Summary from '@/components/content/Summary.astro';
+import { isRewardActive } from '@/lib/content';
+import { graph, webAppNode, webPageNode } from '@/lib/seo';
+import { url } from '@/lib/urls';
+
+const tool = (await getEntry('tools', 'rewards-calculator'))!;
+const site = Astro.site!;
+const path = url.tool(tool.id);
+// 以「國內一般消費」為試算基準；沒有國內回饋資料的卡不列入，避免誤把海外回饋當國內
+const cards = (await getCollection('cards', (c) => c.data.status === 'active')).flatMap((c) => {
+  const base = c.data.rewards.filter(isRewardActive).find((r) => r.scope.includes('國內'));
+  return base ? [{ id: c.id, name: c.data.name, href: url.card(c.id), rate: base.ratePercent, cap: base.capPerMonth ?? null }] : [];
+});
+const title = `${tool.data.name}：輸入月消費算出實拿回饋`;
+const description = tool.data.description;
+const crumbs = [{ name: '首頁', href: '/' }, { name: '工具', href: url.tools() }, { name: tool.data.name, href: path }];
+const jsonLd = graph(site, [...webPageNode(site, { path, title, description, crumbs, dateModified: tool.data.updatedAt }), webAppNode(site, path, tool.data.name, description)]);
+---
+
+<BaseLayout {title} {description} {path} {crumbs} {jsonLd} updatedAt={tool.data.updatedAt} searchable>
+  <h1>{tool.data.name}</h1>
+  <Summary text="輸入每月國內一般消費金額，試算各卡在回饋上限內的實拿回饋；結果依回饋金額由高到低排序。" />
+  <div class="tool">
+    <label for="spend">每月國內一般消費（元）</label>
+    <input id="spend" type="number" inputmode="numeric" min="0" step="1000" value="20000" />
+  </div>
+  <table>
+    <thead><tr><th scope="col">卡片</th><th scope="col">回饋率</th><th scope="col">每月上限</th><th scope="col">每月實拿</th></tr></thead>
+    <tbody id="results">
+      {cards.map((c) => (
+        <tr data-rate={c.rate} data-cap={c.cap ?? ''}>
+          <td><a href={c.href}>{c.name}</a></td><td>{c.rate}%</td><td>{c.cap === null ? '無上限' : `${c.cap} 元`}</td><td class="amount">—</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+
+  <h2>計算方式</h2>
+  <p>每月實拿回饋 = min(月消費 × 回饋率, 每月回饋上限)。試算僅以國內一般消費回饋為基準，未計入通路加碼與年費；實際回饋以銀行公告為準。</p>
+</BaseLayout>
+
+<script>
+  const input = document.querySelector<HTMLInputElement>('#spend')!;
+  const body = document.querySelector<HTMLTableSectionElement>('#results')!;
+  const update = () => {
+    const spend = Math.max(0, Number(input.value) || 0);
+    const rows = [...body.querySelectorAll<HTMLTableRowElement>('tr')];
+    for (const row of rows) {
+      const rate = Number(row.dataset.rate) / 100;
+      const cap = row.dataset.cap ? Number(row.dataset.cap) : Infinity;
+      const amount = Math.round(Math.min(spend * rate, cap));
+      row.dataset.amount = String(amount);
+      row.querySelector('.amount')!.textContent = `${amount.toLocaleString('zh-TW')} 元`;
+    }
+    rows.sort((a, b) => Number(b.dataset.amount) - Number(a.dataset.amount)).forEach((r) => body.appendChild(r));
+  };
+  input.addEventListener('input', update);
+  update();
+</script>

@@ -1,0 +1,19 @@
+---
+/** 人氣排行：本週／累計兩個分頁（純 CSS radio 切換，內容都在 HTML 內） */
+import type { PostCardData } from '@/lib/magazine';
+interface Props { week: PostCardData[]; all: PostCardData[] }
+const { week, all } = Astro.props;
+---
+
+<section class="mz-rank" aria-labelledby="mz-rank-title">
+  <h2 id="mz-rank-title">人氣排行</h2>
+  <div class="mz-tabs">
+    <input type="radio" name="rank" id="rank-week" checked />
+    <label for="rank-week">本週</label>
+    <input type="radio" name="rank" id="rank-all" />
+    <label for="rank-all">累計</label>
+    <ol class="mz-rank-list week">{week.map((p) => <li><a href={p.href}>{p.title}</a></li>)}</ol>
+    <ol class="mz-rank-list all">{all.map((p) => <li><a href={p.href}>{p.title}</a></li>)}</ol>
+  </div>
+  <p class="mz-note">排行為示意編排，上線後依 GA4 瀏覽數每日更新</p>
+</section>

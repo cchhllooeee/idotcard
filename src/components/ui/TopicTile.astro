@@ -1,0 +1,12 @@
+---
+import { url } from '@/lib/urls';
+interface Props { id: string; name: string; description: string; count?: number }
+const { id, name, description, count } = Astro.props;
+---
+
+<a class="topic-tile" href={url.topic(id)}>
+  <span class="ti-icon" aria-hidden="true">{[...name][0]}</span>
+  <strong>{name}</strong>
+  <span>{description}</span>
+  {!!count && <span>{count} 篇文章</span>}
+</a>

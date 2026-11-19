@@ -1,0 +1,52 @@
+---
+/**
+ * 每頁唯一的 <head> SEO 輸出：title、description、canonical、robots、OG、JSON-LD。
+ */
+import { SITE } from '@/lib/site';
+import { absolute } from '@/lib/urls';
+import { isoDate } from '@/lib/content';
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  noindex?: boolean;
+  jsonLd?: object;
+  ogType?: 'website' | 'article';
+  publishedAt?: Date;
+  updatedAt?: Date;
+  image?: string;
+}
+
+const { title, description, path, noindex = false, jsonLd, ogType = 'website', publishedAt, updatedAt, image } = Astro.props;
+const site = Astro.site!;
+const canonical = absolute(path, site);
+const fullTitle = path === '/' ? `${SITE.name}｜${SITE.description.split('，')[0]}` : `${title}｜${SITE.name}`;
+const ogImage = image ? absolute(image, site) : undefined;
+const robots = noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large, max-snippet:-1';
+// Demo 站（DEMO_NOINDEX=1）全站 noindex；原本的設定保留在 data-original，供 check-site 檢查一般規則
+const demo = import.meta.env.DEMO_NOINDEX === '1';
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{demo ? <meta name="robots" content="noindex, nofollow" data-original={robots} /> : <meta name="robots" content={robots} />}
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="alternate" type="application/rss+xml" title={`${SITE.name} 最新內容`} href="/rss.xml" />
+<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+
+<meta property="og:site_name" content={SITE.name} />
+<meta property="og:locale" content={SITE.ogLocale} />
+<meta property="og:type" content={ogType} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+{ogImage && <meta property="og:image" content={ogImage} />}
+{publishedAt && <meta property="article:published_time" content={isoDate(publishedAt)} />}
+{updatedAt && <meta property="article:modified_time" content={isoDate(updatedAt)} />}
+<meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+
+{jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}

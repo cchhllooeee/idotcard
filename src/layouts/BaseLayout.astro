@@ -1,0 +1,99 @@
+---
+import SeoHead from '@/components/seo/SeoHead.astro';
+import Breadcrumbs from '@/components/layout/Breadcrumbs.astro';
+import { NAV, SITE, TRUST_LINKS } from '@/lib/site';
+import type { Crumb } from '@/lib/seo';
+import MagHeader from '@/components/magazine/MagHeader.astro';
+import { isMagazine } from '@/lib/variant';
+import '@/styles/global.css';
+import '@/styles/magazine.css';
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  crumbs?: Crumb[];
+  noindex?: boolean;
+  jsonLd?: object;
+  ogType?: 'website' | 'article';
+  publishedAt?: Date;
+  updatedAt?: Date;
+  /** 是否納入站內搜尋（Pagefind） */
+  searchable?: boolean;
+  /** read：760px 閱讀寬度；wide：1120px（首頁、主題、標籤、文章含側欄） */
+  width?: 'read' | 'wide';
+  /** magazine 版：目前所在主題（分類列高亮） */
+  currentTopic?: string;
+}
+
+const { crumbs = [], searchable = false, width = 'read', currentTopic, ...seo } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<!doctype html>
+<html lang={SITE.locale}>
+  <head>
+    <SeoHead {...seo} />
+  </head>
+  <body class:list={[isMagazine && 'v-mag']}>
+    <a class="skip" href="#main">跳到主要內容</a>
+    {isMagazine ? <MagHeader current={currentTopic} /> : (
+    <header class="site-header" data-pagefind-ignore>
+      <div class="wrap header-inner">
+        <a class="logo" href="/" aria-label={`${SITE.name} 首頁`}>
+          <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="var(--accent)"/><rect x="6" y="10" width="20" height="13" rx="2.5" fill="none" stroke="#fff" stroke-width="2"/><path d="M6 14.5h20" stroke="#fff" stroke-width="2"/></svg>
+          {SITE.name}
+        </a>
+        <nav aria-label="主選單">
+          <ul>
+            {NAV.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+          </ul>
+        </nav>
+      </div>
+    </header>
+    )}
+
+    <main id="main" class:list={['wrap', width === 'wide' && 'wide']} {...(searchable ? { 'data-pagefind-body': '' } : {})}>
+      {crumbs.length > 1 && <Breadcrumbs crumbs={crumbs} />}
+      <slot />
+    </main>
+
+    <footer class="site-footer" data-pagefind-ignore>
+      <div class="wrap">
+        <div class="footer-cols">
+          <nav aria-label="找卡">
+            <h2>找卡</h2>
+            <ul>
+              <li><a href="/cards/">信用卡總覽</a></li>
+              <li><a href="/best/">推薦排行</a></li>
+              <li><a href="/banks/">依銀行</a></li>
+              <li><a href="/merchants/">依通路</a></li>
+              <li><a href="/compare/">信用卡比較</a></li>
+            </ul>
+          </nav>
+          <nav aria-label="內容">
+            <h2>內容</h2>
+            <ul>
+              <li><a href="/topics/">主題</a></li>
+              <li><a href="/articles/">全部文章</a></li>
+              <li><a href="/news/">權益快訊</a></li>
+              <li><a href="/offers/">優惠</a></li>
+              <li><a href="/glossary/">詞彙表</a></li>
+              <li><a href="/tools/">試算工具</a></li>
+            </ul>
+          </nav>
+          <nav aria-label="網站資訊">
+            <h2>關於 {SITE.name}</h2>
+            <ul>
+              {TRUST_LINKS.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+              <li><a href="/authors/">編輯團隊</a></li>
+              <li><a href="/sitemap/">網站地圖</a></li>
+              <li><a href="/rss.xml">RSS</a></li>
+            </ul>
+          </nav>
+        </div>
+        <p class="muted">本站內容僅供參考，不構成任何金融建議；各項權益以銀行官方公告為準。© {year} {SITE.name}</p>
+      </div>
+    </footer>
+  </body>
+</html>

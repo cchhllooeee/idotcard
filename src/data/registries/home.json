@@ -1,0 +1,7 @@
+{
+  "$comment": "magazine 版首頁的人工編排。上線後 popularWeek / popularAll 改由 GA4 每日自動產生。值為文章 id（src/content/articles 檔名）",
+  "hero": ["japan-travel-credit-card", "how-to-choose-cashback-card", "no-annual-fee-card-guide"],
+  "editorPicks": ["japan-travel-credit-card", "supermarket-credit-card-tips", "cashback-cap-explained", "example-online-card-review", "first-credit-card-for-students", "line-pay-binding-rewards", "food-delivery-credit-card", "what-is-revolving-interest"],
+  "popularWeek": ["japan-travel-credit-card", "supermarket-credit-card-tips", "how-to-choose-cashback-card", "food-delivery-credit-card", "cashback-cap-explained", "no-annual-fee-card-guide", "line-pay-binding-rewards"],
+  "popularAll": ["how-to-choose-cashback-card", "what-is-revolving-interest", "japan-travel-credit-card", "first-credit-card-for-students", "example-cashback-card-review", "no-annual-fee-card-guide", "example-online-card-review"]
+}

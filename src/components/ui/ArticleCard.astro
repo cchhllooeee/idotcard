@@ -1,0 +1,17 @@
+---
+/** 直式文章卡（網格用） */
+import { displayDate, isoDate } from '@/lib/content';
+export interface ArticleCardProps { href: string; title: string; summary?: string; eyebrow?: string; eyebrowHref?: string; date?: Date; minutes?: number; label?: string }
+const p = Astro.props as ArticleCardProps;
+---
+
+<article class="tile">
+  {p.eyebrow && (p.eyebrowHref ? <a class="eyebrow" href={p.eyebrowHref} style="position:relative;z-index:1">{p.eyebrow}</a> : <span class="eyebrow">{p.eyebrow}</span>)}
+  <h3><a href={p.href}>{p.title}</a></h3>
+  {p.summary && <p>{p.summary}</p>}
+  <div class="meta">
+    {p.label && <span class="badge">{p.label}</span>}
+    {p.date && <time datetime={isoDate(p.date)}>{displayDate(p.date)}</time>}
+    {p.minutes && <span>{p.minutes} 分鐘</span>}
+  </div>
+</article>

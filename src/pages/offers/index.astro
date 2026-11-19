@@ -1,0 +1,29 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import LinkList from '@/components/layout/LinkList.astro';
+import { displayDate, isOfferActive, isOfferExpired } from '@/lib/content';
+import { graph, itemListNode, webPageNode } from '@/lib/seo';
+import { url } from '@/lib/urls';
+
+const all = await getCollection('offers');
+const active = all.filter(isOfferActive).sort((a, b) => a.data.validThrough.getTime() - b.data.validThrough.getTime());
+const ended = all.filter(isOfferExpired).sort((a, b) => b.data.validThrough.getTime() - a.data.validThrough.getTime()).slice(0, 10);
+const site = Astro.site!;
+const path = url.offers();
+const title = '信用卡優惠總覽：新戶禮與限時活動';
+const description = '整理各銀行信用卡新戶首刷禮、限時加碼與通路活動，依截止日排序，每筆附官方連結與資料核對日期。';
+const crumbs = [{ name: '首頁', href: '/' }, { name: '優惠', href: path }];
+const items = active.map((o) => ({ name: o.data.title, href: url.offer(o.id) }));
+const jsonLd = graph(site, [...webPageNode(site, { path, title, description, crumbs, type: 'CollectionPage' }), itemListNode(site, path, items)]);
+const cardName = async (id: string) => (await getEntry('cards', id))?.data.name ?? id;
+const activeItems = await Promise.all(active.map(async (o) => ({ href: url.offer(o.id), title: o.data.title, note: `${await cardName(o.data.card.id)}｜截止 ${displayDate(o.data.validThrough)}` })));
+---
+
+<BaseLayout {title} {description} {path} {crumbs} {jsonLd}>
+  <h1>信用卡優惠總覽</h1>
+  <p>{description}</p>
+  <h2>進行中的優惠（依截止日排序）</h2>
+  <LinkList items={activeItems} empty="目前沒有進行中的優惠。" />
+  {ended.length > 0 && (<><h2>近期已結束</h2><LinkList items={ended.map((o) => ({ href: url.offer(o.id), title: o.data.title, badge: '已結束' }))} /></>)}
+</BaseLayout>

@@ -1,0 +1,125 @@
+---
+/**
+ * magazine 版文章頁（寬單欄、圖片優先）
+ * 麵包屑 → 主題標籤 → H1 → 日期與作者 → 導言（重點摘要）→ 封面 → 揭露
+ * → 可收合多層目錄 → 內文（H2 色塊、H3 三角標、卡片圖文區塊）
+ * → 常見 Q&A → 資料來源 → 相關情報一把抓 → 作者卡
+ * 寬螢幕：左側浮動目錄、右側試算工具浮動按鈕
+ */
+import type { MarkdownHeading } from 'astro';
+import type { CollectionEntry } from 'astro:content';
+import { getEntries, getEntry, render } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Cover from '@/components/magazine/Cover.astro';
+import PostCard from '@/components/magazine/PostCard.astro';
+import Faq from '@/components/content/Faq.astro';
+import Sources from '@/components/content/Sources.astro';
+import Disclosure from '@/components/content/Disclosure.astro';
+import { magMdxComponents } from '@/components/magazine/mdx';
+import { ARTICLE_TYPE_LABEL, displayDate, initials, isoDate, readingMinutes, relatedArticles } from '@/lib/content';
+import { toPostCard } from '@/lib/magazine';
+import type { Crumb } from '@/lib/seo';
+import { url } from '@/lib/urls';
+
+interface Props { article: CollectionEntry<'articles'>; all: CollectionEntry<'articles'>[]; crumbs: Crumb[]; jsonLd: object; path: string }
+const { article, all, crumbs, jsonLd, path } = Astro.props;
+const d = article.data;
+const { Content, headings } = await render(article);
+const topic = (await getEntry('topics', d.primaryTopic.id))!;
+const cards = (await getEntries(d.cards)).filter(Boolean);
+const author = (await getEntry('authors', d.author.id))!;
+const reviewer = d.reviewer ? await getEntry('authors', d.reviewer.id) : undefined;
+const tags = await getEntries(d.tags);
+
+// 多層目錄：H2 底下掛 H3
+type Node = MarkdownHeading & { children: MarkdownHeading[] };
+const toc: Node[] = [];
+for (const h of headings) {
+  if (h.depth === 2) toc.push({ ...h, children: [] });
+  else if (h.depth === 3 && toc.length) toc.at(-1)!.children.push(h);
+}
+let related = relatedArticles(article, all, 8);
+if (related.length < 4) related = [...related, ...all.filter((a) => a.id !== article.id && !related.includes(a))].slice(0, 4);
+const relatedCards = await Promise.all(related.map(toPostCard));
+---
+
+<BaseLayout title={d.title} description={d.description} {path} {crumbs} {jsonLd} noindex={d.noindex}
+  ogType="article" publishedAt={d.publishedAt} updatedAt={d.updatedAt} searchable width="wide" currentTopic={topic.id}>
+  <div class="mz-article">
+    <header class="mz-article-head">
+      <div class="mz-labels" style="margin-bottom:8px">
+        <a class="mz-label" href={url.topic(topic.id)}>{topic.data.name}</a>
+        <span class="mz-label ghost">{ARTICLE_TYPE_LABEL[d.type]}</span>
+      </div>
+      <h1>{d.title}</h1>
+      <p class="mz-meta">
+        <span>更新日期 <time datetime={isoDate(d.updatedAt)}>{displayDate(d.updatedAt)}</time></span>
+        <span>編輯 <a href={url.author(author.id)} rel="author">{author.data.name}</a></span>
+        {reviewer && <span>審稿 <a href={url.author(reviewer.id)}>{reviewer.data.name}</a></span>}
+        <span>閱讀約 {readingMinutes(article.body)} 分鐘</span>
+      </p>
+      <p class="mz-lead"><strong>重點摘要：</strong>{d.summary}</p>
+    </header>
+
+    <Cover topicId={topic.id} topicName={topic.data.name} cards={cards} size="lg" />
+
+    <div class="mz-body">
+      <Disclosure sponsored={cards.some((c) => c.data.sponsored)} />
+      {toc.length > 0 && (
+        <details class="mz-toc" open>
+          <summary>目錄</summary>
+          <ol>
+            {toc.map((h) => (
+              <li>
+                <a href={`#${h.slug}`}>{h.text}</a>
+                {h.children.length > 0 && <ol>{h.children.map((c) => <li><a href={`#${c.slug}`}>{c.text}</a></li>)}</ol>}
+              </li>
+            ))}
+          </ol>
+        </details>
+      )}
+      <div class="prose">
+        <Content components={magMdxComponents} />
+      </div>
+      <Faq items={d.faq} title="常見 Q&A" />
+      <Sources sources={d.sources} />
+      {tags.length > 0 && <div class="tag-row">標籤 {tags.map((t) => <a class="badge" href={url.tag(t.id)}>{t.data.name}</a>)}</div>}
+    </div>
+
+    <section class="mz-section">
+      <div class="mz-section-head"><h2>相關情報一把抓</h2><a class="mz-more" href={url.topic(topic.id)}>更多{topic.data.name}</a></div>
+      <ul class="mz-grid c4">{relatedCards.map((p) => <li><PostCard post={p} /></li>)}</ul>
+    </section>
+
+    <section class="mz-author" aria-label="關於作者">
+      <span class="avatar" aria-hidden="true">{initials(author.data.name)}</span>
+      <h2><a href={url.author(author.id)} style="color:inherit;text-decoration:none">{author.data.name}</a></h2>
+      <p>{author.data.jobTitle}｜{author.data.bio}</p>
+      {reviewer && <p>本文由 <a href={url.author(reviewer.id)}>{reviewer.data.name}</a> 審稿，審稿流程見<a href="/editorial-policy/">編輯政策</a>。</p>}
+    </section>
+  </div>
+
+  {toc.length > 1 && (
+    <nav class="mz-float-toc" aria-label="文章目錄" data-pagefind-ignore>
+      <strong>目錄</strong>
+      <ol>{toc.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol>
+    </nav>
+  )}
+  <a class="mz-fab" href={url.tool('rewards-calculator')} data-pagefind-ignore>回饋試算</a>
+</BaseLayout>
+
+<script>
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('.mz-float-toc a')];
+  const targets = links.map((a) => document.getElementById(decodeURIComponent(a.hash.slice(1))));
+  let ticking = false;
+  const update = () => {
+    ticking = false;
+    let current = 0;
+    targets.forEach((t, i) => { if (t && t.getBoundingClientRect().top < 150) current = i; });
+    links.forEach((a, i) => a.classList.toggle('active', i === current));
+  };
+  if (links.length) {
+    addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+    update();
+  }
+</script>

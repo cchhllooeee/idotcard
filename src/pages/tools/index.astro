@@ -1,0 +1,20 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import LinkList from '@/components/layout/LinkList.astro';
+import { graph, webPageNode } from '@/lib/seo';
+import { url } from '@/lib/urls';
+
+const tools = await getCollection('tools');
+const site = Astro.site!;
+const path = url.tools();
+const title = '信用卡試算工具';
+const description = '信用卡回饋試算、分期利息與年費計算等免費工具，用你的消費數字算出最適合的選擇。';
+const crumbs = [{ name: '首頁', href: '/' }, { name: '工具', href: path }];
+const jsonLd = graph(site, webPageNode(site, { path, title, description, crumbs, type: 'CollectionPage' }));
+---
+
+<BaseLayout {title} {description} {path} {crumbs} {jsonLd}>
+  <h1>試算工具</h1>
+  <LinkList items={tools.map((t) => ({ href: url.tool(t.id), title: t.data.name, note: t.data.description }))} />
+</BaseLayout>

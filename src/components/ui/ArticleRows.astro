@@ -1,0 +1,24 @@
+---
+/** 橫式文章列表（主題頁、標籤頁、全部文章用） */
+import { displayDate, isoDate } from '@/lib/content';
+export type Row = { href: string; title: string; summary?: string; label?: string; topic?: { name: string; href: string }; date?: Date; minutes?: number };
+interface Props { items: Row[]; empty?: string }
+const { items, empty = '目前沒有文章。' } = Astro.props;
+---
+
+{items.length === 0 ? <p class="muted">{empty}</p> : (
+  <ul class="rows">
+    {items.map((r) => (
+      <li>
+        <h3><a href={r.href}>{r.title}</a></h3>
+        {r.date && <time class="side" datetime={isoDate(r.date)}>{displayDate(r.date)}</time>}
+        {r.summary && <p>{r.summary}</p>}
+        <div class="meta">
+          {r.label && <span class="badge">{r.label}</span>}
+          {r.topic && <a href={r.topic.href} class="badge accent">{r.topic.name}</a>}
+          {r.minutes && <span>閱讀 {r.minutes} 分鐘</span>}
+        </div>
+      </li>
+    ))}
+  </ul>
+)}

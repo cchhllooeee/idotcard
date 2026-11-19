@@ -1,0 +1,114 @@
+---
+/**
+ * magazine 版列表頁（主題頁、標籤頁共用）
+ * 色塊頁首（圖示、名稱、說明、數據）→ 篩選列（銀行 × 類型 × 最新／熱門）→ 封面卡網格 → 分頁 → slot（主題頁的導讀、推薦卡片、FAQ、相關主題）
+ * 篩選與排序只在瀏覽器端切換顯示，所有文章都完整輸出在 HTML 中；canonical 一律指向無參數網址。
+ */
+import type { CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import TopicIcon from '@/components/magazine/TopicIcon.astro';
+import PostCard from '@/components/magazine/PostCard.astro';
+import Pagination from '@/components/layout/Pagination.astro';
+import { ARTICLE_TYPE_LABEL, displayDate, latest } from '@/lib/content';
+import { toPostCard, topicTheme } from '@/lib/magazine';
+import type { Crumb } from '@/lib/seo';
+import home from '@/data/registries/home.json';
+
+interface Props {
+  kind: 'topic' | 'tag';
+  name: string;
+  description: string;
+  themeTopic: string;
+  items: CollectionEntry<'articles'>[];
+  totalCount: number;
+  current: number;
+  total: number;
+  pageHref: (p: number) => string;
+  title: string;
+  path: string;
+  crumbs: Crumb[];
+  jsonLd: object;
+  noindex?: boolean;
+}
+const p = Astro.props;
+const [t1, t2] = topicTheme(p.themeTopic);
+const posts = await Promise.all(p.items.map(toPostCard));
+const banks = await getCollection('banks');
+const bankIds = [...new Set(posts.flatMap((x) => x.banks))];
+const bankOptions = banks.filter((b) => bankIds.includes(b.id));
+const types = [...new Set(p.items.map((a) => a.data.type))];
+const pop = (id: string) => { const i = home.popularAll.indexOf(id); return i === -1 ? 999 : i; };
+const updated = p.items.length ? latest(...p.items.map((a) => a.data.updatedAt)) : undefined;
+const pageSuffix = p.current > 1 ? `（第 ${p.current} 頁）` : '';
+---
+
+<BaseLayout title={p.title} description={p.description} path={p.path} crumbs={p.crumbs} jsonLd={p.jsonLd} noindex={p.noindex} width="wide" currentTopic={p.kind === 'topic' ? p.themeTopic : undefined}>
+  <header class="mz-list-head" style={`--t1:${t1};--t2:${t2}`}>
+    <span class="icon"><TopicIcon id={p.themeTopic} size={40} /></span>
+    <div>
+      <span class="small" style="opacity:.85">{p.kind === 'topic' ? '主題' : '標籤'}</span>
+      <h1>{p.name}{pageSuffix}</h1>
+      <p>{p.description}</p>
+      <div class="mz-stats"><span>{p.totalCount} 篇文章</span>{updated && <span>最後更新 {displayDate(updated)}</span>}</div>
+    </div>
+  </header>
+
+  <div class="mz-filter" data-mz-filter>
+    {bankOptions.length > 0 && (
+      <span><label for="f-bank">銀行</label> <select id="f-bank" data-f="bank"><option value="">全部銀行</option>{bankOptions.map((b) => <option value={b.id}>{b.data.shortName}</option>)}</select></span>
+    )}
+    {types.length > 1 && (
+      <span><label for="f-type">類型</label> <select id="f-type" data-f="type"><option value="">全部類型</option>{types.map((t) => <option value={ARTICLE_TYPE_LABEL[t]}>{ARTICLE_TYPE_LABEL[t]}</option>)}</select></span>
+    )}
+    <div class="mz-sort" role="group" aria-label="排序">
+      <button type="button" data-sort="date" aria-pressed="true">最新</button>
+      <button type="button" data-sort="pop" aria-pressed="false">熱門</button>
+    </div>
+  </div>
+
+  <section class="mz-section" style="margin-top:20px" aria-label="文章列表">
+    <ul class="mz-grid c3" data-mz-grid>
+      {posts.map((post, i) => <li><PostCard post={post} showSummary popularity={pop(p.items[i].id)} /></li>)}
+    </ul>
+    <p class="mz-empty" data-mz-empty>沒有符合條件的文章，換個篩選試試。</p>
+    <Pagination current={p.current} total={p.total} href={p.pageHref} />
+  </section>
+
+  <slot />
+</BaseLayout>
+
+<script>
+  const bar = document.querySelector<HTMLElement>('[data-mz-filter]');
+  const grid = document.querySelector<HTMLUListElement>('[data-mz-grid]');
+  const empty = document.querySelector<HTMLElement>('[data-mz-empty]');
+  if (bar && grid) {
+    const items = [...grid.children] as HTMLLIElement[];
+    const state = { bank: '', type: '', sort: 'date' };
+    const apply = () => {
+      let shown = 0;
+      for (const li of items) {
+        const card = li.firstElementChild as HTMLElement;
+        const ok = (!state.bank || (card.dataset.banks ?? '').split(' ').includes(state.bank)) && (!state.type || card.dataset.type === state.type);
+        li.hidden = !ok;
+        if (ok) shown++;
+      }
+      const key = (li: HTMLLIElement) => (li.firstElementChild as HTMLElement).dataset;
+      items.sort((a, b) => state.sort === 'pop'
+        ? Number(key(a).pop) - Number(key(b).pop)
+        : (key(b).date ?? '').localeCompare(key(a).date ?? '')).forEach((li) => grid.appendChild(li));
+      if (empty) empty.style.display = shown ? 'none' : 'block';
+    };
+    bar.addEventListener('change', (e) => {
+      const el = e.target as HTMLSelectElement;
+      if (el.dataset.f === 'bank') state.bank = el.value;
+      if (el.dataset.f === 'type') state.type = el.value;
+      apply();
+    });
+    bar.querySelectorAll<HTMLButtonElement>('[data-sort]').forEach((btn) => btn.addEventListener('click', () => {
+      state.sort = btn.dataset.sort!;
+      bar.querySelectorAll('[data-sort]').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+      apply();
+    }));
+  }
+</script>

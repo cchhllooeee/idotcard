@@ -1,0 +1,11 @@
+---
+/** MDX 用：<TermLink id="revolving-interest" />，連到詞彙表 */
+import { getEntry } from 'astro:content';
+import { url } from '@/lib/urls';
+interface Props { id: string; text?: string }
+const { id, text } = Astro.props;
+const term = await getEntry('glossary', id);
+if (!term) throw new Error(`TermLink：找不到詞彙 id「${id}」，請確認 src/content/glossary/${id}.md 存在`);
+---
+
+<a href={url.term(id)} class="term-link">{text ?? term.data.term}</a>

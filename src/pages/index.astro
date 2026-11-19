@@ -1,0 +1,151 @@
+---
+/**
+ * 首頁模組順序：
+ * 1. Hero：價值主張 + 站內搜尋 + 常見需求快捷
+ * 2. 依需求找卡（主題 Hub 入口，把權重分給主題頁）
+ * 3. 推薦排行（最高商業意圖的頁面）
+ * 4. 熱門信用卡（實體頁入口）
+ * 5. 即將截止優惠 + 最新權益快訊（新鮮度訊號）
+ * 6. 最新文章
+ * 7. 試算工具 CTA
+ * 8. 為什麼可以相信我們（E-E-A-T）
+ */
+import MagHomePage from '@/variants/magazine/HomePage.astro';
+import { isMagazine } from '@/lib/variant';
+import { getCollection, getEntry } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import SectionHead from '@/components/ui/SectionHead.astro';
+import TopicTile from '@/components/ui/TopicTile.astro';
+import CardTile from '@/components/ui/CardTile.astro';
+import CardArt from '@/components/ui/CardArt.astro';
+import RankCard from '@/components/ui/RankCard.astro';
+import ArticleCard from '@/components/ui/ArticleCard.astro';
+import { ARTICLE_TYPE_LABEL, byUpdatedDesc, daysUntil, displayDate, isOfferActive, published, readingMinutes } from '@/lib/content';
+import { SITE } from '@/lib/site';
+import { graph, webPageNode } from '@/lib/seo';
+import { url } from '@/lib/urls';
+
+const [topics, cards, offers, articles, news, best, banks] = await Promise.all([
+  getCollection('topics'), getCollection('cards', (c) => c.data.status === 'active'), getCollection('offers'),
+  published('articles'), published('news'), published('best'), getCollection('banks'),
+]);
+const site = Astro.site!;
+const path = '/';
+const title = SITE.name;
+const description = SITE.description;
+const jsonLd = graph(site, webPageNode(site, { path, title, description }));
+
+const bankName = (id: string) => banks.find((b) => b.id === id)?.data.shortName ?? '';
+const topicName = (id: string) => topics.find((t) => t.id === id)?.data.name ?? '';
+const sortedTopics = topics.sort((a, b) => a.data.order - b.data.order);
+const countByTopic = (id: string) => articles.filter((a) => a.data.primaryTopic.id === id).length;
+const heroCards = cards.slice(0, 3);
+const activeOffers = offers.filter(isOfferActive).sort((a, b) => a.data.validThrough.getTime() - b.data.validThrough.getTime()).slice(0, 4);
+const offerCards = await Promise.all(activeOffers.map(async (o) => ({ o, card: (await getEntry('cards', o.data.card.id))! })));
+const latestNews = news.sort(byUpdatedDesc).slice(0, 4);
+const latestArticles = articles.sort(byUpdatedDesc).slice(0, 6);
+const quick = ['cashback', 'overseas', 'no-annual-fee', 'new-customer', 'mobile-pay'];
+---
+
+{isMagazine ? (
+  <MagHomePage {title} {description} {jsonLd} />
+) : (
+<BaseLayout {title} {description} {path} {jsonLd} width="wide">
+  <section class="hero">
+    <div>
+      <h1>刷對卡，<br />每一筆都多拿一點</h1>
+      <p class="lead">{SITE.description}</p>
+      <form class="search-box" action="/search/" method="get" role="search">
+        <label class="sr-only" for="q">搜尋信用卡、銀行或問題</label>
+        <input id="q" name="q" type="search" placeholder="例如：超市刷什麼卡、免年費" />
+        <button class="btn" type="submit">搜尋</button>
+      </form>
+      <ul class="chips" aria-label="常見需求">
+        {quick.map((id) => <li><a href={url.topic(id)}>{topicName(id)}</a></li>)}
+      </ul>
+    </div>
+    <div class="hero-cards" aria-hidden="true">
+      {heroCards.map((c) => <CardArt card={c} bank={bankName(c.data.bank.id)} />)}
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="by-need">
+    <SectionHead id="by-need" title="依需求找卡" desc="從你最在意的回饋類型開始" moreHref={url.topics()} moreLabel="全部主題" />
+    <ul class="grid cols-5">
+      {sortedTopics.map((t) => <li><TopicTile id={t.id} name={t.data.name} description={t.data.description.split('，')[0]} count={countByTopic(t.id)} /></li>)}
+    </ul>
+  </section>
+
+  <section class="section" aria-labelledby="ranking">
+    <SectionHead id="ranking" title="推薦排行" desc="依公開評選方法每月檢查更新" moreHref={url.bestIndex()} />
+    <ul class="grid cols-3">
+      {best.map((b) => <li><RankCard item={b} /></li>)}
+    </ul>
+  </section>
+
+  <section class="section" aria-labelledby="popular">
+    <SectionHead id="popular" title="熱門信用卡" desc="每張卡附官方來源與資料核對日期" moreHref={url.cards()} moreLabel="信用卡總覽" />
+    <ul class="grid cols-4">
+      {cards.slice(0, 4).map((c) => <li><CardTile card={c} /></li>)}
+    </ul>
+  </section>
+
+  <section class="section split">
+    <div>
+      <SectionHead title="即將截止的優惠" moreHref={url.offers()} />
+      <ul class="rows">
+        {offerCards.map(({ o, card }) => (
+          <li>
+            <h3><a href={url.offer(o.id)}>{o.data.title}</a></h3>
+            <span class="side days-left">剩 {daysUntil(o.data.validThrough)} 天</span>
+            <div class="meta"><a class="badge" href={url.card(card.id)}>{card.data.name}</a><span>截止 {displayDate(o.data.validThrough)}</span></div>
+          </li>
+        ))}
+      </ul>
+    </div>
+    <div>
+      <SectionHead title="權益快訊" moreHref={url.newsIndex()} />
+      <ul class="rows">
+        {latestNews.map((n) => (
+          <li>
+            <h3><a href={url.news(n.id)}>{n.data.title}</a></h3>
+            <p>{n.data.summary}</p>
+            <div class="meta"><span class="badge warn">權益調整</span><time datetime={n.data.updatedAt.toISOString().slice(0, 10)}>{displayDate(n.data.updatedAt)}</time></div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="latest">
+    <SectionHead id="latest" title="最新文章" moreHref={url.articles()} />
+    <ul class="grid cols-3">
+      {latestArticles.map((a) => (
+        <li><ArticleCard href={url.article(a.id)} title={a.data.title} summary={a.data.summary}
+          eyebrow={topicName(a.data.primaryTopic.id)} eyebrowHref={url.topic(a.data.primaryTopic.id)}
+          label={ARTICLE_TYPE_LABEL[a.data.type]} date={a.data.updatedAt} minutes={readingMinutes(a.body)} /></li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="section">
+    <div class="cta-band">
+      <div>
+        <h2>不確定哪張卡最划算？</h2>
+        <p>輸入你的月消費，直接算出每張卡在回饋上限內的實拿金額。</p>
+      </div>
+      <a class="btn" href={url.tool('rewards-calculator')}>開始試算</a>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="trust">
+    <SectionHead id="trust" title="為什麼可以相信 idotcard" />
+    <ul class="trust-strip">
+      <li><strong>每項權益附官方來源</strong><p>卡片資料逐項對照銀行公告，並標示資料核對日期。</p></li>
+      <li><strong>具名編輯與審稿</strong><p>每篇內容都有負責的編輯與審稿人。<a href={url.authors()}>認識團隊</a></p></li>
+      <li><strong>公開評選方法</strong><p>排行依固定標準評分，合作不影響排名。<a href="/methodology/">評選方法</a></p></li>
+      <li><strong>權益變動即時更新</strong><p>銀行調整權益時更新頁面，並保留變動紀錄。<a href={url.newsIndex()}>權益快訊</a></p></li>
+    </ul>
+  </section>
+</BaseLayout>
+)}

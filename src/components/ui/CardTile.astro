@@ -1,0 +1,21 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { getEntry } from 'astro:content';
+import CardArt from './CardArt.astro';
+import { url } from '@/lib/urls';
+import { feeShort, topRate } from '@/lib/content';
+interface Props { card: CollectionEntry<'cards'>; headingLevel?: 'h2' | 'h3' }
+const { card } = Astro.props;
+const bank = (await getEntry('banks', card.data.bank.id))!;
+const top = topRate(card.data);
+---
+
+<article class="tile">
+  <CardArt card={card} bank={bank.data.shortName} />
+  <h3><a href={url.card(card.id)}>{card.data.name}</a></h3>
+  <dl class="kv">
+    <div><dt>{top.label}</dt><dd>{top.ratePercent}%</dd></div>
+    <div><dt>年費</dt><dd>{feeShort(card.data)}</dd></div>
+  </dl>
+  <p>{card.data.bestFor.slice(0, 2).join('、')}</p>
+</article>

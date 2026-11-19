@@ -1,0 +1,125 @@
+---
+/**
+ * 編輯內容共用版型（文章、快訊、排行、比較）
+ *
+ * 主欄：主題標籤 → H1 → 署名與日期 → 重點摘要 → 揭露 → （手機版目錄）→ 內文 → FAQ → 來源 → 作者框 → after slot
+ * 側欄（桌機 sticky）：目錄（捲動高亮）→ 本文提到的卡片 → 試算工具
+ */
+import type { MarkdownHeading } from 'astro';
+import type { CollectionEntry } from 'astro:content';
+import { getEntry } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import Summary from '@/components/content/Summary.astro';
+import Byline from '@/components/content/Byline.astro';
+import Faq from '@/components/content/Faq.astro';
+import Sources from '@/components/content/Sources.astro';
+import Disclosure from '@/components/content/Disclosure.astro';
+import AuthorBox from '@/components/content/AuthorBox.astro';
+import CardArt from '@/components/ui/CardArt.astro';
+import type { Crumb } from '@/lib/seo';
+import { url } from '@/lib/urls';
+import { feeShort, topRate } from '@/lib/content';
+
+interface Props {
+  path: string;
+  crumbs: Crumb[];
+  jsonLd: object;
+  headings?: MarkdownHeading[];
+  data: {
+    title: string;
+    description: string;
+    summary: string;
+    author: { id: string };
+    reviewer?: { id: string };
+    publishedAt: Date;
+    updatedAt: Date;
+    sources: { title: string; url: string; checkedAt: Date }[];
+    faq: { q: string; a: string }[];
+    noindex: boolean;
+  };
+  /** H1 上方的分類標籤，例如主題名稱 */
+  eyebrow?: { name: string; href: string };
+  /** 側欄「本文提到的卡片」 */
+  cards?: CollectionEntry<'cards'>[];
+  minutes?: number;
+  sponsored?: boolean;
+}
+
+const { path, crumbs, jsonLd, headings = [], data, eyebrow, cards = [], minutes, sponsored = false } = Astro.props;
+const toc = headings.filter((h) => h.depth === 2);
+const cardBanks = await Promise.all(cards.map(async (c) => ({ c, bank: (await getEntry('banks', c.data.bank.id))!.data.shortName })));
+---
+
+<BaseLayout title={data.title} description={data.description} {path} {crumbs} {jsonLd} noindex={data.noindex}
+  ogType="article" publishedAt={data.publishedAt} updatedAt={data.updatedAt} searchable width="wide">
+  <div class="article-grid">
+    <article>
+      <header class="article-head">
+        {eyebrow && <a class="eyebrow" href={eyebrow.href}>{eyebrow.name}</a>}
+        <h1>{data.title}</h1>
+        <Byline author={data.author} reviewer={data.reviewer} publishedAt={data.publishedAt} updatedAt={data.updatedAt} {minutes} />
+      </header>
+      <Summary text={data.summary} />
+      <Disclosure {sponsored} />
+
+      {toc.length >= 3 && (
+        <nav class="toc-plain toc-inline" aria-label="目錄">
+          <strong>目錄</strong>
+          <ol>{toc.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol>
+        </nav>
+      )}
+
+      <div class="prose">
+        <slot />
+      </div>
+      <Faq items={data.faq} />
+      <Sources sources={data.sources} />
+      <AuthorBox author={data.author} reviewer={data.reviewer} />
+      <slot name="after" />
+    </article>
+
+    <aside class="article-aside" data-pagefind-ignore>
+      <div class="aside-sticky">
+        {toc.length >= 2 && (
+          <nav class="aside-box toc" aria-label="文章目錄">
+            <strong>目錄</strong>
+            <ol>{toc.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol>
+          </nav>
+        )}
+        {cardBanks.length > 0 && (
+          <div class="aside-box">
+            <strong>本文提到的卡片</strong>
+            {cardBanks.map(({ c, bank }) => (
+              <div class="mini-card">
+                <CardArt card={c} bank={bank} />
+                <div><a href={url.card(c.id)}>{c.data.name}</a><span>{topRate(c.data).label} {topRate(c.data).ratePercent}%｜{feeShort(c.data)}</span></div>
+              </div>
+            ))}
+          </div>
+        )}
+        <div class="aside-box">
+          <strong>試算工具</strong>
+          <p class="small" style="margin:0 0 10px">輸入月消費，算出各卡實拿回饋。</p>
+          <a class="btn" href={url.tool('rewards-calculator')}>回饋試算器</a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</BaseLayout>
+
+<script>
+  // 側欄目錄捲動高亮：取「已捲過頁首」的最後一個 H2（快速捲動也不會漏）
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('.article-aside .toc a')];
+  const targets = links.map((a) => document.getElementById(decodeURIComponent(a.hash.slice(1))));
+  let ticking = false;
+  const update = () => {
+    ticking = false;
+    let current = 0;
+    targets.forEach((t, i) => { if (t && t.getBoundingClientRect().top < 120) current = i; });
+    links.forEach((a, i) => a.classList.toggle('active', i === current));
+  };
+  if (links.length) {
+    addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+    update();
+  }
+</script>

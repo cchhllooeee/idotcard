@@ -1,0 +1,35 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { graph, itemListNode, webPageNode } from '@/lib/seo';
+import { url } from '@/lib/urls';
+import { feeShort, topRate } from '@/lib/content';
+
+const cards = (await getCollection('cards')).sort((a, b) => Number(a.data.status === 'discontinued') - Number(b.data.status === 'discontinued') || a.data.name.localeCompare(b.data.name, 'zh-Hant'));
+const site = Astro.site!;
+const path = url.cards();
+const title = '信用卡總覽：所有卡片的回饋與年費一次看';
+const description = '整理台灣各銀行信用卡的回饋、年費與適合族群，每張卡附官方來源與資料核對日期，可依需求篩選比較。';
+const crumbs = [{ name: '首頁', href: '/' }, { name: '信用卡', href: path }];
+const items = cards.map((c) => ({ name: c.data.name, href: url.card(c.id) }));
+const jsonLd = graph(site, [...webPageNode(site, { path, title, description, crumbs, type: 'CollectionPage' }), itemListNode(site, path, items)]);
+---
+
+<BaseLayout {title} {description} {path} {crumbs} {jsonLd}>
+  <h1>信用卡總覽</h1>
+  <p>{description}</p>
+  <table>
+    <thead><tr><th scope="col">卡片</th><th scope="col">年費</th><th scope="col">主打回饋</th><th scope="col">適合</th></tr></thead>
+    <tbody>
+      {cards.map((c) => (
+        <tr>
+          <td><a href={url.card(c.id)}>{c.data.name}</a>{c.data.status === 'discontinued' && <span class="badge">停發</span>}</td>
+          <td>{feeShort(c.data)}</td>
+          <td>{topRate(c.data).ratePercent}%<br /><span class="muted small">{topRate(c.data).label}</span></td>
+          <td>{c.data.bestFor[0]}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+  <p>依銀行瀏覽：<a href={url.banks()}>銀行列表</a>｜依通路瀏覽：<a href={url.merchants()}>通路列表</a></p>
+</BaseLayout>

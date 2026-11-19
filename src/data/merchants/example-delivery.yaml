@@ -1,0 +1,6 @@
+# ⚠️ 範例資料（虛構通路），上線前刪除。
+name: 範例外送
+aliases: []
+type: delivery
+description: 範例資料。這裡放外送平台簡介，以及綁卡付款時的回饋計算方式。
+updatedAt: 2026-11-19

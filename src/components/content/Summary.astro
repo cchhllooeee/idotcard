@@ -1,0 +1,10 @@
+---
+/** 頁首重點摘要：40–60 字直接回答標題問題（AI 擷取的第一段） */
+interface Props { text: string; label?: string }
+const { text, label = '重點摘要' } = Astro.props;
+---
+
+<aside class="summary" aria-label={label}>
+  <strong>{label}</strong>
+  <p>{text}</p>
+</aside>

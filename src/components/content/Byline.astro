@@ -1,0 +1,23 @@
+---
+import { getEntry } from 'astro:content';
+import { displayDate, initials, isoDate } from '@/lib/content';
+import { url } from '@/lib/urls';
+
+interface Props { author: { id: string }; reviewer?: { id: string }; publishedAt: Date; updatedAt: Date; minutes?: number }
+const { publishedAt, updatedAt, minutes } = Astro.props;
+const author = await getEntry('authors', Astro.props.author.id);
+const reviewer = Astro.props.reviewer ? await getEntry('authors', Astro.props.reviewer.id) : undefined;
+if (!author) throw new Error(`Byline：找不到作者 ${Astro.props.author.id}`);
+const updated = isoDate(updatedAt) !== isoDate(publishedAt);
+---
+
+<div class="byline">
+  <span class="avatar" aria-hidden="true">{initials(author.data.name)}</span>
+  <span>
+    編輯 <a href={url.author(author.id)} rel="author">{author.data.name}</a>
+    {reviewer && <> <span class="sep">｜</span> 審稿 <a href={url.author(reviewer.id)}>{reviewer.data.name}</a></>}
+    <br />
+    {updated ? <>更新 <time datetime={isoDate(updatedAt)}>{displayDate(updatedAt)}</time>（首次發布 {displayDate(publishedAt)}）</> : <>發布 <time datetime={isoDate(publishedAt)}>{displayDate(publishedAt)}</time></>}
+    {minutes && <> <span class="sep">｜</span> 閱讀約 {minutes} 分鐘</>}
+  </span>
+</div>

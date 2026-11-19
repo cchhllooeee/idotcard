@@ -1,0 +1,22 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import LinkList from '@/components/layout/LinkList.astro';
+import { graph, itemListNode, webPageNode } from '@/lib/seo';
+import { url } from '@/lib/urls';
+
+const banks = await getCollection('banks');
+const cards = await getCollection('cards');
+const site = Astro.site!;
+const path = url.banks();
+const title = '發卡銀行列表：依銀行找信用卡';
+const description = '台灣各家發卡銀行的信用卡與優惠整理，點進銀行頁即可查看旗下所有卡片、停發卡與客服資訊。';
+const crumbs = [{ name: '首頁', href: '/' }, { name: '銀行', href: path }];
+const items = banks.map((b) => ({ name: b.data.name, href: url.bank(b.id) }));
+const jsonLd = graph(site, [...webPageNode(site, { path, title, description, crumbs, type: 'CollectionPage' }), itemListNode(site, path, items)]);
+---
+
+<BaseLayout {title} {description} {path} {crumbs} {jsonLd}>
+  <h1>發卡銀行列表</h1>
+  <LinkList items={banks.map((b) => ({ href: url.bank(b.id), title: b.data.name, note: `${cards.filter((c) => c.data.bank.id === b.id).length} 張卡` }))} />
+</BaseLayout>

@@ -1,0 +1,6 @@
+# ⚠️ 範例資料（虛構通路），上線前刪除。
+name: 範例超市
+aliases: [範例量販]
+type: supermarket
+description: 範例資料。這裡放通路簡介，以及在這個通路刷卡時常見的回饋規則與限制。
+updatedAt: 2026-11-19

@@ -1,0 +1,21 @@
+---
+/** 主題圖示（線條 SVG，跟隨文字顏色） */
+interface Props { id: string; size?: number }
+const { id, size = 28 } = Astro.props;
+const paths: Record<string, string> = {
+  cashback: 'M12 3v18M16.5 7.5c0-1.7-2-3-4.5-3s-4.5 1.3-4.5 3 2 2.6 4.5 3 4.5 1.3 4.5 3-2 3-4.5 3-4.5-1.3-4.5-3',
+  'miles-travel': 'M2.5 13.5 21 6l-4.5 13-4-5.5-6.5 2zM12.5 13.5 21 6',
+  overseas: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm-9 9h18M12 3c2.5 2.5 3.8 5.5 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-5.5-3.8-9S9.5 5.5 12 3Z',
+  'mobile-pay': 'M7.5 2.5h9a1.5 1.5 0 0 1 1.5 1.5v16a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 6 20V4a1.5 1.5 0 0 1 1.5-1.5ZM11 18.5h2',
+  'online-shopping': 'M3 4h2.5l2.2 10.5h10.6L20.5 7H6.6M9 19.5a1 1 0 1 0 0 .01M17 19.5a1 1 0 1 0 0 .01',
+  'new-customer': 'M4 10h16v10H4zM3 7h18v3H3zM12 7v13M12 7c-1.5-3-5-3.5-5-1.5S10 7 12 7Zm0 0c1.5-3 5-3.5 5-1.5S14 7 12 7Z',
+  'no-annual-fee': 'M4 6.5h16v11H4zM4 10h16M8 14.5h3',
+  'students-young': 'M2.5 9 12 4.5 21.5 9 12 13.5zM6.5 11v4.5c1.5 1.5 3.5 2.3 5.5 2.3s4-.8 5.5-2.3V11M21.5 9v5',
+  premium: 'M6 3.5h12l3.5 5L12 20.5 2.5 8.5zM2.5 8.5h19M9 3.5l3 17 3-17',
+  basics: 'M4 4.5h6.5A2.5 2.5 0 0 1 13 7v13a2 2 0 0 0-2-2H4zM20 4.5h-6.5A2.5 2.5 0 0 0 11 7v13a2 2 0 0 1 2-2h7z',
+};
+---
+
+<svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path d={paths[id] ?? paths.basics} />
+</svg>

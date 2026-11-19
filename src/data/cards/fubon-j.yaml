@@ -1,0 +1,43 @@
+# 資料來源：台北富邦 J 卡官網 https://www.fubon.com/banking/personal/credit_card/all_card/omiyage/omiyage.htm（2026-11-19 核對）
+name: 台北富邦 J 卡
+aliases: [富邦J卡, J卡]
+bank: fubon
+status: active
+networks: [jcb]
+highlight: { ratePercent: 10, label: 日本交通卡儲值最高 }
+summary: 富邦 J 卡適合常搭電車、用 Apple Pay 儲值交通卡的人：日韓泰一般消費 3% 無上限，交通卡儲值最高 10%。
+bestFor: [用 iPhone 的 Apple Pay 儲值 Suica、PASMO、ICOCA 的人, 日韓泰都會去的人]
+notFor: [不想每季登錄活動的人, 沒有設定自動扣繳或電子帳單的人（基本回饋只有 0.5%）]
+annualFee:
+  amount: 1800
+  waiver: 首年免年費；次年正附卡合併消費滿 6 萬元或 12 次免年費，2026/12/31 前申請電子帳單等條件亦可免年費
+rewards:
+  - scope: 日本、韓國、泰國一般消費
+    ratePercent: 3
+    conditions: 需設定富邦帳戶自動扣繳，或申請電子帳單並取消實體帳單；未符合為 0.5%；無上限
+    validFrom: 2026-04-01
+    validThrough: 2026-12-31
+  - scope: 日韓泰實體店家加碼
+    ratePercent: 3
+    conditions: 單筆滿 1,000 元、當地實體面對面交易，每季登錄一次（限量 6 萬名），每季每戶加碼上限 1,000 元
+    validFrom: 2026-04-01
+    validThrough: 2026-12-31
+  - scope: 日本交通卡儲值加碼（Apple Pay）
+    ratePercent: 7
+    conditions: Apple Pay 綁定 J 卡儲值 Suica、PASMO、ICOCA，單筆滿 2,000 元，每季登錄（限量 3 萬名），每戶加碼上限 200 元
+    validFrom: 2026-04-01
+    validThrough: 2026-12-31
+  - scope: 國內及其他海外地區一般消費
+    ratePercent: 1
+    conditions: 需符合自動扣繳或電子帳單條件
+    validFrom: 2026-04-01
+    validThrough: 2026-12-31
+topics: [overseas]
+similar: [esun-kumamon, taishin-richart]
+officialUrl: https://www.fubon.com/banking/personal/credit_card/all_card/omiyage/omiyage.htm
+art: { from: '#0e7c66', to: '#073b33' }
+faq:
+  - q: 富邦 J 卡的交通卡儲值回饋怎麼拿？
+    a: 用 Apple Pay 綁定 J 卡，為 Suica、PASMO 或 ICOCA 單筆儲值滿新台幣 2,000 元並完成當季登錄，可享基本 3% 加碼 7%，加碼每戶上限 200 元（2026/12/31 前）。
+checkedAt: 2026-11-19
+updatedAt: 2026-11-19

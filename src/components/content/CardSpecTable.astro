@@ -1,0 +1,38 @@
+---
+/** 卡片核心規格表；數字一律來自 src/data/cards，文章不手打規格 */
+import type { CollectionEntry } from 'astro:content';
+import { getEntry } from 'astro:content';
+import { displayDate, feeLong, isRewardActive } from '@/lib/content';
+import { url } from '@/lib/urls';
+
+interface Props { card: CollectionEntry<'cards'>; showMerchants?: boolean; caption?: boolean }
+const { card, showMerchants = true, caption = true } = Astro.props;
+const d = card.data;
+const merchants = await Promise.all(d.merchantRewards.map(async (m) => ({ ...m, entry: await getEntry('merchants', m.merchant.id) })));
+const money = (n: number) => `${n.toLocaleString('zh-TW')} 元`;
+---
+
+<table class="spec">
+  {caption && <caption>{d.name} 規格（資料核對日期 {displayDate(d.checkedAt)}）</caption>}
+  <tbody>
+    <tr><th scope="row">年費</th><td>{feeLong(d).replace(/^年費 ?/, '')}</td></tr>
+    {d.rewards.map((r) => (
+      <tr class={isRewardActive(r) ? '' : 'expired'}>
+        <th scope="row">{r.scope}</th>
+        <td>
+          {r.ratePercent}% 回饋
+          {r.capPerMonth !== undefined && <>，每月上限 {money(r.capPerMonth)}</>}
+          {r.conditions && <>（{r.conditions}）</>}
+          {r.validThrough && <span class="muted small">　至 {displayDate(r.validThrough)}{isRewardActive(r) ? '' : '，已結束'}</span>}
+        </td>
+      </tr>
+    ))}
+    {showMerchants && merchants.map((m) => (
+      <tr>
+        <th scope="row"><a href={url.merchant(m.merchant.id)}>{m.entry?.data.name}</a></th>
+        <td>{m.ratePercent}% 回饋{m.capPerMonth !== undefined && <>，每月上限 {money(m.capPerMonth)}</>}{m.note && <>（{m.note}）</>}</td>
+      </tr>
+    ))}
+    <tr><th scope="row">卡別</th><td>{d.networks.map((n) => n.toUpperCase()).join('、')}</td></tr>
+  </tbody>
+</table>

@@ -1,0 +1,50 @@
+---
+import { getEntry, render } from 'astro:content';
+import ArticleLayout from '@/layouts/ArticleLayout.astro';
+import { mdxComponents } from '@/components/content/mdx';
+import { feeShort, published, topRate } from '@/lib/content';
+import { articleNode, faqNode, graph, personNode, webPageNode } from '@/lib/seo';
+import { url } from '@/lib/urls';
+
+export async function getStaticPaths() {
+  const compare = await published('compare');
+  return compare.map((item) => ({ params: { id: item.id }, props: { item } }));
+}
+
+const { item } = Astro.props;
+const d = item.data;
+const site = Astro.site!;
+const path = url.compare(item.id);
+const { Content, headings } = await render(item);
+const [a, b] = await Promise.all(d.cards.map(async (r) => (await getEntry('cards', r.id))!));
+const author = (await getEntry('authors', d.author.id))!;
+const reviewer = d.reviewer ? await getEntry('authors', d.reviewer.id) : undefined;
+const crumbs = [{ name: '首頁', href: '/' }, { name: '信用卡比較', href: url.compareIndex() }, { name: d.title, href: path }];
+const jsonLd = graph(site, [
+  ...webPageNode(site, { path, title: d.title, description: d.description, crumbs, datePublished: d.publishedAt, dateModified: d.updatedAt, reviewer }),
+  articleNode(site, {
+    path, title: d.title, description: d.description, datePublished: d.publishedAt, dateModified: d.updatedAt, author,
+    about: [a, b].map((c) => ({ name: c.data.name, href: url.card(c.id), kind: 'card' as const })),
+  }),
+  personNode(site, author),
+  reviewer && personNode(site, reviewer),
+  faqNode(site, path, d.faq),
+]);
+const maxRate = (c: typeof a) => `${topRate(c.data).ratePercent}%（${topRate(c.data).label}）`;
+---
+
+<ArticleLayout {path} {crumbs} {jsonLd} {headings} data={d} cards={[a, b]} eyebrow={{ name: '信用卡比較', href: url.compareIndex() }} sponsored={a.data.sponsored || b.data.sponsored}>
+  <h2>結論</h2>
+  <p>{d.verdict}</p>
+  <h2>規格對照</h2>
+  <table>
+    <thead><tr><th scope="col">項目</th><th scope="col"><a href={url.card(a.id)}>{a.data.name}</a></th><th scope="col"><a href={url.card(b.id)}>{b.data.name}</a></th></tr></thead>
+    <tbody>
+      <tr><th scope="row">年費</th><td>{feeShort(a.data)}</td><td>{feeShort(b.data)}</td></tr>
+      <tr><th scope="row">免年費條件</th><td>{a.data.annualFee.waiver}</td><td>{b.data.annualFee.waiver}</td></tr>
+      <tr><th scope="row">主打回饋</th><td>{maxRate(a)}</td><td>{maxRate(b)}</td></tr>
+      <tr><th scope="row">適合</th><td>{a.data.bestFor.join('、')}</td><td>{b.data.bestFor.join('、')}</td></tr>
+    </tbody>
+  </table>
+  <Content components={mdxComponents} />
+</ArticleLayout>

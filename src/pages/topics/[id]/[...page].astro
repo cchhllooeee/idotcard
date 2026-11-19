@@ -1,0 +1,180 @@
+---
+/**
+ * 主題頁（Hub）：/topics/[id]/ 與分頁 /topics/[id]/page/2/
+ *
+ * 第 1 頁模組順序：
+ * 1. 頁首：主題名、說明、數據（文章數、卡片數、最後更新）
+ * 2. 導讀：300–600 字，建立判斷方式（資訊增益）
+ * 3. 從這裡開始：人工挑選的 3 篇入門文章
+ * 4. 推薦排行 + 相關信用卡：商業意圖最高的入口
+ * 5. 全部文章：可依類型篩選（HTML 內完整列出，篩選只是顯示切換）
+ * 6. 常見問題（FAQPage）
+ * 7. 相關主題：主題之間互連
+ * 第 2 頁之後只保留頁首與文章列表。
+ */
+import MagListingPage from '@/variants/magazine/ListingPage.astro';
+import { isMagazine } from '@/lib/variant';
+import { getCollection, getEntries } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import SectionHead from '@/components/ui/SectionHead.astro';
+import ArticleCard from '@/components/ui/ArticleCard.astro';
+import ArticleRows from '@/components/ui/ArticleRows.astro';
+import CardTile from '@/components/ui/CardTile.astro';
+import RankCard from '@/components/ui/RankCard.astro';
+import TopicTile from '@/components/ui/TopicTile.astro';
+import Faq from '@/components/content/Faq.astro';
+import Pagination from '@/components/layout/Pagination.astro';
+import { ARTICLE_TYPE_LABEL, byUpdatedDesc, displayDate, latest, paginate, published, readingMinutes } from '@/lib/content';
+import { faqNode, graph, itemListNode, webPageNode } from '@/lib/seo';
+import { url } from '@/lib/urls';
+
+export async function getStaticPaths() {
+  const [topics, articles, best] = await Promise.all([getCollection('topics'), published('articles'), published('best')]);
+  return topics.flatMap((topic) => {
+    const list = articles.filter((a) => a.data.primaryTopic.id === topic.id).sort(byUpdatedDesc);
+    const pages = paginate(list);
+    const picks = best.filter((b) => b.data.primaryTopic.id === topic.id);
+    return pages.map((items, i) => ({
+      params: { id: topic.id, page: i === 0 ? undefined : `page/${i + 1}` },
+      props: { topic, items, all: list, current: i + 1, total: pages.length, picks },
+    }));
+  });
+}
+
+const { topic, items, all, current, total, picks } = Astro.props;
+const d = topic.data;
+const site = Astro.site!;
+const path = url.topic(topic.id, current);
+const first = current === 1;
+const cards = await getCollection('cards', (c) => c.data.status === 'active' && c.data.topics.some((t) => t.id === topic.id));
+const featured = (await getEntries(d.featured)).filter(Boolean);
+const related = await getEntries(d.related);
+const allArticles = await published('articles');
+const updatedAt = all.length ? latest(...all.map((a) => a.data.updatedAt)) : undefined;
+const types = [...new Set(items.map((a) => a.data.type))];
+
+const pageSuffix = current > 1 ? `（第 ${current} 頁）` : '';
+const title = `${d.name}信用卡指南：推薦卡片與完整攻略${pageSuffix}`;
+const description = d.description;
+const crumbs = [{ name: '首頁', href: '/' }, { name: '主題', href: url.topics() }, { name: d.name, href: url.topic(topic.id) }];
+const jsonLd = graph(site, [
+  ...webPageNode(site, { path, title, description, crumbs, type: 'CollectionPage', dateModified: updatedAt }),
+  itemListNode(site, path, items.map((a) => ({ name: a.data.title, href: url.article(a.id) })), `${d.name}文章`),
+  first ? faqNode(site, path, d.faq) : null,
+]);
+---
+
+{isMagazine ? (
+  <MagListingPage kind="topic" name={d.name} description={d.description} themeTopic={topic.id} items={items} totalCount={all.length}
+    {current} {total} pageHref={(p) => url.topic(topic.id, p)} {title} {path} {crumbs} {jsonLd}>
+    {first && d.intro && (
+      <section class="mz-section mz-panel mz-intro"><div class="prose"><h2>{d.name}信用卡怎麼選？</h2><Fragment set:html={d.intro} /></div></section>
+    )}
+    {first && (picks.length > 0 || cards.length > 0) && (
+      <section class="mz-section">
+        <div class="mz-section-head"><h2>{d.name}推薦卡片</h2><a class="mz-more" href={url.cards()}>信用卡總覽</a></div>
+        {picks.length > 0 && <ul class="grid cols-2" style="margin-bottom:16px">{picks.map((b) => <li><RankCard item={b} /></li>)}</ul>}
+        <ul class="grid cols-4">{cards.slice(0, 4).map((c) => <li><CardTile card={c} /></li>)}</ul>
+      </section>
+    )}
+    {first && d.faq.length > 0 && <section class="mz-section mz-panel"><Faq items={d.faq} title={`${d.name}常見 Q&A`} /></section>}
+    {first && related.length > 0 && (
+      <section class="mz-section">
+        <div class="mz-section-head"><h2>相關主題</h2><a class="mz-more" href={url.topics()}>全部主題</a></div>
+        <ul class="grid cols-3">{related.map((t) => <li><TopicTile id={t.id} name={t.data.name} description={t.data.description} count={allArticles.filter((a) => a.data.primaryTopic.id === t.id).length} /></li>)}</ul>
+      </section>
+    )}
+  </MagListingPage>
+) : (
+<BaseLayout {title} {description} {path} {crumbs} {jsonLd} width="wide">
+  <header class="page-head">
+    <span class="eyebrow">主題</span>
+    <h1>{d.name}{pageSuffix}</h1>
+    <p class="lead">{d.description}</p>
+    <ul class="stats">
+      <li><strong>{all.length}</strong>篇文章</li>
+      <li><strong>{cards.length}</strong>張相關卡片</li>
+      {updatedAt && <li>最後更新 {displayDate(updatedAt)}</li>}
+    </ul>
+  </header>
+
+  {first && (
+    <>
+      {d.intro && (
+        <section class="section prose" style="max-width:var(--read)">
+          <h2>{d.name}信用卡怎麼選？</h2>
+          <Fragment set:html={d.intro} />
+        </section>
+      )}
+
+      {featured.length > 0 && (
+        <section class="section">
+          <SectionHead title="從這裡開始" desc={`第一次研究${d.name}？依序讀這幾篇`} />
+          <ol class="grid cols-3">
+            {featured.map((a, i) => (
+              <li><ArticleCard href={url.article(a.id)} title={a.data.title} summary={a.data.summary}
+                eyebrow={`第 ${i + 1} 步`} label={ARTICLE_TYPE_LABEL[a.data.type]} minutes={readingMinutes(a.body)} /></li>
+            ))}
+          </ol>
+        </section>
+      )}
+
+      {(picks.length > 0 || cards.length > 0) && (
+        <section class="section">
+          <SectionHead title={`${d.name}推薦卡片`} desc="依公開評選方法排序，資料附官方來源" moreHref={url.cards()} moreLabel="信用卡總覽" />
+          {picks.length > 0 && <ul class="grid cols-2" style="margin-bottom:16px">{picks.map((b) => <li><RankCard item={b} /></li>)}</ul>}
+          <ul class="grid cols-4">
+            {cards.slice(0, 4).map((c) => <li><CardTile card={c} /></li>)}
+          </ul>
+        </section>
+      )}
+    </>
+  )}
+
+  <section class="section" style="max-width:var(--read)" id="articles">
+    <SectionHead title={`${d.name}全部文章`} desc={total > 1 ? `第 ${current} / ${total} 頁` : undefined} />
+    {first && types.length > 1 && (
+      <ul class="chips" role="tablist" aria-label="依類型篩選" data-filter style="margin-bottom:12px">
+        <li><a href="#articles" data-type="" aria-selected="true">全部</a></li>
+        {types.map((t) => <li><a href="#articles" data-type={t}>{ARTICLE_TYPE_LABEL[t]}</a></li>)}
+      </ul>
+    )}
+    <div data-filter-list>
+      <ArticleRows items={items.map((a) => ({ href: url.article(a.id), title: a.data.title, summary: a.data.summary, label: ARTICLE_TYPE_LABEL[a.data.type], date: a.data.updatedAt, minutes: readingMinutes(a.body) }))} empty="這個主題還沒有文章。" />
+    </div>
+    <Pagination {current} {total} href={(p) => url.topic(topic.id, p)} />
+  </section>
+
+  {first && d.faq.length > 0 && (
+    <section class="section" style="max-width:var(--read)"><Faq items={d.faq} title={`${d.name}常見問題`} /></section>
+  )}
+
+  {first && related.length > 0 && (
+    <section class="section">
+      <SectionHead title="相關主題" moreHref={url.topics()} moreLabel="全部主題" />
+      <ul class="grid cols-3">
+        {related.map((t) => <li><TopicTile id={t.id} name={t.data.name} description={t.data.description} count={allArticles.filter((a) => a.data.primaryTopic.id === t.id).length} /></li>)}
+      </ul>
+    </section>
+  )}
+</BaseLayout>
+)}
+
+<script>
+  // 依類型篩選：只切換顯示，所有文章仍完整存在於 HTML 中（爬蟲可讀）
+  const bar = document.querySelector<HTMLElement>('[data-filter]');
+  const rows = document.querySelectorAll<HTMLLIElement>('[data-filter-list] .rows li');
+  bar?.addEventListener('click', (e) => {
+    const a = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[data-type]');
+    if (!a) return;
+    e.preventDefault();
+    const type = a.dataset.type;
+    bar.querySelectorAll('a').forEach((x) => x.setAttribute('aria-selected', String(x === a)));
+    rows.forEach((li) => { li.hidden = !!type && li.querySelector('.badge')?.textContent !== a.textContent; });
+  });
+</script>
+
+<style>
+  [data-filter] a[aria-selected='true'] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  ol.grid { counter-reset: none; }
+</style>

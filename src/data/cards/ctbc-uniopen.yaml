@@ -1,0 +1,35 @@
+# 資料來源：中信 uniopen 聯名卡官網 https://www.ctbcbank.com/twrbo/zh_tw/cc_index/cc_product/cc_introduction_index/C_uniopen.html（2026-11-19 核對）
+name: 中信 uniopen 聯名卡
+aliases: [uniopen卡, 中信uniopen]
+bank: ctbc
+status: active
+networks: [mastercard]
+highlight: { ratePercent: 11, label: 國外實體商店最高 }
+summary: 中信 uniopen 卡適合在日本實體店面消費金額不高、會使用 OPENPOINT 的人：國外實體商店最高 11%，8% 加碼每月上限 500 點。
+bestFor: [每月日本實體消費約 6,000 元以內的人, 平常會用 OPENPOINT 點數的人]
+notFor: [想要現金回饋的人（回饋為 OPENPOINT 點數）, 單月日本消費金額很高的人（8% 加碼很快到上限）]
+annualFee:
+  amount: 1800
+  waiver: 鈦金卡 2026/12/31 前申辦首年免年費，次年使用電子或行動帳單、或自動扣繳即免年費；世界卡年費 5,000 元
+rewards:
+  - scope: 國外一般消費
+    ratePercent: 2
+    conditions: 回饋 OPENPOINT 點數；無上限
+    validFrom: 2026-09-01
+    validThrough: 2026-12-31
+  - scope: 國外實體商店加碼
+    ratePercent: 1
+    conditions: 無上限
+    validFrom: 2026-09-01
+    validThrough: 2026-12-31
+  - scope: 國外實體商店再加碼
+    ratePercent: 8
+    conditions: 每戶每月上限 500 點
+    validFrom: 2026-09-01
+    validThrough: 2026-12-31
+topics: [overseas]
+similar: [esun-kumamon, taishin-richart]
+officialUrl: https://www.ctbcbank.com/twrbo/zh_tw/cc_index/cc_product/cc_introduction_index/C_uniopen.html
+art: { from: '#e05a1c', to: '#4a1606' }
+checkedAt: 2026-11-19
+updatedAt: 2026-11-19

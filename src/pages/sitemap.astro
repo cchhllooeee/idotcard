@@ -1,0 +1,27 @@
+---
+/** HTML 網站地圖：列出所有可索引頁，協助爬蟲探索與孤兒頁防範 */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { indexableUrls, SITEMAP_GROUPS } from '@/lib/content';
+import { graph, webPageNode } from '@/lib/seo';
+
+const all = await indexableUrls();
+const labels: Record<(typeof SITEMAP_GROUPS)[number], string> = {
+  pages: '網站導覽', topics: '主題', cards: '信用卡', entities: '銀行、通路與優惠', articles: '文章、快訊、排行與比較', glossary: '詞彙表',
+};
+const site = Astro.site!;
+const path = '/sitemap/';
+const title = '網站地圖';
+const description = 'idotcard 全站頁面索引，依信用卡、主題、文章與詞彙分類。';
+const crumbs = [{ name: '首頁', href: '/' }, { name: title, href: path }];
+const jsonLd = graph(site, webPageNode(site, { path, title, description, crumbs }));
+---
+
+<BaseLayout {title} {description} {path} {crumbs} {jsonLd}>
+  <h1>網站地圖</h1>
+  {SITEMAP_GROUPS.map((g) => (
+    <section>
+      <h2>{labels[g]}</h2>
+      <ul>{all.filter((u) => u.group === g && u.path !== path).map((u) => <li><a href={u.path}>{u.title}</a></li>)}</ul>
+    </section>
+  ))}
+</BaseLayout>

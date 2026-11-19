@@ -1,0 +1,5 @@
+# 工具頁登錄檔：每個 id 都要有對應的 src/pages/tools/<id>.astro
+- id: rewards-calculator
+  name: 信用卡回饋試算器
+  description: 輸入每月消費金額，試算各張信用卡在回饋上限內實際能拿到多少現金回饋。
+  updatedAt: 2026-11-19

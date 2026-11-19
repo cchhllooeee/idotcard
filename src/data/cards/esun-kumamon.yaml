@@ -1,0 +1,38 @@
+# 資料來源：玉山熊本熊卡官網 https://www.esunbank.com/zh-tw/personal/credit-card/intro/bank-card/kumamon_card（2026-11-19 核對）
+name: 玉山熊本熊卡
+aliases: [熊本熊卡, 玉山熊本熊JCB卡]
+bank: esun
+status: active
+networks: [jcb]
+highlight: { ratePercent: 8.5, label: 日本指定商店最高 }
+summary: 玉山熊本熊卡適合在日本藥妝、百貨、交通卡儲值等指定商店消費的人：日本一般消費 2.5% 無上限，指定商店最高 8.5%。
+bestFor: [常逛日本指定藥妝與購物商店的人, 想用一張卡兼顧一般消費與指定商店加碼的人]
+notFor: [在百貨或車站內店家消費、帳單名稱無法辨識的人, 透過海外訂房網訂房的人（收單地不在日本不列入）]
+annualFee:
+  amount: 3000
+  waiver: 首年免年費；次年起前一年度使用帳單 e 化、玉山帳戶自動扣繳，或有任一筆消費即免年費
+rewards:
+  - scope: 日本一般消費
+    ratePercent: 2.5
+    conditions: 須於日本地區（含收單行為日本地區的商店）刷卡；無上限
+    validFrom: 2026-07-01
+    validThrough: 2026-12-31
+  - scope: 指定日本商店加碼
+    ratePercent: 6
+    conditions: 需登錄一次；依帳單商店名稱判定，含 Suica、PASMO、ICOCA 交通卡儲值；每歸戶每期加碼上限 500 元
+    validFrom: 2026-07-01
+    validThrough: 2026-12-31
+  - scope: 玉山 Wallet 綁定日本 PayPay
+    ratePercent: 3.5
+    conditions: 另免收 1.5% 國外交易服務費；每歸戶每季上限 100 元；不適用 2.5% 與 6% 加碼
+    validFrom: 2026-01-01
+    validThrough: 2026-12-31
+topics: [overseas]
+similar: [fubon-j, ctbc-uniopen]
+officialUrl: https://www.esunbank.com/zh-tw/personal/credit-card/intro/bank-card/kumamon_card
+art: { from: '#c8102e', to: '#2b0a0f' }
+faq:
+  - q: 玉山熊本熊卡在日本刷卡要付手續費嗎？
+    a: 要。玉山熊本熊卡國外消費收取 1.5% 國外交易服務費；綁定玉山 Wallet 於日本 PayPay 消費則免收（2026/12/31 前）。
+checkedAt: 2026-11-19
+updatedAt: 2026-11-19

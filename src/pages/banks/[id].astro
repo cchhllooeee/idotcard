@@ -1,0 +1,45 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import LinkList from '@/components/layout/LinkList.astro';
+import { isOfferActive, mentionsOf } from '@/lib/content';
+import { bankNode, graph, itemListNode, webPageNode } from '@/lib/seo';
+import { url } from '@/lib/urls';
+
+export async function getStaticPaths() {
+  const banks = await getCollection('banks');
+  return banks.map((bank) => ({ params: { id: bank.id }, props: { bank } }));
+}
+
+const { bank } = Astro.props;
+const d = bank.data;
+const site = Astro.site!;
+const path = url.bank(bank.id);
+const cards = await getCollection('cards', (c) => c.data.bank.id === bank.id);
+const active = cards.filter((c) => c.data.status === 'active');
+const discontinued = cards.filter((c) => c.data.status === 'discontinued');
+const cardIds = new Set(cards.map((c) => c.id));
+const offers = (await getCollection('offers', (o) => cardIds.has(o.data.card.id))).filter(isOfferActive);
+const mentions = await mentionsOf({ collection: 'banks', id: bank.id });
+const crumbs = [{ name: '首頁', href: '/' }, { name: '銀行', href: url.banks() }, { name: d.name, href: path }];
+const title = `${d.shortName}信用卡推薦：全部卡片與優惠整理`;
+const description = `${d.name}旗下 ${active.length} 張信用卡的回饋、年費與進行中優惠整理，附官方連結與客服資訊。`;
+const jsonLd = graph(site, [
+  ...webPageNode(site, { path, title, description, crumbs, dateModified: d.updatedAt }),
+  bankNode(site, bank),
+  itemListNode(site, path, active.map((c) => ({ name: c.data.name, href: url.card(c.id) })), `${d.shortName}信用卡`),
+]);
+---
+
+<BaseLayout {title} {description} {path} {crumbs} {jsonLd} updatedAt={d.updatedAt} searchable>
+  <h1>{d.name}信用卡</h1>
+  <p>{d.description}</p>
+  <h2>{d.shortName}發行中的信用卡</h2>
+  <LinkList items={active.map((c) => ({ href: url.card(c.id), title: c.data.name, note: c.data.summary }))} />
+  {discontinued.length > 0 && (<><h2>已停發的卡片</h2><LinkList items={discontinued.map((c) => ({ href: url.card(c.id), title: c.data.name, badge: '停發' }))} /></>)}
+  <h2>{d.shortName}進行中的優惠</h2>
+  <LinkList items={offers.map((o) => ({ href: url.offer(o.id), title: o.data.title, note: o.data.summary }))} empty="目前沒有進行中的優惠。" />
+  {mentions.length > 0 && (<><h2>相關文章</h2><LinkList items={mentions.map((m) => ({ href: m.href, title: m.title, badge: m.kind }))} /></>)}
+  <h2>官方資訊</h2>
+  <p><a href={d.officialUrl} rel="nofollow noopener" target="_blank">{d.shortName}官方網站</a>{d.customerService && <>｜信用卡客服 {d.customerService}</>}</p>
+</BaseLayout>

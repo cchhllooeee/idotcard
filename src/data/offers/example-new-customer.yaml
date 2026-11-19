@@ -1,0 +1,15 @@
+# ⚠️ 範例資料，上線前刪除。
+title: 範例回饋卡新戶首刷禮
+card: example-cashback
+type: new-customer
+summary: 範例資料。新戶核卡後 30 天內消費滿 3,000 元，可獲得 500 元刷卡金。
+details:
+  - 核卡後 30 天內累積消費滿 3,000 元
+  - 需於官網完成活動登錄
+  - 刷卡金於次月帳單回饋
+registrationRequired: true
+validFrom: 2026-10-01
+validThrough: 2027-03-31
+officialUrl: https://example.com/bank/offer
+checkedAt: 2026-11-19
+updatedAt: 2026-11-19

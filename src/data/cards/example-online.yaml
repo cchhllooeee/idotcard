@@ -1,0 +1,27 @@
+# ⚠️ 範例資料（虛構卡片、數字皆為示意），上線前刪除。
+name: 範例數銀 網購卡
+aliases: [範例網購卡]
+bank: example-digital-bank
+status: active
+networks: [mastercard]
+summary: 範例網購卡適合常在電商平台購物的人：指定網購 4%、每月上限 400 元，一般消費 0.5%。
+bestFor: [每月網購超過 5,000 元的人, 習慣用 App 管理帳單的人]
+notFor: [實體店面消費為主的人]
+annualFee: { amount: 0, waiver: 永久免年費 }
+rewards:
+  - scope: 國內一般消費
+    ratePercent: 0.5
+  - scope: 指定網購通路
+    ratePercent: 4
+    capPerMonth: 400
+    validThrough: 2027-06-30
+merchantRewards:
+  - merchant: example-ecommerce
+    ratePercent: 4
+    capPerMonth: 400
+topics: [online-shopping, no-annual-fee]
+similar: [example-nofee]
+officialUrl: https://example.com/digital-bank/online-card
+art: { from: '#7c3aed', to: '#1e1b4b' }
+checkedAt: 2026-11-18
+updatedAt: 2026-11-18

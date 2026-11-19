@@ -1,0 +1,63 @@
+# 主題清單（人工維護，全站 8–15 個）。每篇文章恰好屬於一個 primaryTopic。
+# 新增或改名需人工決定；Agent 不得自行新增。
+- id: cashback
+  name: 現金回饋
+  order: 1
+  description: 現金回饋信用卡怎麼選、回饋上限與通路條件整理，幫你找到日常消費回饋最高的卡。
+  intro: |
+    <p>現金回饋卡是最直覺的信用卡類型：刷多少、回多少，回饋直接折抵帳單或存入帳戶。但「最高 5%」這類廣告數字通常只限特定通路，而且每月有回饋上限。</p>
+    <p>挑卡時先整理自己的消費分布，再比較每張卡在上限內的<strong>實拿回饋</strong>。這個主題從觀念、通路攻略到單卡評測，依序幫你建立判斷方式（範例導讀）。</p>
+  featured: [how-to-choose-cashback-card, cashback-cap-explained, example-cashback-card-review]
+  related: [no-annual-fee, online-shopping, mobile-pay]
+  faq:
+    - q: 現金回饋卡和點數卡哪個比較好？
+      a: 現金回饋不用換算、不會過期，適合不想管點數的人；點數卡在特定兌換方式下價值較高，但需要花時間經營。
+    - q: 現金回饋什麼時候會入帳？
+      a: 多數銀行在次月或次期帳單折抵，部分數位銀行會即時回饋到帳戶，實際以各卡條款為準。
+- id: miles-travel
+  name: 哩程與旅遊
+  order: 2
+  description: 航空哩程累積、旅遊保險與機場貴賓室權益，規劃出國前該知道的信用卡知識。
+  intro: ""
+- id: overseas
+  name: 海外消費
+  order: 3
+  description: 海外刷卡手續費、外幣回饋與跨境網購，降低出國與海淘的刷卡成本。
+  intro: ""
+- id: mobile-pay
+  name: 行動支付
+  order: 4
+  description: LINE Pay、街口、Apple Pay 等行動支付綁卡回饋與注意事項整理。
+  intro: ""
+- id: online-shopping
+  name: 網購
+  order: 5
+  description: 電商平台與網購通路的信用卡回饋比較，以及網購刷卡安全須知。
+  intro: ""
+- id: new-customer
+  name: 新戶首刷
+  order: 6
+  description: 各銀行新戶首刷禮、申辦門檻與領取條件，避免錯過或誤踩條件。
+  intro: ""
+- id: no-annual-fee
+  name: 免年費
+  order: 7
+  description: 免年費信用卡與年費減免條件整理，讓你持卡不多花冤枉錢。
+  intro: ""
+  featured: [no-annual-fee-card-guide]
+  related: [cashback, students-young]
+- id: students-young
+  name: 學生與小資
+  order: 8
+  description: 第一張信用卡怎麼選、學生與社會新鮮人的申辦條件與用卡觀念。
+  intro: ""
+- id: premium
+  name: 高端卡
+  order: 9
+  description: 無限卡、世界卡等高端卡權益、年費與是否值得持有的評估方式。
+  intro: ""
+- id: basics
+  name: 信用卡基礎知識
+  order: 10
+  description: 帳單、循環利息、信用額度與聯徵分數等信用卡基本觀念，一次講清楚。
+  intro: ""

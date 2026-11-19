@@ -1,0 +1,20 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import LinkList from '@/components/layout/LinkList.astro';
+import { published } from '@/lib/content';
+import { graph, webPageNode } from '@/lib/seo';
+import { url } from '@/lib/urls';
+
+const news = (await published('news')).sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime());
+const site = Astro.site!;
+const path = url.newsIndex();
+const title = '信用卡權益快訊：權益調整與新卡發行';
+const description = '即時整理各銀行信用卡權益調整、回饋變動與新卡發行消息，標示生效日與調整前後差異。';
+const crumbs = [{ name: '首頁', href: '/' }, { name: '權益快訊', href: path }];
+const jsonLd = graph(site, webPageNode(site, { path, title, description, crumbs, type: 'CollectionPage' }));
+---
+
+<BaseLayout {title} {description} {path} {crumbs} {jsonLd}>
+  <h1>權益快訊</h1>
+  <LinkList items={news.map((n) => ({ href: url.news(n.id), title: n.data.title, note: n.data.summary, date: n.data.updatedAt }))} />
+</BaseLayout>

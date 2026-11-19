@@ -1,0 +1,14 @@
+# ⚠️ 範例資料（已到期優惠，用來示範自動標示「已結束」與 noindex），上線前刪除。
+title: 範例超市夏季加碼活動
+card: example-cashback
+type: merchant
+summary: 範例資料。活動期間於範例超市消費，額外加碼 2% 回饋。
+details:
+  - 活動期間於範例超市刷卡消費
+  - 每月加碼回饋上限 100 元
+registrationRequired: false
+validFrom: 2026-06-01
+validThrough: 2026-08-31
+officialUrl: https://example.com/bank/summer
+checkedAt: 2026-08-01
+updatedAt: 2026-08-01

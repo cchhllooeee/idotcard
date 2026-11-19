@@ -1,0 +1,25 @@
+---
+/** MDX 用：<CardSpec id="example-cashback" />，從資料層帶入規格卡片（含卡面、規格表、核對日期） */
+import { getEntry } from 'astro:content';
+import CardArt from '@/components/ui/CardArt.astro';
+import CardSpecTable from './CardSpecTable.astro';
+import { displayDate } from '@/lib/content';
+import { url } from '@/lib/urls';
+interface Props { id: string }
+const card = await getEntry('cards', Astro.props.id);
+if (!card) throw new Error(`CardSpec：找不到卡片 id「${Astro.props.id}」`);
+const bank = (await getEntry('banks', card.data.bank.id))!;
+---
+
+<figure class="spec-card" style="margin-left:0;margin-right:0">
+  <header>
+    <CardArt card={card} bank={bank.data.shortName} />
+    <div>
+      <strong>{card.data.name}</strong>
+      <span>{card.data.summary}</span>
+    </div>
+    <a class="btn ghost" href={url.card(card.id)}>完整權益</a>
+  </header>
+  <CardSpecTable card={card} caption={false} />
+  <figcaption><footer>資料核對日期 {displayDate(card.data.checkedAt)}，權益以 <a href={card.data.officialUrl} rel="nofollow noopener" target="_blank">{bank.data.shortName}官方公告</a> 為準</footer></figcaption>
+</figure>

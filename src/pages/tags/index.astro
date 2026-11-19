@@ -1,0 +1,21 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { tagArticleCounts } from '@/lib/content';
+import { graph, webPageNode } from '@/lib/seo';
+import { url } from '@/lib/urls';
+
+const tags = await getCollection('tags');
+const counts = await tagArticleCounts();
+const site = Astro.site!;
+const path = url.tags();
+const title = '信用卡文章標籤';
+const description = '依行動支付、通路、族群與活動類型等標籤瀏覽 idotcard 的信用卡文章。';
+const crumbs = [{ name: '首頁', href: '/' }, { name: '標籤', href: path }];
+const jsonLd = graph(site, webPageNode(site, { path, title, description, crumbs, type: 'CollectionPage' }));
+---
+
+<BaseLayout {title} {description} {path} {crumbs} {jsonLd} noindex>
+  <h1>標籤</h1>
+  <p>{tags.map((t) => <a class="badge" href={url.tag(t.id)}>{t.data.name}（{counts.get(t.id) ?? 0}）</a>)}</p>
+</BaseLayout>

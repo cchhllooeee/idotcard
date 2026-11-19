@@ -1,0 +1,45 @@
+# 推到 main 時建置兩個版本並部署到 GitHub Pages（Demo 站，全站 noindex）
+# 第一次使用前：GitHub repo → Settings → Pages → Source 選「GitHub Actions」
+name: Deploy demo to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: '0 18 * * *' # 每天台北時間 02:00 重建，讓優惠到期等時間敏感內容更新
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Build both variants
+        run: scripts/build-pages.sh "https://${{ github.repository_owner }}.github.io" "/${{ github.event.repository.name }}/"
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

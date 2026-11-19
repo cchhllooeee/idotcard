@@ -1,0 +1,9 @@
+---
+interface Props { sponsored?: boolean }
+const { sponsored = false } = Astro.props;
+---
+
+<p class="disclosure small">
+  {sponsored ? '本頁含合作連結，透過連結申辦本站可能獲得報酬，但不影響評選結果。' : '本頁內容由編輯獨立撰寫，未接受銀行付費。'}
+  <a href="/disclosure/">合作揭露</a>
+</p>

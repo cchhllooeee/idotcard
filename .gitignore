@@ -1,0 +1,10 @@
+node_modules/
+dist/
+dist-magazine/
+.astro/
+.env
+.env.*
+.DS_Store
+_site/
+.pages-sim/
+.claude/

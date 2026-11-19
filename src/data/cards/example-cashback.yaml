@@ -1,0 +1,43 @@
+# ⚠️ 範例資料（虛構卡片、數字皆為示意），上線前刪除。
+name: 範例銀行 回饋卡
+aliases: [範例回饋卡]
+bank: example-bank
+status: active
+networks: [visa, mastercard]
+summary: 範例回饋卡適合消費分散、不想記通路的人：國內一般消費 1%，超市與外送另有加碼。
+bestFor: [日常消費分散的人, 不想切換方案的人]
+notFor: [海外消費比例高的人]
+annualFee:
+  amount: 1800
+  waiver: 首年免年費，次年起使用電子帳單免年費
+rewards:
+  - scope: 國內一般消費
+    ratePercent: 1
+    capPerMonth: 300
+    validThrough: 2026-12-31
+  - scope: 海外消費
+    ratePercent: 2.5
+    capPerMonth: 500
+    conditions: 需登錄活動
+    validThrough: 2026-12-31
+merchantRewards:
+  - merchant: example-supermarket
+    ratePercent: 3
+    capPerMonth: 200
+  - merchant: example-delivery
+    ratePercent: 5
+    capPerMonth: 150
+    note: 需綁定行動支付
+topics: [cashback, no-annual-fee]
+similar: [example-miles]
+officialUrl: https://example.com/bank/cashback-card
+sponsored: false
+faq:
+  - q: 範例回饋卡有年費嗎？
+    a: 範例回饋卡首年免年費，次年起使用電子帳單即可免年費（範例資料）。
+changelog:
+  - date: 2026-07-01
+    change: 海外回饋由 2% 調整為 2.5%（範例資料）
+checkedAt: 2026-11-19
+updatedAt: 2026-11-19
+art: { from: '#2453d4', to: '#0b1f5c' }

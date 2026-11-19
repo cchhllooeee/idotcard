@@ -1,0 +1,28 @@
+---
+/** 站內搜尋（Pagefind 靜態索引，建置後產生於 /pagefind/）；搜尋結果頁不索引 */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { graph, webPageNode } from '@/lib/seo';
+
+const site = Astro.site!;
+const path = '/search/';
+const title = '站內搜尋';
+const description = '搜尋 idotcard 的信用卡、文章、優惠與詞彙。';
+const jsonLd = graph(site, webPageNode(site, { path, title, description }));
+---
+
+<BaseLayout {title} {description} {path} {jsonLd} noindex>
+  <h1>站內搜尋</h1>
+  <link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
+  <div id="search"></div>
+  <script is:inline src="/pagefind/pagefind-ui.js"></script>
+  <script is:inline>
+    window.addEventListener('DOMContentLoaded', () => {
+      // 部署在子路徑時（如 GitHub Pages），從腳本網址推算 baseUrl
+      const src = document.querySelector('script[src$="pagefind/pagefind-ui.js"]').getAttribute('src');
+      const baseUrl = src.replace(/pagefind\/pagefind-ui\.js$/, '') || '/';
+      const ui = new PagefindUI({ element: '#search', baseUrl, showSubResults: true, translations: { placeholder: '輸入卡名、銀行或問題' } });
+      const q = new URLSearchParams(location.search).get('q');
+      if (q) ui.triggerSearch(q);
+    });
+  </script>
+</BaseLayout>

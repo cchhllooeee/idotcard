@@ -1,0 +1,16 @@
+---
+/** 卡面示意圖：沒有官方授權卡面圖時，用銀行簡稱 + 卡組織 + 漸層色呈現 */
+import type { CollectionEntry } from 'astro:content';
+interface Props { card: CollectionEntry<'cards'>; bank: string; class?: string }
+const { card, bank } = Astro.props;
+const from = card.data.art?.from ?? '#2453d4';
+const to = card.data.art?.to ?? '#0f1729';
+const net = card.data.networks[0].toUpperCase();
+---
+
+<div class:list={['card-art', Astro.props.class]} style={`--c1:${from};--c2:${to}`} role="img" aria-label={`${card.data.name}卡面示意`}>
+  <span class="ca-bank">{bank}</span>
+  <span class="ca-chip"></span>
+  <span class="ca-name">{card.data.aliases[0] ?? card.data.name}</span>
+  <span class="ca-net">{net}</span>
+</div>

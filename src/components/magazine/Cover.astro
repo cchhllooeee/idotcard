@@ -1,0 +1,26 @@
+---
+/**
+ * 封面圖（沒有授權照片時自動產生）：主題色漸層 + 卡面示意或主題圖示。
+ * 上線後若文章有 cover 圖片，改用 <Image> 輸出並保留相同比例，避免 CLS。
+ */
+import type { CollectionEntry } from 'astro:content';
+import { getEntry } from 'astro:content';
+import CardArt from '@/components/ui/CardArt.astro';
+import TopicIcon from './TopicIcon.astro';
+import { topicTheme } from '@/lib/magazine';
+interface Props { topicId: string; topicName?: string; cards?: CollectionEntry<'cards'>[]; size?: 'sm' | 'md' | 'lg'; label?: string }
+const { topicId, topicName, cards = [], size = 'md', label } = Astro.props;
+const [c1, c2] = topicTheme(topicId);
+const withBanks = await Promise.all(cards.slice(0, 3).map(async (c) => ({ c, bank: (await getEntry('banks', c.data.bank.id))?.data.shortName ?? '' })));
+---
+
+<div class:list={['mz-cover', `mz-cover-${size}`]} style={`--t1:${c1};--t2:${c2}`} aria-hidden="true">
+  {withBanks.length > 0 ? (
+    <div class:list={['mz-cover-cards', `n${withBanks.length}`]}>
+      {withBanks.map(({ c, bank }) => <CardArt card={c} bank={bank} />)}
+    </div>
+  ) : (
+    <div class="mz-cover-icon"><TopicIcon id={topicId} size={size === 'lg' ? 88 : 56} /></div>
+  )}
+  {(label || topicName) && <span class="mz-cover-label">{label ?? topicName}</span>}
+</div>

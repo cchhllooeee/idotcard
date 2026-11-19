@@ -1,0 +1,28 @@
+# ⚠️ 範例資料（虛構卡片、數字皆為示意），上線前刪除。
+name: 範例數銀 零年費卡
+aliases: [範例零年費卡]
+bank: example-digital-bank
+status: active
+networks: [visa, jcb]
+summary: 範例零年費卡適合第一張信用卡與不想管條件的人：永久免年費、國內 0.8% 無上限。
+bestFor: [第一次辦信用卡的人, 不想記回饋條件的人]
+notFor: [追求高回饋的重度消費者]
+annualFee: { amount: 0, waiver: 永久免年費 }
+rewards:
+  - scope: 國內一般消費
+    ratePercent: 0.8
+  - scope: 海外消費
+    ratePercent: 1.2
+merchantRewards:
+  - merchant: example-supermarket
+    ratePercent: 1.5
+    capPerMonth: 100
+topics: [no-annual-fee, students-young, cashback]
+similar: [example-cashback, example-online]
+officialUrl: https://example.com/digital-bank/nofee-card
+art: { from: '#0f766e', to: '#042f2e' }
+faq:
+  - q: 範例零年費卡的回饋有上限嗎？
+    a: 範例零年費卡的國內一般消費 0.8% 沒有回饋上限（範例資料）。
+checkedAt: 2026-11-18
+updatedAt: 2026-11-18

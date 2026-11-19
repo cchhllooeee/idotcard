@@ -1,0 +1,8 @@
+# ⚠️ 範例審稿者：上線前請換成具名、具金融相關背景的真實審稿人。
+name: 範例審稿人
+roles: [reviewer]
+jobTitle: 金融內容審稿人
+bio: 範例資料。這裡放審稿人的金融相關資歷與證照，以及負責審核的內容範圍。
+credentials: []
+knowsAbout: [消費金融, 信用卡法規]
+sameAs: []

@@ -1,0 +1,127 @@
+---
+/**
+ * 標籤頁：橫向串連不同主題的文章
+ * 滿 TAG_INDEX_MIN_ARTICLES 篇且有說明才索引，否則 noindex, follow（仍可瀏覽、連結仍會被追蹤）
+ *
+ * 模組順序：
+ * 1. 頁首：標籤名、說明、文章數
+ * 2. 出現在這些主題：把讀者與權重導回主題 Hub
+ * 3. 文章列表（依更新時間）
+ * 4. 常出現的卡片：這些文章最常提到的卡
+ * 5. 相關標籤：常一起出現的標籤
+ */
+import MagListingPage from '@/variants/magazine/ListingPage.astro';
+import { isMagazine } from '@/lib/variant';
+import { getCollection, getEntries } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import SectionHead from '@/components/ui/SectionHead.astro';
+import ArticleRows from '@/components/ui/ArticleRows.astro';
+import CardTile from '@/components/ui/CardTile.astro';
+import Pagination from '@/components/layout/Pagination.astro';
+import { ARTICLE_TYPE_LABEL, byUpdatedDesc, isTagIndexable, paginate, published, readingMinutes } from '@/lib/content';
+import { graph, itemListNode, webPageNode } from '@/lib/seo';
+import { url } from '@/lib/urls';
+
+export async function getStaticPaths() {
+  const [tags, articles] = await Promise.all([getCollection('tags'), published('articles')]);
+  return tags.flatMap((tag) => {
+    const list = articles.filter((a) => a.data.tags.some((t) => t.id === tag.id)).sort(byUpdatedDesc);
+    const indexable = isTagIndexable(tag, list.length);
+    const pages = paginate(list);
+    return pages.map((items, i) => ({
+      params: { id: tag.id, page: i === 0 ? undefined : `page/${i + 1}` },
+      props: { tag, items, all: list, current: i + 1, total: pages.length, indexable },
+    }));
+  });
+}
+
+const { tag, items, all, current, total, indexable } = Astro.props;
+const site = Astro.site!;
+const path = url.tag(tag.id, current);
+const first = current === 1;
+const [topics, tags] = await Promise.all([getCollection('topics'), getCollection('tags')]);
+const topicName = (id: string) => topics.find((t) => t.id === id)?.data.name ?? id;
+
+// 統計：主題分布、常出現的卡片、共同出現的標籤
+const count = <T,>(xs: T[]) => [...xs.reduce((m, x) => m.set(x, (m.get(x) ?? 0) + 1), new Map<T, number>())].sort((a, b) => b[1] - a[1]);
+const topicDist = count(all.map((a) => a.data.primaryTopic.id));
+const cardIds = count(all.flatMap((a) => a.data.cards.map((c) => c.id))).slice(0, 4).map(([id]) => ({ collection: 'cards' as const, id }));
+const cards = (await getEntries(cardIds)).filter(Boolean);
+const coTags = count(all.flatMap((a) => a.data.tags.map((t) => t.id)).filter((id) => id !== tag.id)).slice(0, 6);
+
+const pageSuffix = current > 1 ? `（第 ${current} 頁）` : '';
+const title = `${tag.data.name}：相關信用卡文章與回饋攻略${pageSuffix}`;
+const description = tag.data.description || `整理與「${tag.data.name}」相關的信用卡文章、回饋規則與用卡技巧。`;
+const crumbs = [{ name: '首頁', href: '/' }, { name: '標籤', href: url.tags() }, { name: tag.data.name, href: url.tag(tag.id) }];
+const jsonLd = graph(site, [
+  ...webPageNode(site, { path, title, description, crumbs, type: 'CollectionPage' }),
+  itemListNode(site, path, items.map((a) => ({ name: a.data.title, href: url.article(a.id) }))),
+]);
+---
+
+{isMagazine ? (
+  <MagListingPage kind="tag" name={tag.data.name} description={description} themeTopic={topicDist[0]?.[0] ?? 'basics'} items={items} totalCount={all.length}
+    {current} {total} pageHref={(p) => url.tag(tag.id, p)} {title} {path} {crumbs} {jsonLd} noindex={!indexable}>
+    {first && topicDist.length > 0 && (
+      <section class="mz-section">
+        <div class="mz-section-head"><h2>出現在這些主題</h2></div>
+        <ul class="chips">{topicDist.map(([id, n]) => <li><a href={url.topic(id)}>{topicName(id)}<span class="muted">　{n}</span></a></li>)}</ul>
+      </section>
+    )}
+    {first && cards.length > 0 && (
+      <section class="mz-section">
+        <div class="mz-section-head"><h2>這些文章常提到的卡片</h2><a class="mz-more" href={url.cards()}>信用卡總覽</a></div>
+        <ul class="grid cols-4">{cards.map((c) => <li><CardTile card={c} /></li>)}</ul>
+      </section>
+    )}
+    {first && coTags.length > 0 && (
+      <section class="mz-section">
+        <div class="mz-section-head"><h2>相關標籤</h2></div>
+        <ul class="chips">{coTags.map(([id]) => <li><a href={url.tag(id)}>{tags.find((t) => t.id === id)?.data.name}</a></li>)}</ul>
+      </section>
+    )}
+  </MagListingPage>
+) : (
+<BaseLayout {title} {description} {path} {crumbs} {jsonLd} noindex={!indexable} width="wide">
+  <header class="page-head">
+    <span class="eyebrow">標籤</span>
+    <h1>{tag.data.name}{pageSuffix}</h1>
+    {tag.data.description && <p class="lead">{tag.data.description}</p>}
+    <ul class="stats"><li><strong>{all.length}</strong>篇文章</li><li><strong>{topicDist.length}</strong>個主題</li></ul>
+  </header>
+
+  {first && topicDist.length > 0 && (
+    <section class="section" style="margin-top:1.5rem">
+      <p class="small muted" style="margin-bottom:8px">出現在這些主題</p>
+      <ul class="chips">
+        {topicDist.map(([id, n]) => <li><a href={url.topic(id)}>{topicName(id)}<span class="muted">　{n}</span></a></li>)}
+      </ul>
+    </section>
+  )}
+
+  <section class="section" style="max-width:var(--read)">
+    <SectionHead title={`${tag.data.name}相關文章`} desc={total > 1 ? `第 ${current} / ${total} 頁` : undefined} />
+    <ArticleRows items={items.map((a) => ({
+      href: url.article(a.id), title: a.data.title, summary: a.data.summary, label: ARTICLE_TYPE_LABEL[a.data.type],
+      topic: { name: topicName(a.data.primaryTopic.id), href: url.topic(a.data.primaryTopic.id) }, date: a.data.updatedAt, minutes: readingMinutes(a.body),
+    }))} />
+    <Pagination {current} {total} href={(p) => url.tag(tag.id, p)} />
+  </section>
+
+  {first && cards.length > 0 && (
+    <section class="section">
+      <SectionHead title="這些文章常提到的卡片" moreHref={url.cards()} moreLabel="信用卡總覽" />
+      <ul class="grid cols-4">{cards.map((c) => <li><CardTile card={c} /></li>)}</ul>
+    </section>
+  )}
+
+  {first && coTags.length > 0 && (
+    <section class="section">
+      <SectionHead title="相關標籤" />
+      <ul class="chips">
+        {coTags.map(([id]) => <li><a href={url.tag(id)}>{tags.find((t) => t.id === id)?.data.name}</a></li>)}
+      </ul>
+    </section>
+  )}
+</BaseLayout>
+)}

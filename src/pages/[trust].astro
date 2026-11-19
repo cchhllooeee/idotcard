@@ -1,0 +1,27 @@
+---
+/** 信任頁：/about/、/editorial-policy/、/methodology/、/disclosure/、/corrections/、/contact/ */
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { displayDate } from '@/lib/content';
+import { graph, webPageNode } from '@/lib/seo';
+import { url } from '@/lib/urls';
+
+export async function getStaticPaths() {
+  const pages = await getCollection('pages');
+  return pages.map((page) => ({ params: { trust: page.id }, props: { page } }));
+}
+
+const { page } = Astro.props;
+const d = page.data;
+const site = Astro.site!;
+const path = url.page(page.id);
+const { Content } = await render(page);
+const crumbs = [{ name: '首頁', href: '/' }, { name: d.title, href: path }];
+const jsonLd = graph(site, webPageNode(site, { path, title: d.title, description: d.description, crumbs, type: d.pageType, dateModified: d.updatedAt }));
+---
+
+<BaseLayout title={d.title} description={d.description} {path} {crumbs} {jsonLd} updatedAt={d.updatedAt}>
+  <h1>{d.title}</h1>
+  <Content />
+  <p class="muted small">最後更新 {displayDate(d.updatedAt)}</p>
+</BaseLayout>

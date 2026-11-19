@@ -1,0 +1,21 @@
+# ⚠️ 範例資料（虛構卡片、數字皆為示意），上線前刪除。
+name: 範例銀行 無限卡
+aliases: [範例無限卡]
+bank: example-bank
+status: active
+networks: [visa]
+summary: 範例無限卡適合年消費 60 萬以上、常出國的人：海外 3%、機場貴賓室與旅平險，但年費較高。
+bestFor: [常出國商務旅客, 年消費高的人]
+notFor: [年消費低於 30 萬的人]
+annualFee: { amount: 20000, waiver: 年消費滿 80 萬元免次年年費 }
+rewards:
+  - scope: 國內一般消費
+    ratePercent: 1.2
+  - scope: 海外消費
+    ratePercent: 3
+topics: [premium, miles-travel, overseas]
+similar: [example-miles]
+officialUrl: https://example.com/bank/infinite-card
+art: { from: '#1f2937', to: '#000000' }
+checkedAt: 2026-11-15
+updatedAt: 2026-11-15

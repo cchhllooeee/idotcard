@@ -1,0 +1,45 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Summary from '@/components/content/Summary.astro';
+import { displayDate, isOfferExpired } from '@/lib/content';
+import { articleNode, graph, webPageNode } from '@/lib/seo';
+import { url } from '@/lib/urls';
+
+export async function getStaticPaths() {
+  const offers = await getCollection('offers');
+  return offers.map((offer) => ({ params: { id: offer.id }, props: { offer } }));
+}
+
+const { offer } = Astro.props;
+const d = offer.data;
+const site = Astro.site!;
+const path = url.offer(offer.id);
+const card = (await getEntry('cards', d.card.id))!;
+// 到期優惠：保留頁面並標示已結束、連回卡片頁，同時 noindex 並排除於 sitemap
+const expired = isOfferExpired(offer);
+const crumbs = [{ name: '首頁', href: '/' }, { name: '優惠', href: url.offers() }, { name: d.title, href: path }];
+const title = `${d.title}（${displayDate(d.validFrom)}–${displayDate(d.validThrough)}）`;
+const description = `${d.summary} 活動期間 ${displayDate(d.validFrom)} 至 ${displayDate(d.validThrough)}，整理參加條件與登錄方式。`.slice(0, 155);
+const jsonLd = graph(site, [
+  ...webPageNode(site, { path, title, description, crumbs, dateModified: d.updatedAt }),
+  articleNode(site, { path, title, description, datePublished: d.updatedAt, dateModified: d.updatedAt, about: [{ name: card.data.name, href: url.card(card.id), kind: 'card' }], citations: [d.officialUrl] }),
+]);
+---
+
+<BaseLayout {title} {description} {path} {crumbs} {jsonLd} noindex={expired} updatedAt={d.updatedAt} ogType="article" searchable={!expired}>
+  <h1>{d.title}</h1>
+  {expired && <p class="notice">這個活動已於 {displayDate(d.validThrough)} 結束。查看 <a href={url.card(card.id)}>{card.data.name}</a> 目前的權益與優惠。</p>}
+  <Summary text={d.summary} />
+  <table class="spec">
+    <tbody>
+      <tr><th scope="row">適用卡片</th><td><a href={url.card(card.id)}>{card.data.name}</a></td></tr>
+      <tr><th scope="row">活動期間</th><td>{displayDate(d.validFrom)} – {displayDate(d.validThrough)}</td></tr>
+      <tr><th scope="row">需要登錄</th><td>{d.registrationRequired ? '是' : '否'}</td></tr>
+      <tr><th scope="row">資料核對日期</th><td>{displayDate(d.checkedAt)}</td></tr>
+    </tbody>
+  </table>
+  <h2>參加條件</h2>
+  <ul>{d.details.map((x) => <li>{x}</li>)}</ul>
+  <p><a href={d.officialUrl} rel="nofollow noopener" target="_blank">官方活動頁</a></p>
+</BaseLayout>

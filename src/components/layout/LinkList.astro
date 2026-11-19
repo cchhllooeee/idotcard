@@ -1,0 +1,22 @@
+---
+/** 通用的連結列表（標題 + 說明 + 日期） */
+import { displayDate } from '@/lib/content';
+export type LinkItem = { href: string; title: string; note?: string; date?: Date; badge?: string };
+interface Props { items: LinkItem[]; empty?: string }
+const { items, empty = '目前沒有內容。' } = Astro.props;
+---
+
+{items.length === 0 ? (
+  <p class="muted">{empty}</p>
+) : (
+  <ul class="link-list">
+    {items.map((it) => (
+      <li>
+        <a href={it.href}>{it.title}</a>
+        {it.badge && <span class="badge">{it.badge}</span>}
+        {it.note && <p class="muted">{it.note}</p>}
+        {it.date && <time class="muted small" datetime={it.date.toISOString().slice(0, 10)}>更新 {displayDate(it.date)}</time>}
+      </li>
+    ))}
+  </ul>
+)}

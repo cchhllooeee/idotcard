@@ -1,0 +1,20 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import LinkList from '@/components/layout/LinkList.astro';
+import { published } from '@/lib/content';
+import { graph, webPageNode } from '@/lib/seo';
+import { url } from '@/lib/urls';
+
+const items = await published('compare');
+const site = Astro.site!;
+const path = url.compareIndex();
+const title = '信用卡比較：熱門卡片一對一分析';
+const description = '熱門信用卡一對一比較，用規格對照與消費情境試算告訴你哪一張比較適合。';
+const crumbs = [{ name: '首頁', href: '/' }, { name: '信用卡比較', href: path }];
+const jsonLd = graph(site, webPageNode(site, { path, title, description, crumbs, type: 'CollectionPage' }));
+---
+
+<BaseLayout {title} {description} {path} {crumbs} {jsonLd}>
+  <h1>信用卡比較</h1>
+  <LinkList items={items.map((c) => ({ href: url.compare(c.id), title: c.data.title, note: c.data.summary, date: c.data.updatedAt }))} />
+</BaseLayout>

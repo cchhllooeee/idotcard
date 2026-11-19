@@ -1,0 +1,24 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { published } from '@/lib/content';
+import { graph, webPageNode } from '@/lib/seo';
+import { url } from '@/lib/urls';
+
+const terms = (await published('glossary')).sort((a, b) => a.data.term.localeCompare(b.data.term, 'zh-Hant'));
+const site = Astro.site!;
+const path = url.glossary();
+const title = '信用卡詞彙表：常見名詞白話解釋';
+const description = '循環利息、最低應繳金額、年費等信用卡常見名詞的一句話定義與白話解釋。';
+const crumbs = [{ name: '首頁', href: '/' }, { name: '詞彙表', href: path }];
+const jsonLd = graph(site, [
+  ...webPageNode(site, { path, title, description, crumbs, type: 'CollectionPage' }),
+  { '@type': 'DefinedTermSet', '@id': `${new URL(path, site)}#termset`, name: '信用卡詞彙表', hasDefinedTerm: terms.map((t) => ({ '@id': `${new URL(url.term(t.id), site)}#term` })) },
+]);
+---
+
+<BaseLayout {title} {description} {path} {crumbs} {jsonLd}>
+  <h1>信用卡詞彙表</h1>
+  <dl>
+    {terms.map((t) => (<><dt><a href={url.term(t.id)}>{t.data.term}</a></dt><dd>{t.data.definition}</dd></>))}
+  </dl>
+</BaseLayout>

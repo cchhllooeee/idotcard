@@ -1,0 +1,21 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import LinkList from '@/components/layout/LinkList.astro';
+import { graph, itemListNode, webPageNode } from '@/lib/seo';
+import { url } from '@/lib/urls';
+
+const merchants = await getCollection('merchants');
+const site = Astro.site!;
+const path = url.merchants();
+const title = '消費通路列表：在哪裡刷哪張卡最划算';
+const description = '依超市、外送、網購、交通等消費通路，整理各通路回饋最高的信用卡與回饋上限，資料隨銀行公告更新。';
+const crumbs = [{ name: '首頁', href: '/' }, { name: '通路', href: path }];
+const items = merchants.map((m) => ({ name: m.data.name, href: url.merchant(m.id) }));
+const jsonLd = graph(site, [...webPageNode(site, { path, title, description, crumbs, type: 'CollectionPage' }), itemListNode(site, path, items)]);
+---
+
+<BaseLayout {title} {description} {path} {crumbs} {jsonLd}>
+  <h1>消費通路列表</h1>
+  <LinkList items={merchants.map((m) => ({ href: url.merchant(m.id), title: `${m.data.name}刷什麼卡`, note: m.data.description }))} />
+</BaseLayout>

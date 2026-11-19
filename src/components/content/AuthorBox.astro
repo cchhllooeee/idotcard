@@ -1,0 +1,17 @@
+---
+import { getEntry } from 'astro:content';
+import { initials } from '@/lib/content';
+import { url } from '@/lib/urls';
+interface Props { author: { id: string }; reviewer?: { id: string } }
+const author = (await getEntry('authors', Astro.props.author.id))!;
+const reviewer = Astro.props.reviewer ? await getEntry('authors', Astro.props.reviewer.id) : undefined;
+---
+
+<section class="author-box" aria-label="關於作者">
+  <span class="avatar" aria-hidden="true">{initials(author.data.name)}</span>
+  <div>
+    <a href={url.author(author.id)}>{author.data.name}</a> <span class="muted small">{author.data.jobTitle}</span>
+    <p>{author.data.bio}</p>
+    {reviewer && <p>本文由 <a href={url.author(reviewer.id)}>{reviewer.data.name}</a>（{reviewer.data.jobTitle}）審稿。審稿流程見<a href="/editorial-policy/" style="font-weight:400;color:var(--accent)">編輯政策</a>。</p>}
+  </div>
+</section>

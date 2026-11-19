@@ -1,0 +1,7 @@
+# ⚠️ 範例資料（虛構銀行），上線前刪除。
+name: 範例商業銀行
+shortName: 範例銀行
+description: 範例資料。這裡放銀行簡介，例如信用卡業務特色、主要卡別與數位服務。
+officialUrl: https://example.com/bank
+customerService: 0800-000-000
+updatedAt: 2026-11-19

@@ -1,0 +1,18 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { getEntry } from 'astro:content';
+import { displayDate } from '@/lib/content';
+import { url } from '@/lib/urls';
+interface Props { item: CollectionEntry<'best'>; limit?: number }
+const { item, limit = 3 } = Astro.props;
+const picks = await Promise.all(item.data.picks.slice(0, limit).map(async (p) => ({ ...p, card: (await getEntry('cards', p.card.id))! })));
+---
+
+<article class="rank-card">
+  <span class="eyebrow">推薦排行</span>
+  <h3><a href={url.best(item.id)}>{item.data.title}</a></h3>
+  <p class="muted small" style="margin:0">更新 {displayDate(item.data.updatedAt)}</p>
+  <ol>
+    {picks.map((p) => <li><a href={url.card(p.card.id)}>{p.card.data.name}</a><span class="badge">{p.label}</span></li>)}
+  </ol>
+</article>

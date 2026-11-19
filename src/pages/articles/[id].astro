@@ -1,0 +1,78 @@
+---
+import MagArticlePage from '@/variants/magazine/ArticlePage.astro';
+import { isMagazine } from '@/lib/variant';
+import { getEntries, getEntry, render } from 'astro:content';
+import ArticleLayout from '@/layouts/ArticleLayout.astro';
+import ArticleCard from '@/components/ui/ArticleCard.astro';
+import { mdxComponents } from '@/components/content/mdx';
+import { ARTICLE_TYPE_LABEL, published, readingMinutes, relatedArticles } from '@/lib/content';
+import { articleNode, faqNode, graph, personNode, webPageNode } from '@/lib/seo';
+import { url } from '@/lib/urls';
+
+export async function getStaticPaths() {
+  const articles = await published('articles');
+  return articles.map((article) => ({ params: { id: article.id }, props: { article, all: articles } }));
+}
+
+const { article, all } = Astro.props;
+const d = article.data;
+const site = Astro.site!;
+const path = url.article(article.id);
+const { Content, headings } = await render(article);
+const topic = (await getEntry('topics', d.primaryTopic.id))!;
+const tags = await getEntries(d.tags);
+const cards = await getEntries(d.cards);
+const author = (await getEntry('authors', d.author.id))!;
+const reviewer = d.reviewer ? await getEntry('authors', d.reviewer.id) : undefined;
+const related = relatedArticles(article, all, 3);
+const topicCount = all.filter((a) => a.data.primaryTopic.id === topic.id).length;
+const crumbs = [
+  { name: '首頁', href: url.home() },
+  { name: topic.data.name, href: url.topic(topic.id) },
+  { name: d.title, href: path },
+];
+const jsonLd = graph(site, [
+  ...webPageNode(site, { path, title: d.title, description: d.description, crumbs, datePublished: d.publishedAt, dateModified: d.updatedAt, reviewer }),
+  articleNode(site, {
+    path, title: d.title, description: d.description, datePublished: d.publishedAt, dateModified: d.updatedAt, author,
+    about: cards.map((c) => ({ name: c.data.name, href: url.card(c.id), kind: 'card' as const })),
+    citations: d.sources.map((s) => s.url),
+  }),
+  personNode(site, author),
+  reviewer && personNode(site, reviewer),
+  faqNode(site, path, d.faq),
+]);
+---
+
+{isMagazine ? (
+  <MagArticlePage {article} {all} {crumbs} {jsonLd} {path} />
+) : (
+<ArticleLayout {path} {crumbs} {jsonLd} {headings} data={d} {cards}
+  eyebrow={{ name: `${topic.data.name}・${ARTICLE_TYPE_LABEL[d.type]}`, href: url.topic(topic.id) }}
+  minutes={readingMinutes(article.body)} sponsored={cards.some((c) => c.data.sponsored)}>
+  <Content components={mdxComponents} />
+
+  <Fragment slot="after">
+    {tags.length > 0 && (
+      <div class="tag-row">標籤 {tags.map((t) => <a class="badge" href={url.tag(t.id)}>{t.data.name}</a>)}</div>
+    )}
+
+    <div class="topic-cta">
+      <p><strong>{topic.data.name}</strong>　<span class="muted small">共 {topicCount} 篇文章與推薦排行</span></p>
+      <a class="more" href={url.topic(topic.id)}>看完整主題</a>
+    </div>
+
+    {related.length > 0 && (
+      <section class="section">
+        <h2>延伸閱讀</h2>
+        <ul class="grid cols-3">
+          {related.map((a) => (
+            <li><ArticleCard href={url.article(a.id)} title={a.data.title} summary={a.data.summary}
+              label={ARTICLE_TYPE_LABEL[a.data.type]} date={a.data.updatedAt} minutes={readingMinutes(a.body)} /></li>
+          ))}
+        </ul>
+      </section>
+    )}
+  </Fragment>
+</ArticleLayout>
+)}

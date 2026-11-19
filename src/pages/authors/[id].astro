@@ -1,0 +1,41 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import LinkList from '@/components/layout/LinkList.astro';
+import { published } from '@/lib/content';
+import { graph, personNode, webPageNode } from '@/lib/seo';
+import { url } from '@/lib/urls';
+
+export async function getStaticPaths() {
+  const authors = await getCollection('authors');
+  return authors.map((author) => ({ params: { id: author.id }, props: { author } }));
+}
+
+const { author } = Astro.props;
+const d = author.data;
+const site = Astro.site!;
+const path = url.author(author.id);
+const [articles, news, best, compare] = await Promise.all([published('articles'), published('news'), published('best'), published('compare')]);
+const mine = [
+  ...articles.map((x) => ({ x, href: url.article(x.id) })),
+  ...news.map((x) => ({ x, href: url.news(x.id) })),
+  ...best.map((x) => ({ x, href: url.best(x.id) })),
+  ...compare.map((x) => ({ x, href: url.compare(x.id) })),
+].filter(({ x }) => x.data.author.id === author.id || x.data.reviewer?.id === author.id)
+  .sort((a, b) => b.x.data.updatedAt.getTime() - a.x.data.updatedAt.getTime());
+const roleName = { editor: '編輯', reviewer: '審稿', writer: '撰文' } as const;
+const crumbs = [{ name: '首頁', href: '/' }, { name: '作者與審稿團隊', href: url.authors() }, { name: d.name, href: path }];
+const title = `${d.name}｜${d.jobTitle}`;
+const description = d.bio.slice(0, 150);
+const jsonLd = graph(site, [...webPageNode(site, { path, title, description, crumbs, type: 'ProfilePage' }), personNode(site, author)]);
+---
+
+<BaseLayout {title} {description} {path} {crumbs} {jsonLd}>
+  <h1>{d.name}</h1>
+  <p class="muted">{d.jobTitle}｜{d.roles.map((r) => roleName[r]).join('、')}</p>
+  <p>{d.bio}</p>
+  {d.credentials.length > 0 && (<><h2>專業背景</h2><ul>{d.credentials.map((c) => <li>{c}</li>)}</ul></>)}
+  {d.sameAs.length > 0 && <p>{d.sameAs.map((s) => <a href={s} rel="me noopener" target="_blank" class="badge">{new URL(s).hostname}</a>)}</p>}
+  <h2>{d.name}負責的內容</h2>
+  <LinkList items={mine.map(({ x, href }) => ({ href, title: x.data.title, date: x.data.updatedAt, badge: x.data.reviewer?.id === author.id ? '審稿' : '編輯' }))} />
+</BaseLayout>

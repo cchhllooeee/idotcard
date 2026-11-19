@@ -1,0 +1,36 @@
+---
+import { getEntries, render } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Sources from '@/components/content/Sources.astro';
+import { displayDate, published } from '@/lib/content';
+import { definedTermNode, graph, webPageNode } from '@/lib/seo';
+import { url } from '@/lib/urls';
+
+export async function getStaticPaths() {
+  const terms = await published('glossary');
+  return terms.map((term) => ({ params: { id: term.id }, props: { term } }));
+}
+
+const { term } = Astro.props;
+const d = term.data;
+const site = Astro.site!;
+const path = url.term(term.id);
+const { Content } = await render(term);
+const related = await getEntries(d.related);
+const crumbs = [{ name: '首頁', href: '/' }, { name: '詞彙表', href: url.glossary() }, { name: d.term, href: path }];
+const title = `${d.term}是什麼？定義與計算範例`;
+const description = `${d.definition} 用白話解釋${d.term}的意思、計算方式與常見誤解。`.slice(0, 155);
+const jsonLd = graph(site, [...webPageNode(site, { path, title, description, crumbs, dateModified: d.updatedAt }), definedTermNode(site, term)]);
+---
+
+<BaseLayout {title} {description} {path} {crumbs} {jsonLd} updatedAt={d.updatedAt} searchable>
+  <article>
+    <h1>{d.term}是什麼？</h1>
+    <p class="summary"><strong>{d.term}</strong>：{d.definition}</p>
+    {d.aliases.length > 0 && <p class="muted small">又稱：{d.aliases.join('、')}</p>}
+    <Content />
+    {related.length > 0 && (<><h2>相關詞彙</h2><p>{related.map((r) => <a class="badge" href={url.term(r.id)}>{r.data.term}</a>)}</p></>)}
+    <Sources sources={d.sources} />
+    <p class="muted small">更新日期 {displayDate(d.updatedAt)}</p>
+  </article>
+</BaseLayout>

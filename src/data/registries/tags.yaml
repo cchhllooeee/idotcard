@@ -1,0 +1,27 @@
+# 標籤清單：橫向屬性（支付工具、族群、活動類型）。
+# Agent 只能從這裡挑選，不得自創；卡名、銀行名不做成標籤；不得與主題同名。
+# 標籤頁滿 5 篇文章且有 description 才會被索引，否則 noindex, follow。
+- id: line-pay
+  name: LINE Pay
+  description: ""
+- id: apple-pay
+  name: Apple Pay
+  description: ""
+- id: supermarket
+  name: 超市量販
+  description: 在超市與量販店刷卡怎麼拿最多回饋：通路加碼、會員卡與行動支付的疊加方式，以及常見的排除條件。
+- id: food-delivery
+  name: 外送平台
+  description: ""
+- id: annual-fee
+  name: 年費
+  description: ""
+- id: revolving-credit
+  name: 循環信用
+  description: ""
+- id: first-card
+  name: 第一張信用卡
+  description: ""
+- id: limited-offer
+  name: 限時活動
+  description: ""

@@ -1,0 +1,117 @@
+---
+/**
+ * magazine 版首頁
+ * 1. 主題圖示分類列（在頁首）
+ * 2. 主視覺輪播（人工編排）＋ 右側人氣排行（本週／累計）
+ * 3. 編輯部推薦（封面卡網格）
+ * 4. 最新優惠情報（附剩餘天數）
+ * 5. 依銀行找卡
+ * 6. 熱門信用卡
+ * 7. 權益快訊
+ * 8. 信任說明
+ */
+import { getCollection, getEntry } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Cover from '@/components/magazine/Cover.astro';
+import PostCard from '@/components/magazine/PostCard.astro';
+import RankList from '@/components/magazine/RankList.astro';
+import CardTile from '@/components/ui/CardTile.astro';
+import { byUpdatedDesc, daysUntil, displayDate, isOfferActive, published } from '@/lib/content';
+import { toPostCard } from '@/lib/magazine';
+import { url } from '@/lib/urls';
+import home from '@/data/registries/home.json';
+
+interface Props { title: string; description: string; jsonLd: object }
+const { title, description, jsonLd } = Astro.props;
+
+const [articles, offers, banks, cards, news] = await Promise.all([
+  published('articles'), getCollection('offers'), getCollection('banks'), getCollection('cards', (c) => c.data.status === 'active'), published('news'),
+]);
+const byId = new Map(articles.map((a) => [a.id, a]));
+const pick = async (ids: string[]) => Promise.all(ids.map((id) => byId.get(id)).filter((a): a is NonNullable<typeof a> => !!a).map(toPostCard));
+const [hero, picks, week, all] = await Promise.all([pick(home.hero), pick(home.editorPicks), pick(home.popularWeek), pick(home.popularAll)]);
+const activeOffers = await Promise.all(offers.filter(isOfferActive).sort((a, b) => a.data.validThrough.getTime() - b.data.validThrough.getTime()).slice(0, 4)
+  .map(async (o) => ({ o, card: (await getEntry('cards', o.data.card.id))! })));
+const bankCounts = banks.map((b) => ({ b, n: cards.filter((c) => c.data.bank.id === b.id).length })).filter((x) => x.n > 0).sort((x, y) => y.n - x.n);
+const latestNews = news.sort(byUpdatedDesc).slice(0, 4);
+---
+
+<BaseLayout {title} {description} path="/" {jsonLd} width="wide">
+  <h1 class="sr-only">{title}：{description}</h1>
+
+  <div class="mz-home-top">
+    <section class="mz-hero" aria-label="精選文章">
+      <div class="mz-hero-track">
+        {hero.map((p, i) => (
+          <article class="mz-slide" id={`slide-${i + 1}`}>
+            <Cover topicId={p.topic.id} cards={p.cards} size="lg" />
+            <div class="mz-slide-caption">
+              <span class="mz-label">{p.topic.name}</span>
+              <h2><a href={p.href}>{p.title}</a></h2>
+            </div>
+          </article>
+        ))}
+      </div>
+      <nav class="mz-dots" aria-label="切換精選">{hero.map((_, i) => <a href={`#slide-${i + 1}`} aria-label={`第 ${i + 1} 則`}></a>)}</nav>
+    </section>
+    <RankList {week} {all} />
+  </div>
+
+  <section class="mz-section">
+    <div class="mz-section-head"><h2>編輯部推薦</h2><a class="mz-more" href={url.articles()}>看全部文章</a></div>
+    <ul class="mz-grid c4">{picks.map((p) => <li><PostCard post={p} /></li>)}</ul>
+  </section>
+
+  <section class="mz-section">
+    <div class="mz-section-head"><h2>最新優惠情報</h2><a class="mz-more" href={url.offers()}>看全部優惠</a></div>
+    <ul class="mz-grid c4">
+      {activeOffers.map(({ o, card }) => (
+        <li>
+          <article class="mz-offer">
+            <span class="mz-labels"><span class="mz-label">{card.data.name}</span></span>
+            <h3><a href={url.offer(o.id)}>{o.data.title}</a></h3>
+            <span class="left">剩 {daysUntil(o.data.validThrough)} 天｜截止 {displayDate(o.data.validThrough)}</span>
+            <a class="mz-btn" href={url.offer(o.id)}>看活動條件</a>
+          </article>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="mz-section">
+    <div class="mz-section-head"><h2>依銀行找卡</h2><a class="mz-more" href={url.banks()}>全部銀行</a></div>
+    <ul class="mz-banks">
+      {bankCounts.map(({ b, n }) => <li><a href={url.bank(b.id)}>{b.data.shortName}<span>{n} 張卡</span></a></li>)}
+    </ul>
+  </section>
+
+  <section class="mz-section">
+    <div class="mz-section-head"><h2>熱門信用卡</h2><a class="mz-more" href={url.cards()}>信用卡總覽</a></div>
+    <ul class="grid cols-4">{cards.slice(0, 4).map((c) => <li><CardTile card={c} /></li>)}</ul>
+  </section>
+
+  <section class="mz-section">
+    <div class="mz-section-head"><h2>權益快訊</h2><a class="mz-more" href={url.newsIndex()}>看全部快訊</a></div>
+    <div class="mz-panel">
+      <ul class="rows">
+        {latestNews.map((n) => (
+          <li>
+            <h3><a href={url.news(n.id)}>{n.data.title}</a></h3>
+            <time class="side">{displayDate(n.data.updatedAt)}</time>
+            <p>{n.data.summary}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="mz-section">
+    <div class="mz-panel">
+      <ul class="trust-strip">
+        <li><strong>每項權益附官方來源</strong><p>卡片資料逐項對照銀行公告，並標示資料核對日期。</p></li>
+        <li><strong>具名編輯與審稿</strong><p>每篇內容都有負責的編輯與審稿人。<a href={url.authors()}>認識團隊</a></p></li>
+        <li><strong>公開評選方法</strong><p>排行依固定標準評分，合作不影響排名。<a href="/methodology/">評選方法</a></p></li>
+      </ul>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,28 @@
+# ⚠️ 範例資料（虛構卡片、數字皆為示意），上線前刪除。
+name: 範例銀行 哩程卡
+aliases: [範例哩程卡]
+bank: example-bank
+status: active
+networks: [visa]
+summary: 範例哩程卡適合每年出國兩次以上、想累積航空哩程的人；一般消費回饋較低。
+bestFor: [常出國的人, 累積哩程換機票的人]
+notFor: [只在國內消費的人]
+annualFee:
+  amount: 3000
+  waiver: 年消費滿 18 萬元免次年年費
+rewards:
+  - scope: 國內一般消費（折算）
+    ratePercent: 0.5
+  - scope: 海外消費（折算）
+    ratePercent: 1.5
+    conditions: 以哩程折算現金價值估算
+merchantRewards: []
+topics: [miles-travel, overseas]
+similar: [example-cashback]
+officialUrl: https://example.com/bank/miles-card
+sponsored: false
+faq: []
+changelog: []
+checkedAt: 2026-11-19
+updatedAt: 2026-11-19
+art: { from: '#0369a1', to: '#082f49' }

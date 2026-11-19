@@ -1,0 +1,21 @@
+---
+import Cover from './Cover.astro';
+import { displayDate, isoDate } from '@/lib/content';
+import { url } from '@/lib/urls';
+import type { PostCardData } from '@/lib/magazine';
+interface Props { post: PostCardData; size?: 'sm' | 'md'; showSummary?: boolean; popularity?: number }
+const { post, size = 'md', showSummary = false, popularity = 999 } = Astro.props;
+---
+
+<article class:list={['mz-post', `mz-post-${size}`]} data-topic={post.topic.id} data-type={post.label} data-date={isoDate(post.date)} data-banks={post.banks.join(' ')} data-pop={popularity}>
+  <Cover topicId={post.topic.id} cards={post.cards} size="sm" />
+  <div class="mz-post-body">
+    <div class="mz-labels">
+      <a href={url.topic(post.topic.id)} class="mz-label">{post.topic.name}</a>
+      <span class="mz-label ghost">{post.label}</span>
+    </div>
+    <h3><a href={post.href}>{post.title}</a></h3>
+    {showSummary && <p>{post.summary}</p>}
+    <time datetime={isoDate(post.date)}>{displayDate(post.date)}</time>
+  </div>
+</article>

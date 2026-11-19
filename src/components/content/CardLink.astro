@@ -1,0 +1,14 @@
+---
+/**
+ * MDX 用：<CardLink id="example-cashback" />
+ * 連到卡片實體頁，文字為卡片正式名稱。id 不存在時建置失敗，杜絕斷鏈。
+ */
+import { getEntry } from 'astro:content';
+import { url } from '@/lib/urls';
+interface Props { id: string; text?: string }
+const { id, text } = Astro.props;
+const card = await getEntry('cards', id);
+if (!card) throw new Error(`CardLink：找不到卡片 id「${id}」，請確認 src/data/cards/${id}.yaml 存在`);
+---
+
+<a href={url.card(id)} class="entity-link">{text ?? card.data.name}</a>

@@ -1,0 +1,92 @@
+---
+import { getCollection, getEntry, getEntries } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Summary from '@/components/content/Summary.astro';
+import CardSpecTable from '@/components/content/CardSpecTable.astro';
+import Faq from '@/components/content/Faq.astro';
+import Disclosure from '@/components/content/Disclosure.astro';
+import LinkList from '@/components/layout/LinkList.astro';
+import { displayDate, isOfferActive, mentionsOf } from '@/lib/content';
+import { bankNode, creditCardNode, faqNode, graph, webPageNode } from '@/lib/seo';
+import { url } from '@/lib/urls';
+
+export async function getStaticPaths() {
+  const cards = await getCollection('cards');
+  return cards.map((card) => ({ params: { id: card.id }, props: { card } }));
+}
+
+const { card } = Astro.props;
+const d = card.data;
+const site = Astro.site!;
+const path = url.card(card.id);
+const bank = (await getEntry('banks', d.bank.id))!;
+const similar = await getEntries(d.similar);
+const topics = await getEntries(d.topics);
+const offers = (await getCollection('offers', (o) => o.data.card.id === card.id)).filter(isOfferActive);
+const compares = await getCollection('compare', (c) => !c.data.draft && c.data.cards.some((x) => x.id === card.id));
+const mentions = (await mentionsOf({ collection: 'cards', id: card.id })).filter((m) => m.kind !== '比較');
+const crumbs = [
+  { name: '首頁', href: url.home() },
+  { name: '信用卡', href: url.cards() },
+  { name: bank.data.shortName, href: url.bank(bank.id) },
+  { name: d.name, href: path },
+];
+const title = `${d.name}：回饋、年費與適合族群`;
+const description = `${d.summary} 整理${d.name}的回饋上限、年費條件、進行中優惠與權益變動紀錄。`.slice(0, 155);
+const jsonLd = graph(site, [
+  ...webPageNode(site, { path, title, description, crumbs, dateModified: d.updatedAt }),
+  creditCardNode(site, card, bank),
+  bankNode(site, bank),
+  faqNode(site, path, d.faq),
+]);
+---
+
+<BaseLayout {title} {description} {path} {crumbs} {jsonLd} updatedAt={d.updatedAt} searchable>
+  <article>
+    <h1>{d.name}</h1>
+    {d.status === 'discontinued' && <p class="notice">這張卡已停發，以下資料僅供既有持卡人參考。</p>}
+    <Summary text={d.summary} label="一句話結論" />
+    <p class="muted small">發卡銀行 <a href={url.bank(bank.id)}>{bank.data.name}</a>｜資料核對日期 {displayDate(d.checkedAt)}</p>
+    <Disclosure sponsored={d.sponsored} />
+
+    <h2>{d.name}的核心規格</h2>
+    <CardSpecTable card={card} />
+
+    <h2>{d.name}適合誰？</h2>
+    <ul>{d.bestFor.map((x) => <li>適合：{x}</li>)}{d.notFor.map((x) => <li>不適合：{x}</li>)}</ul>
+
+    <h2>{d.name}進行中的優惠</h2>
+    <LinkList items={offers.map((o) => ({ href: url.offer(o.id), title: o.data.title, note: o.data.summary }))} empty="目前沒有進行中的優惠。" />
+
+    {d.changelog.length > 0 && (
+      <>
+        <h2>{d.name}權益變動紀錄</h2>
+        <table>
+          <thead><tr><th scope="col">日期</th><th scope="col">變動內容</th></tr></thead>
+          <tbody>{[...d.changelog].sort((a, b) => b.date.getTime() - a.date.getTime()).map((c) => <tr><td>{displayDate(c.date)}</td><td>{c.change}</td></tr>)}</tbody>
+        </table>
+      </>
+    )}
+
+    {(similar.length > 0 || compares.length > 0) && (
+      <>
+        <h2>和{d.name}相似的卡</h2>
+        <LinkList items={[
+          ...compares.map((c) => ({ href: url.compare(c.id), title: c.data.title, badge: '比較' })),
+          ...similar.map((s) => ({ href: url.card(s.id), title: s.data.name, note: s.data.summary })),
+        ]} />
+      </>
+    )}
+
+    <h2>提到{d.name}的文章</h2>
+    <LinkList items={mentions.map((m) => ({ href: m.href, title: m.title, badge: m.kind, date: m.updatedAt }))} empty="還沒有相關文章。" />
+
+    <Faq items={d.faq} />
+
+    <section>
+      <h2>官方資料與相關主題</h2>
+      <p><a href={d.officialUrl} rel="nofollow noopener" target="_blank">{bank.data.shortName}官方權益頁</a>{d.applyUrl && <>｜<a href={d.applyUrl} rel="sponsored noopener" target="_blank">線上申辦</a></>}</p>
+      <p>{topics.map((t) => <a href={url.topic(t.id)} class="badge">{t.data.name}</a>)}</p>
+    </section>
+  </article>
+</BaseLayout>

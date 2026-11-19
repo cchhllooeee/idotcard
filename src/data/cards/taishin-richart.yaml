@@ -1,0 +1,27 @@
+# 資料來源：台新 Richart 卡官網 https://www.taishinbank.com.tw/TSB/personal/credit/intro/overview/cg047/card001/（2026-11-19 核對）
+name: 台新 Richart 卡
+aliases: [Richart卡, 台新Richart]
+bank: taishin
+status: active
+networks: [visa, mastercard, jcb]
+highlight: { ratePercent: 3.3, label: 玩旅刷海外 }
+summary: 台新 Richart 卡適合不想研究上限與登錄的人：切換「玩旅刷」後海外、交通卡、航空、訂房最高 3.3%，加碼額度很高。
+bestFor: [日本消費金額大、不想算上限的人, 機票、訂房和日本消費想用同一張卡的人]
+notFor: [沒有台新帳戶、不想設定自動扣繳的人, 一般消費比例高的人（未切換方案時僅 0.3%）]
+annualFee:
+  waiver: 首年免年費；次年起使用電子或行動簡訊帳單即免年費
+rewards:
+  - scope: 切換「玩旅刷」：海外消費、海外交通（含 Suica、ICOCA、PASMO）、指定航空與訂房平台
+    ratePercent: 3.3
+    conditions: Level 2 需設定台新帳戶自動扣繳卡費；每期加碼消費上限為永久信用額度加 30 萬元；回饋台新 Point
+    validFrom: 2026-07-01
+    validThrough: 2027-12-31
+  - scope: 一般消費
+    ratePercent: 0.3
+    conditions: 無上限，部分項目不回饋
+topics: [overseas, miles-travel]
+similar: [ctbc-uniopen, fubon-j]
+officialUrl: https://www.taishinbank.com.tw/TSB/personal/credit/intro/overview/cg047/card001/
+art: { from: '#1f2a44', to: '#0a0f1c' }
+checkedAt: 2026-11-19
+updatedAt: 2026-11-19

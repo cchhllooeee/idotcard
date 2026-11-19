@@ -1,0 +1,28 @@
+---
+/** 全部文章：/articles/ 與 /articles/page/2/ */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import LinkList from '@/components/layout/LinkList.astro';
+import Pagination from '@/components/layout/Pagination.astro';
+import { byUpdatedDesc, paginate, published } from '@/lib/content';
+import { graph, webPageNode } from '@/lib/seo';
+import { url } from '@/lib/urls';
+
+export async function getStaticPaths() {
+  const pages = paginate((await published('articles')).sort(byUpdatedDesc));
+  return pages.map((items, i) => ({ params: { page: i === 0 ? undefined : `page/${i + 1}` }, props: { items, current: i + 1, total: pages.length } }));
+}
+
+const { items, current, total } = Astro.props;
+const site = Astro.site!;
+const path = url.articles(current);
+const title = `全部信用卡文章${current > 1 ? `（第 ${current} 頁）` : ''}`;
+const description = 'idotcard 全部信用卡文章，依更新時間排序，涵蓋回饋比較、用卡教學與卡片評測。';
+const crumbs = [{ name: '首頁', href: '/' }, { name: '文章', href: url.articles() }];
+const jsonLd = graph(site, webPageNode(site, { path, title, description, crumbs, type: 'CollectionPage' }));
+---
+
+<BaseLayout {title} {description} {path} {crumbs} {jsonLd}>
+  <h1>{title}</h1>
+  <LinkList items={items.map((a) => ({ href: url.article(a.id), title: a.data.title, note: a.data.summary, date: a.data.updatedAt }))} />
+  <Pagination {current} {total} href={url.articles} />
+</BaseLayout>

@@ -1,0 +1,17 @@
+---
+/** 可見的 FAQ 區塊；FAQPage JSON-LD 由頁面另外輸出 */
+interface Props { items: { q: string; a: string }[]; title?: string }
+const { items, title = '常見問題' } = Astro.props;
+---
+
+{items.length > 0 && (
+  <section class="faq">
+    <h2>{title}</h2>
+    {items.map((f) => (
+      <details open>
+        <summary><h3>{f.q}</h3></summary>
+        <p>{f.a}</p>
+      </details>
+    ))}
+  </section>
+)}
