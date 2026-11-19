@@ -1,0 +1,843 @@
+<title>愛搭卡 i dot CARD</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="愛搭卡 i dot CARD：把信用卡消費做成一座回饋島，網購、外送、海外、超市等 10 大消費區塊，幫你搭出主卡＋補位卡的最佳組合。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600&family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@600;700&display=swap">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","name":"愛搭卡","alternateName":"i dot CARD"},{"@type":"Organization","name":"愛搭卡 i dot CARD"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"信用卡的回饋上限是什麼？","acceptedAnswer":{"@type":"Answer","text":"加碼回饋多半設有每月或每期上限。超過上限的消費只剩基本回饋，所以月花費高的類別，要看上限換算的「回饋滿額消費金額」，不能只看回饋率。"}},{"@type":"Question","name":"一個人該辦幾張信用卡？","acceptedAnswer":{"@type":"Answer","text":"依消費分布決定。先找出花最多的兩個類別，用一張主卡吃最大的一區，再用一張補位卡補第二區或一般消費。卡越多，年費、帳單和登錄活動越難管理。"}},{"@type":"Question","name":"行動支付綁信用卡，回饋怎麼算？","acceptedAnswer":{"@type":"Answer","text":"綁定後的消費多半依信用卡條款計算回饋，但電子支付儲值、轉帳常被列為排除項目。綁卡前先看發卡銀行公告的排除清單。"}},{"@type":"Question","name":"在海外網站刷卡會被收手續費嗎？","acceptedAnswer":{"@type":"Answer","text":"以外幣計價或在海外清算的交易，多數會收約 1.5% 國外交易服務費，即使結帳畫面顯示台幣也可能被收。訂閱服務和海外電商都要把這筆算進去。"}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首頁"},{"@type":"ListItem","position":2,"name":"信用卡"},{"@type":"ListItem","position":3,"name":"消費地圖"}]}]}</script>
+<style>
+/* Layout: 左欄＝主張、島嶼面板、我的搭卡地圖；右欄＝黏住的 3D 回饋島（10 座消費主題島，點開升起子島）。下方是快速解答與 FAQ。 */
+:root{
+  --bg:#ffffff;
+  --ink:#3a2f2c;
+  --ink-soft:#6f625e;
+  --accent:#e0501b;
+  --accent-ink:#ffffff;
+  --land:#fbe9e5;
+  --sea:#a9c2ea;
+  --sky:#b9cdee;
+  --surface:#fff6f3;
+  --rule:#f0d6ce;
+  --top3d:#f8d3c8;
+  --side3d:#e9a08d;
+  --floor:#cfe0f5;
+  --f-display:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  --f-label:"Noto Serif TC","Songti TC","PMingLiU",serif;
+  --f-latin:"Jost","Futura","Avenir Next",system-ui,sans-serif;
+  --f-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#1b1513;--ink:#f3e7e2;--ink-soft:#bba9a2;--accent:#ff7443;--accent-ink:#1b1513;
+  --land:#3a2723;--sea:#4f6890;--sky:#6d88b3;--surface:#251c19;--rule:#43302b;--top3d:#6b463d;--side3d:#4a2f29;--floor:#232836;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#1b1513;--ink:#f3e7e2;--ink-soft:#bba9a2;--accent:#ff7443;--accent-ink:#1b1513;
+  --land:#3a2723;--sea:#4f6890;--sky:#6d88b3;--surface:#251c19;--rule:#43302b;--top3d:#6b463d;--side3d:#4a2f29;--floor:#232836;color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.7;overflow-x:hidden}
+a{color:inherit}
+.wrap{max-width:1240px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.topline{height:2px;background:var(--accent)}
+header.bar{display:flex;align-items:center;justify-content:space-between;padding-block:18px;gap:12px;flex-wrap:wrap}
+.logo{display:inline-flex;align-items:center;gap:12px;text-decoration:none}
+.wm{font-family:var(--f-latin);font-weight:600;font-size:26px;line-height:1;color:var(--ink);display:inline-flex;align-items:baseline;white-space:nowrap}
+.wm .ii{position:relative;display:inline-block}
+.wm .tittle{position:absolute;left:50%;top:-.04em;width:.46em;height:.31em;transform:translateX(-50%) rotate(-14deg);background:var(--accent);border-radius:2px}
+.wm .tittle::after{content:"";position:absolute;left:18%;top:28%;width:28%;height:34%;border-radius:1px;background:var(--sky)}
+.wm .dot{font-weight:500;font-size:.6em;color:var(--ink-soft);margin:0 .22em 0 .14em}
+.wm .cd{color:var(--accent);letter-spacing:.05em}
+.logo .zh{font-family:var(--f-display);font-weight:900;font-size:15px;color:var(--ink);letter-spacing:.16em;border-left:1.5px solid var(--rule);padding-left:12px}
+.meme{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 14px;font-family:var(--f-latin);font-size:18px;color:var(--ink-soft)}
+.meme s{color:var(--accent);text-decoration-thickness:2px}
+.meme svg{width:30px;height:12px;flex:none;color:var(--accent)}
+.meme b{color:var(--accent);font-weight:600;letter-spacing:.04em}
+h1 .lat{font-family:var(--f-latin);font-weight:600;letter-spacing:0}
+nav.crumbs{font-size:13px;color:var(--ink-soft)}
+nav.crumbs a{text-decoration:none}
+nav.crumbs a:hover{color:var(--accent)}
+
+.hero{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:28px;align-items:start;padding-block:28px 8px}
+.lead{padding-top:40px;min-width:0}
+.lead-top,.panel,.mine{min-width:0}
+h1{font-family:var(--f-display);font-weight:900;color:var(--accent);font-size:clamp(28px,3.5vw,42px);line-height:1.2;margin:0;letter-spacing:.02em;text-wrap:balance;position:relative;display:inline-block;padding-bottom:12px}
+h1::after{content:"";position:absolute;right:0;bottom:0;height:9px;width:200vw;
+  background:repeating-linear-gradient(115deg,var(--accent) 0 1.5px,transparent 1.5px 6px);opacity:.75}
+.lead p.sub{margin:22px 0 0;color:var(--ink-soft);font-size:15px;max-width:30em}
+.cta{display:inline-flex;align-items:center;gap:28px;margin-top:34px;padding:20px 40px 20px 56px;border:2px solid var(--accent);border-radius:999px;
+  color:var(--accent);background:var(--bg);text-decoration:none;font-family:var(--f-latin);font-weight:600;font-size:22px;letter-spacing:.55em;
+  box-shadow:8px 9px 0 var(--accent);transition:transform .15s ease,box-shadow .15s ease}
+.cta svg{width:44px;height:16px;flex:none}
+.cta:hover{transform:translate(3px,4px);box-shadow:5px 5px 0 var(--accent)}
+.cta:focus-visible,.bubble:focus-visible,.zone:focus-visible{outline:3px solid var(--sky);outline-offset:4px}
+
+/* panel */
+.panel{margin-top:44px;border-top:2px solid var(--accent);padding-top:18px}
+.eyebrow{font-family:var(--f-latin);letter-spacing:.3em;font-size:12px;color:var(--accent);text-transform:uppercase}
+.panel h2{font-family:var(--f-label);font-size:28px;margin:2px 0 4px;letter-spacing:.06em}
+.panel .tag{margin:0;color:var(--ink-soft)}
+.pgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px 24px;margin-top:18px}
+.pgrid h3,.mine h3{font-size:13px;letter-spacing:.12em;color:var(--accent);margin:0 0 6px;font-weight:700}
+.pgrid ul{margin:0;padding-left:1.1em}
+.pgrid li{margin:2px 0}
+.cards{display:flex;flex-direction:column;gap:10px}
+.ctype{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:500}
+.mini{width:46px;height:30px;border-radius:5px;flex:none;position:relative;border:1.5px solid var(--accent);background:var(--surface);display:inline-block}
+.mini::before{content:"";position:absolute;left:6px;top:9px;width:10px;height:8px;border-radius:2px;background:var(--sky)}
+.mini::after{content:"";position:absolute;left:6px;right:6px;bottom:5px;height:2px;background:var(--accent);opacity:.5}
+.mini.solid{background:var(--accent)}
+.mini.solid::after{background:var(--accent-ink)}
+.ctype:hover span{color:var(--accent)}
+.tip{grid-column:1/-1;background:var(--surface);border-radius:4px;padding:12px 16px;margin:0}
+.tip b{color:var(--accent);margin-right:6px}
+.reads{grid-column:1/-1}
+.reads ol{list-style:none;padding:0;margin:0;display:grid;gap:2px}
+.reads a{display:flex;justify-content:space-between;gap:16px;padding:8px 0;border-bottom:1px dashed var(--rule);text-decoration:none}
+.reads a:hover{color:var(--accent)}
+.reads a span:last-child{color:var(--accent);flex:none}
+
+/* my spending map */
+.mine{margin-top:44px;border:2px solid var(--accent);border-radius:18px;padding:22px;box-shadow:8px 9px 0 var(--accent);background:var(--bg)}
+.mine h2{font-family:var(--f-display);font-weight:900;font-size:22px;margin:2px 0 4px}
+.mine p.hint{margin:0 0 14px;color:var(--ink-soft);font-size:13.5px}
+.spend{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 16px}
+.spend label{display:grid;grid-template-columns:4.6em minmax(0,1fr);align-items:center;gap:8px;font-size:14px}
+.spend input{width:100%;font:inherit;font-size:15px;padding:6px 10px;border:1.5px solid var(--rule);border-radius:8px;background:var(--surface);color:var(--ink);font-variant-numeric:tabular-nums;text-align:right}
+.spend input:focus{outline:2px solid var(--accent);outline-offset:1px}
+.result{margin-top:16px;border-top:1px dashed var(--rule);padding-top:14px;display:grid;gap:10px}
+.top2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.top2 div{background:var(--surface);border-radius:8px;padding:10px 12px;display:grid;gap:2px}
+.top2 small{color:var(--ink-soft);font-size:12px}
+.top2 strong{font-size:17px}
+.top2 em{font-style:normal;color:var(--accent);font-variant-numeric:tabular-nums;font-weight:700}
+.combo{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center}
+.combo span{display:inline-flex;align-items:center;gap:8px;font-weight:500}
+.legend{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink-soft)}
+.legend i{width:90px;height:8px;border-radius:4px;background:linear-gradient(90deg,var(--land),var(--accent))}
+
+/* 3D map */
+.mapbox{position:sticky;top:max(16px,env(safe-area-inset-top,0px));min-width:0}
+.stage{position:relative;width:100%;aspect-ratio:1.4/1;max-width:100%;touch-action:pan-y;user-select:none;-webkit-user-select:none;background:var(--floor);border-radius:22px;overflow:hidden}
+.stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:grab}
+.stage canvas.hot{cursor:pointer}
+.stage canvas:active{cursor:grabbing}
+.isle-title{position:absolute;left:18px;top:14px;pointer-events:none;z-index:2}
+.isle-title b{display:block;font-family:var(--f-label);font-size:24px;color:var(--accent);letter-spacing:.2em;line-height:1.3}
+.isle-title span{font-family:var(--f-latin);font-size:11px;color:var(--ink-soft);letter-spacing:.35em}
+.labels{position:absolute;inset:0;pointer-events:none;z-index:1}
+[hidden]{display:none!important}
+.tag3d,.sub3d{position:absolute;left:0;top:0;pointer-events:auto;cursor:pointer;border:0;background:none;padding:0;font:inherit;color:inherit;display:flex;flex-direction:column;align-items:center;will-change:transform}
+.tag3d{transition:opacity .3s}
+.stage.zoom .tag3d{pointer-events:none}
+.tag3d .c{display:inline-flex;align-items:center;gap:6px;background:var(--bg);border:1.5px solid var(--accent);border-radius:999px;padding:3px 11px 3px 8px;font-family:var(--f-label);font-weight:700;font-size:15px;line-height:1.3;color:var(--accent);white-space:nowrap;box-shadow:0 2px 0 var(--accent);transition:background .2s,color .2s,transform .2s}
+.tag3d .c::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.tag3d.on .c::before{background:var(--accent)}
+.tag3d .s,.sub3d .s{display:none}
+.tag3d:hover .c{background:var(--surface);transform:scale(1.06)}
+.tag3d.on .c{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.sub3d .c{background:var(--bg);border:1.5px solid var(--accent);color:var(--accent);border-radius:999px;padding:2px 10px;font-weight:700;font-size:13px;box-shadow:0 2px 0 var(--accent);white-space:nowrap;transition:background .2s,color .2s}
+.sub3d .s{height:18px}
+.sub3d:hover .c{background:var(--surface)}
+.sub3d.on .c,.sub3d.on:hover .c{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tag3d:focus-visible,.sub3d:focus-visible{outline:none}
+.tag3d:focus-visible .c,.sub3d:focus-visible .c{outline:3px solid var(--sky);outline-offset:3px}
+.back3d{position:absolute;right:14px;top:14px;z-index:3;border:1.5px solid var(--accent);background:var(--bg);color:var(--accent);border-radius:999px;padding:6px 14px;font:inherit;font-weight:700;font-size:14px;cursor:pointer;box-shadow:3px 4px 0 var(--accent)}
+.back3d:hover{transform:translate(1px,2px);box-shadow:2px 2px 0 var(--accent)}
+.back3d:focus-visible{outline:3px solid var(--sky);outline-offset:3px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid var(--accent);border-radius:999px;padding:4px 12px;background:var(--bg);color:var(--accent);font:inherit;font-size:13.5px;font-weight:500;cursor:pointer}
+.chip:hover{background:var(--surface)}
+.chip.on{background:var(--accent);color:var(--accent-ink)}
+.chip:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
+.subsx{grid-column:1/-1}
+.stage.nogl{aspect-ratio:auto;padding:64px 16px 16px}
+.stage.nogl .labels{position:static;display:flex;flex-wrap:wrap;gap:10px}
+.stage.nogl .tag3d{position:static;transform:none!important}
+.stage.nogl .tag3d .s,.stage.nogl .sub3d{display:none!important}
+.maphint{display:block;margin-top:6px;font-size:12px;color:var(--ink-soft)}
+@media (max-width:560px){
+  .stage{aspect-ratio:.78/1;border-radius:18px}
+  .tag3d .c{font-size:12px;padding:2px 8px 2px 6px;gap:4px}
+  .tag3d .c::before{width:5px;height:5px}
+  .sub3d .c{font-size:11px;padding:1px 7px}
+  .isle-title b{font-size:19px}
+  .back3d{font-size:13px;padding:5px 12px}
+}
+
+/* answer + faq */
+section.band{padding-block:56px 8px}
+.sec-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:20px}
+.sec-head h2{font-family:var(--f-display);font-weight:900;font-size:clamp(22px,2.6vw,30px);margin:0}
+.sec-head .en{font-family:var(--f-latin);letter-spacing:.3em;font-size:12px;color:var(--accent);text-transform:uppercase}
+.summary{font-size:17px;line-height:1.85;margin:0 0 22px;max-width:40em}
+.summary strong{color:var(--accent)}
+.rules{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;counter-reset:r}
+.rules li{counter-increment:r;display:grid;gap:8px;align-content:start}
+.rules li::before{content:counter(r);width:36px;height:36px;border-radius:50%;border:1.6px solid var(--accent);color:var(--accent);
+  display:grid;place-items:center;font-family:var(--f-latin);font-weight:600}
+.rules b{display:block}
+.rules span{color:var(--ink-soft)}
+.faq{border-top:1px solid var(--rule);max-width:860px}
+.faq details{border-bottom:1px solid var(--rule)}
+.faq summary{cursor:pointer;list-style:none;padding:16px 36px 16px 0;font-weight:700;position:relative}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";position:absolute;right:6px;top:12px;font-family:var(--f-latin);font-size:24px;color:var(--accent);transition:transform .2s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{margin:0 0 16px;color:var(--ink-soft);max-width:60em}
+footer{margin-top:64px;border-top:2px solid var(--accent);padding-block:22px 40px;font-size:12.5px;color:var(--ink-soft);display:grid;gap:6px}
+footer .warn{font-family:var(--f-display);font-weight:900;color:var(--accent);font-size:15px;letter-spacing:.2em}
+
+@media (max-width:900px){
+  .hero{grid-template-columns:minmax(0,1fr)}
+  .hero > .lead{display:contents}
+  .lead-top{order:1}
+  .mapbox{order:2;position:relative;top:auto}
+  .panel{order:3;margin-top:8px}
+  .mine{order:4;margin-top:24px}
+  .rules{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:560px){
+  .cta{font-size:17px;letter-spacing:.35em;padding:16px 26px 16px 34px;gap:16px}
+  .pgrid,.spend{grid-template-columns:minmax(0,1fr)}
+  .mine{padding:18px 16px;box-shadow:5px 6px 0 var(--accent)}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="topline"></div>
+<div class="wrap">
+  <header class="bar">
+    <a class="logo" href="#top" aria-label="愛搭卡 i dot CARD 首頁"><span class="wm" aria-hidden="true"><span class="ii">ı<i class="tittle"></i></span><span class="dot">dot</span><span class="cd">CARD</span></span><span class="zh">愛搭卡</span></a>
+    <nav class="crumbs" aria-label="麵包屑"><a href="#top">首頁</a> ／ <a href="#top">信用卡</a> ／ 消費地圖</nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="lead">
+        <div class="lead-top">
+          <p class="meme" aria-label="i don’t care，少打幾個字，變成 i dot CARD"><span>i do<s>n’</s>t car<s>e</s></span><svg viewBox="0 0 30 12" aria-hidden="true"><path d="M0 6H28M22 1l6 5-6 5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><b>i dot CARD</b></p>
+          <h1>什麼都可以 <span class="lat">i don’t care</span><br>刷卡回饋一定要ㄎㄟˊ起來</h1>
+          <p class="sub">愛搭卡把網購、外送、超市到出國的每一筆消費，畫成一座回饋島。點地圖上的區塊看各區眉角，再填花費，幫你搭出一張主卡、一張補位卡。</p>
+          <a class="cta" href="#mine" style="text-transform:none">i dot CARD<svg viewBox="0 0 44 16" aria-hidden="true"><path d="M0 8H42M34 1l8 7-8 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></a>
+        </div>
+
+        <article class="panel" id="panel" aria-live="polite">
+          <div class="eyebrow" id="p-en"></div>
+          <h2 id="p-name"></h2>
+          <p class="tag" id="p-tag"></p>
+          <div class="pgrid">
+            <div><h3>這區常見消費</h3><ul id="p-scenes"></ul></div>
+            <div><h3>適合卡型</h3><div class="cards" id="p-cards"></div></div>
+            <div class="subsx"><h3 id="p-subs-h">島上的小島</h3><div class="chips" id="p-subs"></div></div>
+            <p class="tip" id="p-tip"></p>
+            <div class="reads"><h3>延伸閱讀</h3><ol id="p-reads"></ol></div>
+          </div>
+        </article>
+
+        <form class="mine" id="mine" aria-labelledby="mine-h">
+          <div class="eyebrow">Match my cards</div>
+          <h2 id="mine-h">我的搭卡地圖</h2>
+          <p class="hint">填入每月大概花多少，地圖上的區塊會依花費變深。預設為範例數字。</p>
+          <div class="spend" id="spend"></div>
+          <div class="result" aria-live="polite">
+            <div class="top2">
+              <div><small>花最多</small><strong id="t1">—</strong><em id="t1v"></em></div>
+              <div><small>第二多</small><strong id="t2">—</strong><em id="t2v"></em></div>
+            </div>
+            <div><h3>愛搭卡建議搭法</h3><div class="combo" id="combo"></div></div>
+            <div class="legend"><span>花得少</span><i></i><span>花得多</span></div>
+          </div>
+        </form>
+      </div>
+
+      <div class="mapbox">
+        <div class="stage" id="stage">
+          <div class="isle-title"><b id="isle-b">回饋島</b><span id="isle-s">BY i dot CARD</span></div>
+          <button type="button" class="back3d" id="back3d" hidden>← 回到全島</button>
+          <div class="labels" id="labels" role="group" aria-label="回饋島：10 座信用卡消費島，點選查看各島攻略"></div>
+        </div>
+        <span class="maphint">點主題島放大看島上的小島，按「回到全島」或 Esc 返回；左右拖曳可以轉動。全島視角下，島的顏色深淺依「我的搭卡地圖」的花費</span>
+      </div>
+    </section>
+
+    <section class="band" id="rules">
+      <div class="sec-head"><h2>信用卡怎麼挑才不會辦錯？</h2><span class="en">Quick answer</span></div>
+      <p class="summary">挑信用卡先看<strong>自己花最多的兩個消費類別</strong>，再比較那兩類的實拿回饋和上限。回饋率最高的卡，不一定是你拿最多的卡。</p>
+      <ol class="rules">
+        <li><div><b>先找出花最多的兩區</b><span>多數卡只在特定通路加碼。先看清楚錢花在網購、外送還是超市，再找對應的卡。</span></div></li>
+        <li><div><b>看實拿，不看最高</b><span>加碼常有上限、門檻和登錄。月花費超過上限的部分只剩基本回饋。</span></div></li>
+        <li><div><b>一張主卡加一張補位卡</b><span>主卡吃花最多的一區，補位卡補第二區或國內一般消費，管理起來也輕鬆。</span></div></li>
+      </ol>
+    </section>
+
+    <section class="band" id="faq">
+      <div class="sec-head"><h2>常見問題</h2><span class="en">FAQ</span></div>
+      <div class="faq">
+        <details open><summary>信用卡的回饋上限是什麼？</summary><p>加碼回饋多半設有每月或每期上限。超過上限的消費只剩基本回饋，所以月花費高的類別，要看上限換算的「回饋滿額消費金額」，不能只看回饋率。</p></details>
+        <details><summary>一個人該辦幾張信用卡？</summary><p>依消費分布決定。先找出花最多的兩個類別，用一張主卡吃最大的一區，再用一張補位卡補第二區或一般消費。卡越多，年費、帳單和登錄活動越難管理。</p></details>
+        <details><summary>行動支付綁信用卡，回饋怎麼算？</summary><p>綁定後的消費多半依信用卡條款計算回饋，但電子支付儲值、轉帳常被列為排除項目。綁卡前先看發卡銀行公告的排除清單。</p></details>
+        <details><summary>在海外網站刷卡會被收手續費嗎？</summary><p>以外幣計價或在海外清算的交易，多數會收約 1.5% 國外交易服務費，即使結帳畫面顯示台幣也可能被收。訂閱服務和海外電商都要把這筆算進去。</p></details>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <a class="logo" href="#top" aria-label="愛搭卡 i dot CARD 首頁"><span class="wm" aria-hidden="true"><span class="ii">ı<i class="tittle"></i></span><span class="dot">dot</span><span class="cd">CARD</span></span><span class="zh">愛搭卡</span></a>
+    <span>站名由來：網路迷因把「i don’t care」打成「i dot car」。我們幫它補上一個 D，變成 i dot CARD，中文叫愛搭卡。別的事可以不在乎，刷卡回饋要搭得剛剛好。</span>
+    <span class="warn">謹慎理財　信用至上</span>
+    <span>本頁為網站版型示意：卡型、文章標題與花費預設值皆為範例，實際權益與循環信用利率以各發卡銀行公告為準。</span>
+    <span>合作揭露：本站部分連結為合作推廣連結，透過連結申辦，本站可能獲得分潤，不影響你的申辦條件。</span>
+  </footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const Z={
+  online:{zh:"網購",en:"Online shopping",def:6000,build:"boxes",
+    tag:"蝦皮、momo、PChome，最常刷，也最常被回饋上限卡住。",
+    scenes:["電商平台日常採購","雙 11、週年慶大促","海外電商（可能被收國外交易手續費）"],
+    cards:["網購指定通路加碼型","電商聯名卡"],
+    tip:"大促檔期的回饋常有活動上限。大額採購拆到兩張卡，比全部押在一張划算。",
+    reads:["網購信用卡怎麼挑？依平台分開比","雙 11 刷卡回饋攻略","在海外網站刷卡會被收手續費嗎？"]},
+  subs:{zh:"訂閱",en:"Subscriptions",def:800,build:"screen",
+    tag:"影音串流、音樂、雲端空間，每月自動扣款的小錢加起來不小。",
+    scenes:["影音串流平台","音樂、雲端空間","AI 工具、軟體訂閱"],
+    cards:["數位訂閱加碼型","海外一般消費無上限型"],
+    tip:"不少訂閱服務以外幣扣款，會被收國外交易手續費，挑卡要把手續費一起算。",
+    reads:["訂閱制服務刷哪張卡回饋最高","串流平台扣款算國內還是海外消費？","每月訂閱費整理術"]},
+  travel:{zh:"海外",en:"Overseas",def:2000,build:"plane",
+    tag:"機票、訂房、出國刷卡，單筆金額最大的一區。",
+    scenes:["機票、訂房網站","日韓、東南亞當地消費","海外交通與門票"],
+    cards:["海外一般消費無上限型","航空哩程聯名卡"],
+    tip:"海外刷卡一律選當地貨幣結帳。選台幣結帳會多一道動態貨幣轉換（DCC）匯差。",
+    reads:["日本刷哪張卡最划算","哩程卡還是現金回饋卡？看你一年飛幾趟","信用卡旅平險怎麼啟用"]},
+  delivery:{zh:"外送",en:"Food delivery",def:3000,build:"scooter",
+    tag:"外送、叫車、生鮮快送，天天點的人最該挑對卡。",
+    scenes:["外送平台","叫車服務","生鮮雜貨快送"],
+    cards:["外送平台回饋型","行動支付綁定型"],
+    tip:"外送常搭配平台會員方案。先算一個月點幾次，再決定要不要買會員搭配回饋卡。",
+    reads:["外送信用卡怎麼挑","外送平台刷卡回饋比較","外送平台會員划算嗎"]},
+  dining:{zh:"美食",en:"Dining",def:4000,build:"bowl",
+    tag:"餐廳、咖啡、手搖飲，小額多筆，最考驗回饋門檻。",
+    scenes:["餐廳聚餐","咖啡、手搖飲","飯店 Buffet"],
+    cards:["餐飲通路加碼型","行動支付綁定型"],
+    tip:"飯店 Buffet 常有合作銀行的信用卡優惠，訂位前先查，有時比回饋更划算。",
+    reads:["餐廳刷哪張卡回饋最高","飯店 Buffet 信用卡優惠整理","手搖飲用行動支付還是刷卡"]},
+  dept:{zh:"百貨",en:"Department stores",def:1500,build:"bags",
+    tag:"週年慶、Outlet、家電，一年一次的大額消費高峰。",
+    scenes:["百貨週年慶","Outlet","精品、家電"],
+    cards:["百貨聯名卡","分期零利率型"],
+    tip:"週年慶的滿額贈和刷卡回饋通常可以疊加，先算好門檻再結帳。",
+    reads:["百貨週年慶刷卡攻略","百貨聯名卡值得辦嗎","分期零利率怎麼看才不吃虧"]},
+  mobile:{zh:"行動\n支付",en:"Mobile pay",def:2500,build:"phone",
+    tag:"手機感應、電子支付，綁對卡等於多一層回饋。",
+    scenes:["超商、便利商店","手機感應支付","電子支付付款"],
+    cards:["行動支付綁定型","電子支付聯名卡"],
+    tip:"電子支付儲值和轉帳多半不算一般消費，綁卡前先看排除項目。",
+    reads:["行動支付綁哪張卡最划算","手機感應支付的刷卡回饋一樣嗎","電子支付儲值有回饋嗎"]},
+  grocery:{zh:"超市",en:"Supermarkets",def:5000,build:"cart",
+    tag:"超市、量販、會員倉儲，家庭開銷的固定大宗。",
+    scenes:["量販店採購","超市日常","會員倉儲賣場"],
+    cards:["量販超市聯名卡","國內一般消費無上限型"],
+    tip:"有些會員倉儲賣場只收特定卡別，出門前先確認手上那張能不能用。",
+    reads:["超市量販刷哪張卡","會員倉儲賣場可以用哪些信用卡","家庭開銷信用卡怎麼分配"]},
+  transit:{zh:"交通",en:"Transport",def:2500,build:"fuel",
+    tag:"加油、高鐵、停車、交通卡，通勤族每月的固定支出。",
+    scenes:["加油站","高鐵、台鐵","停車費、交通卡加值"],
+    cards:["加油聯名卡","交通通路加碼型"],
+    tip:"交通卡自動加值多半不計回饋，通勤族要另外看交通類加碼。",
+    reads:["加油信用卡怎麼挑","高鐵刷卡回饋比較","交通卡自動加值有回饋嗎"]},
+  bills:{zh:"繳費",en:"Bills & insurance",def:3000,build:"doc",
+    tag:"保費、稅款、水電瓦斯，金額大，但回饋常被排除。",
+    scenes:["保費","繳稅","水電瓦斯、電信費"],
+    cards:["保費回饋型","分期零利率型"],
+    tip:"多數卡片繳稅、繳費沒有回饋或回饋較低。保費要找有明列保費回饋的卡。",
+    reads:["保費刷哪張卡回饋最高","繳稅用信用卡划算嗎","水電費自動扣繳綁信用卡有回饋嗎"]}
+};
+const SUBS={
+  online:[["蝦皮購物","大促檔期常有銀行合作加碼，記得先看活動上限和是否要登錄。"],["momo購物網","有平台聯名卡，也常被列入網購加碼通路，兩種一起比實拿。"],["PChome 24h","3C、日用品大宗採購多，分期付款多半不計回饋。"],["Yahoo奇摩購物中心","滿額折扣和刷卡回饋常可疊加，回饋以折扣後金額計算。"],["酷澎","有會員訂閱方案，會員費、運費和刷卡回饋一起算才準。"],["淘寶","海外電商，以外幣計價或在海外清算時可能被收國外交易手續費。"]],
+  subs:[["Netflix","每月固定扣款，部分卡片會把這類數位服務算成海外消費。"],["Spotify","金額小但每月都扣，適合綁在有數位訂閱加碼的卡。"],["YouTube Premium","透過 App 內購付款時，交易通路會變成應用程式商店。"],["Disney+","年繳通常比月繳便宜，一次刷年費也比較容易吃到加碼。"],["ChatGPT","以美元計價，多數卡片會收國外交易手續費。"],["iCloud","透過 Apple 帳號扣款，綁哪張卡就照那張卡的條件計算。"]],
+  travel:[["日本","台灣旅客最常去的國家，指定通路加碼和一般海外回饋要分開看。"],["韓國","結帳時若被問要不要用台幣，記得選韓元。"],["東南亞","小店現金比例高，大額的住宿和機票再交給回饋卡。"],["歐美","單筆金額大，海外無上限型的卡比較不怕撞到回饋上限。"],["機票","用哪張卡刷機票，通常決定旅平險跟著哪張卡。"],["訂房網站","外幣計價或海外清算時會被收國外交易手續費，結帳幣別要看清楚。"]],
+  delivery:[["Uber Eats","常有平台會員方案，點越多越要把會員費和回饋一起算。"],["foodpanda","會員方案和銀行合作活動常一起出現，先看活動是否需要登錄。"],["Uber 叫車","叫車和外送可能被歸在同一個通路，加碼上限也可能共用。"],["生鮮快送","量販、超市的快送服務，可能被歸類在超市通路而不是外送。"]],
+  dining:[["餐廳","聚餐常由一人先刷，單筆金額大，先看回饋上限。"],["咖啡廳","小額高頻，綁行動支付的卡常比直接刷卡回饋高。"],["手搖飲","不少店只收行動支付或現金，先確認店家支援的付款方式。"],["飯店 Buffet","合作銀行的折扣常比回饋划算，訂位時就要報卡別。"],["速食","自助點餐機多可感應付款，回饋多半照一般消費計算。"]],
+  dept:[["新光三越","有百貨聯名卡，週年慶的滿額贈和刷卡回饋多半分開計算。"],["SOGO","週年慶檔期集中，先算好滿額門檻再決定拆單或合併結帳。"],["遠東百貨","會員點數、聯名卡回饋和銀行活動可能同時適用，看清楚疊加條件。"],["微風","精品比例高，單筆金額大，留意分期和回饋只能擇一的規定。"],["Outlet","折扣後的金額才是回饋計算基礎，回饋上限比較不容易用完。"]],
+  mobile:[["LINE Pay","綁卡付款時，平台點數活動和信用卡回饋要分開看。"],["PX Pay","全聯的自家支付，在全聯綁卡付款常有加碼活動。"],["台灣 Pay","銀行端的掃碼支付，也能拿來繳費，常見發卡銀行自家加碼。"],["全支付","電子支付帳戶，綁卡付款和儲值的回饋規則不同。"],["街口支付","可綁卡或用帳戶餘額付款，儲值多半不計信用卡回饋。"],["Apple Pay","手機感應付款，回饋多半照該卡的一般消費計算。"]],
+  grocery:[["全聯","搭配 PX Pay 常有加碼，直接刷卡和綁支付的回饋可能不同。"],["家樂福","量販大宗採購，有聯名卡，也常被列入超市加碼通路。"],["好市多","只收特定卡別，出門前先確認手上的卡能不能用。"],["美廉社","社區型超市，小額消費多，適合綁行動支付的卡。"],["便利商店","小額高頻，常見行動支付加碼，直接刷卡不一定有。"]],
+  transit:[["中油","加油聯名卡常是每公升折抵，要換算成回饋率再和現金回饋卡比。"],["台塑石化","加油站常有銀行合作，自助加油和人工加油的優惠可能不同。"],["高鐵","線上訂票刷卡，部分卡片把高鐵列入交通類加碼。"],["捷運與悠遊卡","交通卡自動加值多半不計回饋，通勤要另外看交通加碼。"],["停車費","代收停車費、停車場繳費可能被排除在回饋之外。"]],
+  bills:[["保費","找有明列保費回饋，或提供保費分期零利率的卡。"],["繳稅","繳稅多半沒有回饋，部分卡片提供分期零利率。"],["水電瓦斯","代扣繳費常不計回饋，綁定前先看排除項目。"],["電信費","部分卡片有電信費自動扣繳的回饋或優惠。"],["學費","金額大，部分學校可以刷卡繳費，留意是否計入回饋。"]]
+};
+// 島嶼排列：寬版 3-4-3，窄版 2 欄 5 列
+const LAYOUT={
+  wide:{online:[-5.6,-2.6],subs:[-1.2,-3.8],travel:[4.2,-3.6],delivery:[-7.6,1.2],dining:[-3,.6],dept:[1.4,-.4],mobile:[6.4,.9],grocery:[-4.4,4.4],transit:[.6,3.6],bills:[5,4.6]},
+  tall:{online:[-2,-7.4],subs:[2.3,-6],travel:[-2.4,-3.6],delivery:[2,-2.2],dining:[-1.9,.2],dept:[2.4,1.4],mobile:[-2.3,3.8],grocery:[2,5],transit:[-1.6,7.4],bills:[2.4,8.6]}
+};
+// 每座島各自的轉角與大小，避免排成方陣
+const ROT=[.3,-.25,.15,-.4,.2,-.1,.35,-.3,.1,.25],SCL=[1,.92,1.08,.95,1.05,.9,1,1.06,.94,1];
+const $=id=>document.getElementById(id);
+const KEYS=Object.keys(Z);
+KEYS.forEach(k=>{Z[k].subs=SUBS[k].map(([n,t])=>({n,t}));});
+const SHORT={"Yahoo奇摩購物中心":"Yahoo購物","YouTube Premium":"YouTube","momo購物網":"momo","捷運與悠遊卡":"捷運","飯店 Buffet":"Buffet"};
+const nm=k=>Z[k].zh.replace("\n","");
+let current="online",zoomKey=null,subSel=null;
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+// HTML 標籤：主題島（圓形）與子島（膠囊）
+const labels=$("labels"),stage=$("stage");
+KEYS.forEach(k=>{
+  const b=document.createElement("button");
+  b.type="button";b.className="tag3d";b.dataset.z=k;
+  b.setAttribute("aria-label",nm(k)+"島，放大看小島");
+  b.innerHTML=`<span class="c">${nm(k)}</span>`;
+  b.addEventListener("click",()=>openTheme(k));
+  labels.appendChild(b);Z[k].label=b;
+  Z[k].subs.forEach((s,i)=>{
+    const p=document.createElement("button");
+    p.type="button";p.className="sub3d";p.hidden=true;
+    p.innerHTML=`<span class="c">${SHORT[s.n]||s.n}</span>`;
+    p.addEventListener("click",()=>selectSub(k,i));
+    labels.appendChild(p);s.label=p;
+  });
+});
+
+/* ---------- 3D ---------- */
+let GL=null;
+try{ if(window.THREE) GL=init3D(); }catch(e){ console.error(e); GL=null; }
+if(!GL) stage.classList.add("nogl");
+
+function init3D(){
+  const T=THREE;
+  const renderer=new T.WebGLRenderer({antialias:true,alpha:true});
+  renderer.setClearColor(0x000000,0);
+  renderer.setPixelRatio(Math.min(2,window.devicePixelRatio||1));
+  renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;
+  renderer.outputEncoding=T.sRGBEncoding;
+  stage.insertBefore(renderer.domElement,labels);
+  renderer.domElement.setAttribute("aria-hidden","true");
+
+  const scene=new T.Scene();
+  const camera=new T.PerspectiveCamera(30,1,1,300);
+  const world=new T.Group();scene.add(world);
+  scene.add(new T.HemisphereLight(0xffffff,0xf0cfc4,.85));
+  const sun=new T.DirectionalLight(0xffffff,1.05);
+  sun.position.set(6,15,9);sun.castShadow=true;
+  sun.shadow.mapSize.set(2048,2048);sun.shadow.bias=-.0012;sun.shadow.normalBias=.02;
+  Object.assign(sun.shadow.camera,{left:-17,right:17,top:17,bottom:-17,near:1,far:50});
+  scene.add(sun);
+
+  const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const col=h=>new T.Color(h).convertSRGBToLinear();
+  const std=(h,o)=>new T.MeshStandardMaterial(Object.assign({color:col(h),roughness:.72,metalness:0},o||{}));
+  const M={
+    white:std("#ffffff"),whiteD:std("#ffffff",{side:T.DoubleSide}),ink:std("#4a3a35"),kraft:std("#e3b386"),
+    chip:std("#f2c462",{roughness:.45,metalness:.25}),green:std("#7fbf8a"),red:std("#e8553a"),cream:std("#fff1d6"),
+    gray:std("#cfc6c2"),broth:std("#f0a65a"),tea:std("#b8d98f"),sand:std("#f6e2c2",{roughness:.95}),
+    leaf:std("#86c48f"),leaf2:std("#6fb07c"),trunk:std("#b8865a"),
+    foam:new T.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.65,depthWrite:false}),
+    accent:std("#e0501b"),sky:std("#b9cdee"),side:std("#e9a08d"),floor:std("#cfe0f5",{roughness:1})
+  };
+  let LAND=col("#f8d3c8"),ACC=col("#e0501b"),needs=true;
+  function theme(){
+    LAND=col(css("--top3d")||"#f8d3c8");ACC=col(css("--accent")||"#e0501b");
+    M.accent.color.copy(ACC);M.sky.color.copy(col(css("--sky")||"#b9cdee"));
+    M.side.color.copy(col(css("--side3d")||"#e9a08d"));M.floor.color.copy(col(css("--floor")||"#e6eefa"));
+    needs=true;
+  }
+
+  const add=(p,geo,mat,x=0,y=0,z=0,rx=0,ry=0,rz=0)=>{const m=new T.Mesh(geo,mat);m.position.set(x,y,z);m.rotation.set(rx,ry,rz);m.castShadow=true;m.receiveShadow=true;p.add(m);return m;};
+  const B=(w,h,d)=>new T.BoxGeometry(w,h,d);
+  const Cy=(a,b,h,s=20)=>new T.CylinderGeometry(a,b,h,s);
+  const Sp=(r,w=14,h=10)=>new T.SphereGeometry(r,w,h);
+  const Tor=(r,t,arc=Math.PI*2)=>new T.TorusGeometry(r,t,8,24,arc);
+  const grp=(p,x,y,z,ry=0)=>{const g=new T.Group();g.position.set(x,y,z);g.rotation.y=ry;p.add(g);return g;};
+
+  // 不規則島形：橢圓加上幾組正弦起伏，再用 Catmull-Rom 平滑
+  function blob(rx,rz,seed,s){
+    const p=[];
+    for(let i=0;i<12;i++){const a=i/12*Math.PI*2,r=1+.1*Math.sin(a*2+seed)+.06*Math.sin(a*3+seed*1.7)+.04*Math.sin(a*5+seed*.6);
+      p.push(new T.Vector3(Math.cos(a)*rx*r*s,0,Math.sin(a)*rz*r*s));}
+    return new T.CatmullRomCurve3(p,true,"centripetal").getPoints(84).slice(0,-1).map(v=>new T.Vector2(v.x,-v.z));
+  }
+  function slab(pts,depth,bv,y){
+    const g=new T.ExtrudeGeometry(new T.Shape(pts),{depth,bevelEnabled:true,bevelThickness:bv,bevelSize:bv,bevelSegments:3,curveSegments:1});
+    g.rotateX(-Math.PI/2);g.translate(0,y+bv,0);return g;
+  }
+  const TOP=.46;
+  function island(parent,rx,rz,seed){
+    const g=new T.Group();parent.add(g);
+    const sand=new T.Mesh(slab(blob(rx,rz,seed,1.1),.1,.05,0),M.sand);sand.receiveShadow=true;sand.castShadow=true;g.add(sand);
+    const top=new T.MeshStandardMaterial({color:LAND.clone(),roughness:.85});
+    const land=new T.Mesh(slab(blob(rx,rz,seed,1),.2,.07,.12),[top,M.side]);land.receiveShadow=true;land.castShadow=true;g.add(land);
+    const sh=new T.Shape(blob(rx,rz,seed,1.3));sh.holes.push(new T.Path(blob(rx,rz,seed,1.18)));
+    const fg=new T.ShapeGeometry(sh);fg.rotateX(-Math.PI/2);
+    const foam=new T.Mesh(fg,M.foam);foam.position.y=.01;g.add(foam);
+    return {g,top};
+  }
+  function tree(p,x,y,z,s=1){
+    add(p,Cy(.05*s,.07*s,.36*s,8),M.trunk,x,y+.18*s,z);
+    add(p,new T.IcosahedronGeometry(.27*s,0),M.leaf,x,y+.47*s,z);
+    add(p,new T.IcosahedronGeometry(.18*s,0),M.leaf2,x+.04*s,y+.68*s,z-.02*s);
+  }
+
+  const BUILD={
+    boxes(g,y){
+      const box=(w,h,d,x,yy,z,ry)=>{const b=grp(g,x,yy,z,ry);add(b,B(w,h,d),M.kraft,0,h/2,0);add(b,B(w*.2,h+.012,d+.012),M.accent,0,h/2,0);add(b,B(w*.5,.012,d*.25),M.white,w*.18,h+.008,d*.22);return b;};
+      box(.95,.62,.8,.4,y,.05,.15);box(.72,.48,.62,.37,y+.62,.05,-.35);box(.55,.38,.5,1.1,y,.5,.6);
+    },
+    screen(g,y){
+      const x=.3;
+      add(g,Cy(.32,.36,.06),M.ink,x,y+.03,0);add(g,B(.1,.42,.1),M.ink,x,y+.27,0);
+      add(g,B(1.45,.92,.1),M.ink,x,y+.92,0);add(g,B(1.32,.8,.02),M.sky,x,y+.92,.055);
+      const s=new T.Shape();s.moveTo(-.12,-.17);s.lineTo(.21,0);s.lineTo(-.12,.17);s.closePath();
+      add(g,new T.ExtrudeGeometry(s,{depth:.03,bevelEnabled:false}),M.accent,x+.02,y+.92,.06);
+      add(g,B(.9,.03,.012),M.white,x,y+.6,.067);add(g,B(.36,.03,.014),M.accent,x-.27,y+.6,.068);
+      add(g,Cy(.2,.15,.4,18),M.accent,1.15,y+.2,.55);add(g,Cy(.205,.205,.06,18),M.white,1.15,y+.37,.55);
+      for(let i=0;i<7;i++)add(g,Sp(.085,10,8),M.cream,1.15+Math.cos(i*.9)*.11,y+.44+(i%3)*.04,.55+Math.sin(i*.9)*.11);
+    },
+    plane(g,y){
+      const p=grp(g,.15,y+1,.05,.55);p.rotation.z=.1;
+      add(p,Cy(.15,.15,1.3,18),M.sky,0,0,0,0,0,Math.PI/2);add(p,Sp(.15,18,12),M.sky,.65,0,0);
+      add(p,new T.ConeGeometry(.15,.42,18),M.sky,-.86,0,0,0,0,Math.PI/2);
+      add(p,B(.4,.035,1.7),M.accent,.05,-.03,0);add(p,B(.24,.36,.035),M.accent,-.84,.2,0);add(p,B(.2,.03,.6),M.accent,-.86,.04,0);
+      for(let i=0;i<4;i++){add(p,Sp(.035,8,6),M.white,.38-i*.22,.07,.138);add(p,Sp(.035,8,6),M.white,.38-i*.22,.07,-.138);}
+      g.userData.fly=p;g.userData.flyH=1;
+      const s=grp(g,1,y,.42,-.3);add(s,B(.62,.8,.32),M.sky,0,.4,0);add(s,B(.63,.09,.33),M.accent,0,.52,0);
+      add(s,Tor(.12,.03,Math.PI),M.ink,0,.8,0);
+      for(let i=0;i<3;i++)add(g,B(.32,.012,.07),M.white,-.45+i*.48,y+.006,.75);
+    },
+    scooter(g,y){
+      const s=grp(g,.4,y,.02,-.35);
+      [-.48,.5].forEach(x=>{add(s,Tor(.19,.075),M.ink,x,.27,0);add(s,Cy(.08,.08,.12,12),M.gray,x,.27,0,Math.PI/2,0,0);});
+      add(s,B(.82,.2,.32),M.accent,0,.43,0);add(s,B(.15,.64,.15),M.accent,.5,.68,0,0,0,-.28);
+      add(s,B(.07,.07,.58),M.ink,.6,1,0);add(s,Sp(.075,10,8),M.chip,.62,.86,0);
+      add(s,B(.48,.1,.3),M.ink,-.12,.59,0);
+      add(s,B(.54,.5,.5),M.white,-.46,.9,0);add(s,B(.55,.13,.51),M.accent,-.46,.97,0);
+      const bag=grp(g,-.3,y,.6,.4);add(bag,B(.42,.34,.3),M.kraft,0,.17,0);add(bag,B(.43,.06,.31),M.white,0,.26,0);
+    },
+    bowl(g,y){
+      const x=.4;
+      add(g,Cy(.26,.3,.1,24),M.white,x,y+.05,0);
+      add(g,new T.SphereGeometry(.62,30,14,0,Math.PI*2,Math.PI/2,Math.PI/2),M.whiteD,x,y+.72,0);
+      add(g,new T.TorusGeometry(.6,.04,8,40),M.accent,x,y+.72,0,Math.PI/2,0,0);
+      add(g,Cy(.58,.58,.02,30),M.broth,x,y+.63,0);
+      for(let i=0;i<5;i++)add(g,new T.TorusGeometry(.1+i*.05,.025,6,22,Math.PI*1.3),M.cream,x-.08,y+.645,.04,Math.PI/2,0,i*1.2);
+      add(g,Cy(.16,.16,.05,18),M.white,x+.24,y+.66,-.14);add(g,Cy(.08,.08,.06,16),M.chip,x+.24,y+.67,-.14);
+      for(let i=0;i<7;i++)add(g,Cy(.03,.03,.03,8),M.green,x-.3+((i*37)%5)*.08,y+.66,-.22+((i*53)%4)*.09);
+      add(g,Cy(.022,.016,1.35,8),M.ink,x+.1,y+.95,.28,0,.3,Math.PI/2-.42);
+      add(g,Cy(.022,.016,1.35,8),M.ink,x+.13,y+.95,.38,0,.3,Math.PI/2-.42);
+      add(g,Cy(.2,.17,.4,20),M.sky,-.3,y+.2,.62);add(g,Cy(.175,.175,.02,20),M.tea,-.3,y+.39,.62);
+    },
+    bags(g,y){
+      [[.0,-.1,M.accent,.8,.62,-.25],[.8,.15,M.sky,.62,.55,.35],[.4,.6,M.white,.5,.46,-.45]].forEach(([x,z,m,h,w,ry])=>{
+        const b=grp(g,x,y,z,ry);add(b,B(w,h,.26),m,0,h/2,0);add(b,Tor(.13,.026,Math.PI),M.ink,0,h,0);
+        add(b,B(w*.4,w*.4,.012),m===M.white?M.accent:M.white,0,h*.5,.135);
+      });
+      const gift=grp(g,1.15,y,-.45,.2);add(gift,B(.36,.3,.36),M.white,0,.15,0);add(gift,B(.08,.31,.37),M.accent,0,.15,0);add(gift,B(.37,.31,.08),M.accent,0,.15,0);
+      add(gift,Tor(.07,.025),M.accent,-.05,.32,0,0,.5,0);add(gift,Tor(.07,.025),M.accent,.05,.32,0,0,-.5,0);
+    },
+    phone(g,y){
+      const p=grp(g,.15,y,0,-.25);
+      add(p,B(.52,.08,.36),M.ink,0,.04,.05);
+      const body=new T.Group();body.position.set(0,.08,0);body.rotation.x=-.15;p.add(body);
+      add(body,B(.68,1.28,.1),M.ink,0,.64,0);add(body,B(.6,1.14,.012),M.sky,0,.66,.056);
+      add(body,Cy(.16,.16,.012,22),M.accent,0,.78,.063,Math.PI/2,0,0);add(body,B(.26,.05,.012),M.white,0,.46,.063);
+      [.42,.62,.82].forEach(r=>add(g,Tor(r,.035,Math.PI/2),M.accent,.35,y+.9,0,0,-.25,-Math.PI/4));
+      const c=grp(g,-.55,y+.95,.3,.3);c.rotation.z=.55;add(c,B(.64,.04,.4),M.accent,0,0,0);add(c,B(.14,.045,.1),M.chip,-.18,.002,-.06);
+      g.userData.fly=c;g.userData.flyH=.95;
+      for(let i=0;i<4;i++)add(g,Cy(.2,.2,.06,22),M.chip,1.1,y+.03+i*.065,.55);
+    },
+    cart(g,y){
+      const c=grp(g,.3,y,.05,.35),by=.38,m=M.accent;
+      add(c,B(1,.04,.62),m,0,by,0);
+      add(c,B(1,.42,.04),m,0,by+.21,.31);add(c,B(1,.42,.04),m,0,by+.21,-.31);
+      add(c,B(.04,.42,.62),m,.5,by+.21,0);add(c,B(.04,.42,.62),m,-.5,by+.21,0);
+      for(let i=0;i<4;i++)add(c,B(.025,.38,.05),M.white,-.36+i*.24,by+.21,.31);
+      [[.42,.25],[.42,-.25],[-.42,.25],[-.42,-.25]].forEach(([x,z])=>{add(c,Cy(.025,.025,.3,8),M.ink,x,.21,z);add(c,Sp(.07,10,8),M.ink,x,.07,z);});
+      add(c,Cy(.035,.035,.72,10),M.ink,-.64,by+.5,0,Math.PI/2,0,0);
+      add(c,B(.16,.04,.04),M.ink,-.57,by+.45,.3);add(c,B(.16,.04,.04),M.ink,-.57,by+.45,-.3);
+      add(c,Sp(.15),M.red,-.22,by+.5,.05);add(c,Sp(.13),M.green,.04,by+.47,-.13);
+      add(c,B(.2,.44,.2),M.white,.28,by+.4,.08);add(c,B(.21,.09,.21),M.sky,.28,by+.66,.08);
+      add(c,B(.38,.16,.2),M.kraft,-.02,by+.6,.15,0,0,.3);
+      add(g,Sp(.13),M.red,-.35,y+.13,.7);add(g,Sp(.12),M.green,-.1,y+.12,.78);
+    },
+    fuel(g,y){
+      const x=-.1,z=-.15;
+      add(g,B(.78,.08,.62),M.white,x,y+.04,z);add(g,B(.55,1.05,.42),M.accent,x,y+.6,z);
+      add(g,B(.42,.26,.02),M.sky,x,y+.86,z+.215);add(g,B(.62,.08,.48),M.white,x,y+1.17,z);
+      add(g,B(.3,.06,.02),M.white,x,y+.56,z+.215);add(g,B(.1,.22,.12),M.ink,x+.33,y+.72,z);
+      add(g,Tor(.2,.03,Math.PI),M.ink,x+.48,y+.6,z,0,0,Math.PI);
+      const c=grp(g,.9,y,.3,-.5);
+      add(c,B(.95,.26,.5),M.sky,0,.26,0);add(c,B(.5,.22,.46),M.white,-.05,.5,0);add(c,B(.52,.12,.47),M.ink,-.05,.52,0);
+      add(c,Sp(.05,8,6),M.chip,.48,.3,.16);add(c,Sp(.05,8,6),M.chip,.48,.3,-.16);
+      [[.3,.25],[.3,-.25],[-.3,.25],[-.3,-.25]].forEach(([a,b])=>add(c,Cy(.12,.12,.08,16),M.ink,a,.12,b,Math.PI/2,0,0));
+      add(g,new T.ConeGeometry(.11,.3,14),M.accent,.65,y+.15,-.7);add(g,Cy(.12,.12,.03,14),M.white,.65,y+.015,-.7);
+    },
+    doc(g,y){
+      const d=grp(g,.2,y,0,.25);
+      const b=new T.Group();b.position.set(0,.56,0);b.rotation.x=-.5;d.add(b);
+      add(b,B(.86,1.06,.05),M.kraft,0,0,0);add(b,B(.72,.9,.012),M.white,0,-.04,.03);add(b,B(.32,.1,.07),M.ink,0,.5,.03);
+      for(let i=0;i<3;i++)add(b,B(.44,.035,.012),M.gray,-.06,.24-i*.15,.04);
+      add(b,B(.15,.05,.014),M.accent,-.12,-.27,.042,0,0,-.75);add(b,B(.32,.05,.014),M.accent,.04,-.2,.042,0,0,.85);
+      add(d,B(.06,.62,.06),M.ink,0,.3,-.3,.55,0,0);
+      [[1.05,.5,5],[1.15,-.25,3],[-.35,.7,2]].forEach(([x,z,n])=>{for(let i=0;i<n;i++)add(g,Cy(.2,.2,.06,22),M.chip,x+(i%2)*.015,y+.03+i*.065,z);});
+    }
+  };
+  // 子島上的小物件
+  const MINI={
+    boxes(g,y){const b=grp(g,.15,y,.05,.4);add(b,B(.46,.34,.4),M.kraft,0,.17,0);add(b,B(.1,.35,.41),M.accent,0,.17,0);},
+    screen(g,y){add(g,B(.06,.2,.06),M.ink,.15,y+.1,0);add(g,B(.62,.42,.06),M.ink,.15,y+.4,0);add(g,B(.54,.34,.012),M.sky,.15,y+.4,.035);},
+    plane(g,y){add(g,Cy(.02,.02,.7,8),M.ink,.15,y+.35,0);add(g,B(.36,.22,.02),M.accent,.33,y+.58,0);},
+    scooter(g,y){add(g,B(.44,.4,.4),M.white,.15,y+.2,0);add(g,B(.45,.1,.41),M.accent,.15,y+.26,0);},
+    bowl(g,y){add(g,Cy(.16,.13,.34,16),M.sky,.15,y+.17,0);add(g,Cy(.17,.17,.04,16),M.white,.15,y+.36,0);add(g,Cy(.012,.012,.25,6),M.accent,.2,y+.48,0,0,0,.2);},
+    bags(g,y){add(g,B(.4,.46,.2),M.accent,.15,y+.23,0,0,.3,0);add(g,Tor(.1,.02,Math.PI),M.ink,.15,y+.46,0,0,.3,0);},
+    phone(g,y){const p=grp(g,.15,y,0,-.2);add(p,B(.34,.62,.06),M.ink,0,.36,0,-.15,0,0);add(p,B(.29,.53,.01),M.sky,0,.37,.035,-.15,0,0);add(p,B(.3,.05,.2),M.ink,0,.025,.03);},
+    cart(g,y){add(g,Sp(.18),M.red,.15,y+.18,0);add(g,B(.05,.12,.05),M.trunk,.15,y+.4,0);add(g,B(.14,.03,.08),M.green,.22,y+.42,0,0,0,.4);},
+    fuel(g,y){add(g,new T.ConeGeometry(.15,.42,14),M.accent,.15,y+.21,0);add(g,Cy(.16,.16,.04,14),M.white,.15,y+.02,0);add(g,Cy(.11,.12,.05,14),M.white,.15,y+.22,0);},
+    doc(g,y){for(let i=0;i<4;i++)add(g,Cy(.18,.18,.06,20),M.chip,.15+(i%2)*.012,y+.03+i*.065,0);}
+  };
+
+  const islands={},subs=[];
+  KEYS.forEach((k,i)=>{
+    const I=island(world,1.85,1.3,i*1.9+.5);
+    I.g.userData.key=k;
+    BUILD[Z[k].build](I.g,TOP);
+    tree(I.g,-1.15,TOP,-.3,1);tree(I.g,-1.35,TOP,.35,.72);
+    add(I.g,new T.DodecahedronGeometry(.12,0),M.gray,-.8,TOP+.06,.85);
+    I.g.traverse(o=>{o.userData.key=k;o.userData.sub=-1;});
+    islands[k]=Object.assign(I,{key:k,lift:0,heat:0,vis:1,phase:i*.7,col:LAND.clone()});
+    Z[k].subs.forEach((s,j)=>{
+      const S=island(world,.82,.62,i*3.1+j*1.3+2);
+      MINI[Z[k].build](S.g,TOP);tree(S.g,-.38,TOP,-.12,.68);
+      S.g.traverse(o=>{o.userData.key=k;o.userData.sub=j;});
+      S.g.scale.setScalar(.001);S.g.visible=false;
+      Object.assign(S,{key:k,idx:j,lift:0,vis:0,t0:0,phase:j*.9,col:LAND.clone(),label:s.label});
+      subs.push(S);s.obj=S;
+    });
+  });
+  const floor=new T.Mesh(new T.PlaneGeometry(160,160),M.floor);floor.rotation.x=-Math.PI/2;floor.position.y=-.08;floor.receiveShadow=true;scene.add(floor);
+
+  const ANC=[-1.15,TOP+.85,-.3],SANC=[0,TOP+.75,0];
+  let mode="",w=1,h=1,rot=0;
+  const camT=new T.Vector3(),desT=new T.Vector3();let camD=40,desD=40,camInit=false;
+  const dirOf=()=>new T.Vector3(mode==="tall"?.18:.3,mode==="tall"?1.25:1,1.05).normalize();
+  function ringPos(k,j,n){
+    const [cx,cz]=LAYOUT[mode][k],a=-Math.PI*.5+(j+.5)/n*Math.PI*2+Math.sin(j*2.3+n)*.28,q=1+.13*Math.sin(j*1.7+n*.9),rx=q*(mode==="tall"?2.95:3.8),rz=q*(mode==="tall"?3.6:2.85);
+    return [cx+Math.cos(a)*rx,cz+Math.sin(a)*rz];
+  }
+  function fit(target,pts,anc,labH){
+    const dir=dirOf(),topLim=1-2*labH/h;let lo=3,hi=150;
+    for(let i=0;i<26;i++){
+      const d=(lo+hi)/2;camera.position.copy(target).addScaledVector(dir,d);camera.lookAt(target);camera.updateMatrixWorld();
+      const ok=pts.every(p=>{const q=p.clone().project(camera);return Math.abs(q.x)<.95&&Math.abs(q.y)<.95;})
+        &&anc.every(p=>{const q=p.clone().project(camera);return Math.abs(q.y)<.92&&Math.abs(q.x)<.88;});
+      if(ok)hi=d;else lo=d;
+    }
+    return hi;
+  }
+  const box=(x,z,rx,rz,pts)=>[-rx,rx].forEach(dx=>[-rz,rz].forEach(dz=>[0,1.4].forEach(y=>pts.push(new T.Vector3(x+dx,y,z+dz)))));
+  function aim(){
+    const L=LAYOUT[mode],pts=[],anc=[];
+    if(!zoomKey){
+      let sx=0,sz=0;
+      KEYS.forEach(k=>{const [x,z]=L[k];sx+=x;sz+=z;box(x,z,2.3,1.75,pts);anc.push(new T.Vector3(x,TOP,z+.95));});
+      desT.set(sx/KEYS.length,.4,sz/KEYS.length+.4);
+      desD=fit(desT,pts,anc,(w<560?60:84)+8);
+    }else{
+      const [x,z]=L[zoomKey],n=Z[zoomKey].subs.length;box(x,z,2.1,1.5,pts);
+      for(let j=0;j<n;j++){const [sx,sz]=ringPos(zoomKey,j,n);box(sx,sz,1,.8,pts);anc.push(new T.Vector3(sx,TOP,sz+.42));}
+      desT.set(x,.4,z+.3);
+      desD=fit(desT,pts,anc,(w<560?44:52)+6);
+    }
+    if(!camInit){camT.copy(desT);camD=desD;camInit=true;}
+    needs=true;
+  }
+  function layout(){
+    const m=w<560?"tall":"wide";
+    if(m!==mode){mode=m;const L=LAYOUT[m];
+      KEYS.forEach((k,i)=>{islands[k].g.position.set(L[k][0],0,L[k][1]);islands[k].g.rotation.y=ROT[i];islands[k].s=SCL[i];});
+      subs.forEach(S=>{const n=Z[S.key].subs.length,[x,z]=ringPos(S.key,S.idx,n);S.g.position.set(x,0,z);S.g.rotation.y=Math.sin(S.idx*2.1+n)*.6;S.s=.86+((S.idx*7+n)%4)*.08;});
+    }
+    aim();
+  }
+  function resize(){
+    const r=stage.getBoundingClientRect();w=Math.max(1,r.width);h=Math.max(1,r.height);
+    renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();layout();
+  }
+  new ResizeObserver(resize).observe(stage);resize();
+
+  // 點選、懸停、拖曳轉動視角
+  const ray=new T.Raycaster(),ptr=new T.Vector2();let hover=null,down=null;
+  const meshes=[];world.traverse(o=>{if(o.isMesh&&o.material!==M.foam)meshes.push(o);});
+  function pick(e){
+    const r=renderer.domElement.getBoundingClientRect();
+    ptr.set(((e.clientX-r.left)/r.width)*2-1,-((e.clientY-r.top)/r.height)*2+1);
+    ray.setFromCamera(ptr,camera);
+    for(const hit of ray.intersectObjects(meshes,false)){
+      const u=hit.object.userData;
+      if(u.sub<0){if(islands[u.key].vis>.5)return {k:u.key,s:-1};}
+      else{const S=Z[u.key].subs[u.sub].obj;if(S.vis>.5)return {k:u.key,s:u.sub};}
+    }
+    return null;
+  }
+  const cv=renderer.domElement;
+  cv.addEventListener("pointerdown",e=>{down={x:e.clientX,rot,drag:false};});
+  cv.addEventListener("pointermove",e=>{
+    if(down&&(e.buttons||e.pointerType==="touch")){
+      const dx=e.clientX-down.x;
+      if(Math.abs(dx)>6){down.drag=true;rot=Math.max(-.5,Math.min(.5,down.rot-dx*.005));needs=true;}
+      return;
+    }
+    const p=pick(e),id=p?p.k+":"+p.s:null;
+    if(id!==hover){hover=id;cv.classList.toggle("hot",!!p);needs=true;}
+  });
+  window.addEventListener("pointerup",e=>{
+    if(down&&!down.drag&&e.target===cv){
+      const p=pick(e);
+      if(p){ if(!zoomKey) openTheme(p.k); else if(p.k===zoomKey) selectSub(p.k,p.s<0?null:p.s); }
+    }
+    down=null;
+  });
+  cv.addEventListener("pointerleave",()=>{hover=null;cv.classList.remove("hot");needs=true;});
+
+  let visible=true;
+  new IntersectionObserver(es=>{visible=es[0].isIntersecting;}).observe(stage);
+  const v=new T.Vector3(),tmp=new T.Color(),Y=new T.Vector3(0,1,0),clock=new T.Clock();
+  const ease=(a,b,k)=>reduce?b:a+(b-a)*k;
+  function place(el,x,y,z){
+    v.set(x,y,z);v.project(camera);
+    el.style.transform=`translate(${((v.x+1)/2*w).toFixed(1)}px,${((1-v.y)/2*h).toFixed(1)}px) translate(-50%,-50%)`;
+    el.style.zIndex=String(1000-Math.round(v.z*500));
+  }
+  function frame(){
+    requestAnimationFrame(frame);
+    if(!visible)return;
+    const t=clock.getElapsedTime();let moving=!reduce;
+    // 鏡頭平滑移動到目標
+    if(camT.distanceTo(desT)>.001||Math.abs(camD-desD)>.001){camT.lerp(desT,reduce?1:.08);camD=ease(camD,desD,.08);moving=true;}
+    camera.position.copy(camT).addScaledVector(dirOf().applyAxisAngle(Y,rot),camD);camera.lookAt(camT);camera.updateMatrixWorld();
+    KEYS.forEach(k=>{
+      const I=islands[k];
+      const vt=zoomKey?(k===zoomKey?1:0):1;
+      const on=zoomKey?(k===zoomKey&&subSel===null):k===current;
+      const lt=on?.3:(hover===k+":-1"?.14:0);
+      if(Math.abs(I.vis-vt)>.002){I.vis=ease(I.vis,vt,.1);moving=true;}else I.vis=vt;
+      if(Math.abs(I.lift-lt)>.002){I.lift=ease(I.lift,lt,.14);moving=true;}else I.lift=lt;
+      tmp.copy(LAND).lerp(ACC,on?1:(zoomKey?0:I.heat*.62));
+      if(Math.abs(I.col.r-tmp.r)+Math.abs(I.col.g-tmp.g)+Math.abs(I.col.b-tmp.b)>.002){I.col.lerp(tmp,reduce?1:.12);moving=true;}else I.col.copy(tmp);
+      I.top.color.copy(I.col);
+      I.g.visible=I.vis>.01;I.g.scale.setScalar(Math.max(.001,I.vis*(I.s||1)));
+      I.g.position.y=I.lift-(1-I.vis)*.6;
+      const f=I.g.userData.fly;if(f&&!reduce)f.position.y=TOP+I.g.userData.flyH+Math.sin(t*1.6+I.phase)*.08;
+      Z[k].label.hidden=!!zoomKey;
+      if(!zoomKey&&I.g.visible){const p=I.g.position,sc=I.s||1;place(Z[k].label,p.x,p.y+TOP*sc,p.z+.95*sc);}
+    });
+    subs.forEach(S=>{
+      const want=zoomKey===S.key&&(reduce||t>=S.t0)?1:0;
+      const on=zoomKey===S.key&&subSel===S.idx;
+      const lt=on?.28:(hover===S.key+":"+S.idx?.12:0);
+      if(Math.abs(S.vis-want)>.002){S.vis=ease(S.vis,want,.12);moving=true;}else S.vis=want;
+      if(Math.abs(S.lift-lt)>.002){S.lift=ease(S.lift,lt,.14);moving=true;}else S.lift=lt;
+      tmp.copy(LAND).lerp(ACC,on?1:0);
+      if(Math.abs(S.col.r-tmp.r)+Math.abs(S.col.g-tmp.g)+Math.abs(S.col.b-tmp.b)>.002){S.col.lerp(tmp,reduce?1:.12);moving=true;}else S.col.copy(tmp);
+      S.top.color.copy(S.col);
+      S.g.visible=S.vis>.01;S.g.scale.setScalar(Math.max(.001,S.vis*(S.s||1)));
+      S.g.position.y=S.lift-(1-S.vis)*.8;
+      S.label.hidden=!(S.vis>.6);
+      if(!S.label.hidden){const p=S.g.position,sc=S.s||1;place(S.label,p.x,p.y+TOP*sc,p.z+.42*sc);}
+    });
+    if(moving||needs){renderer.render(scene,camera);needs=false;}
+  }
+  theme();frame();
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change",theme);
+  new MutationObserver(theme).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
+  return {
+    islands,
+    zoom(k){const t=clock.getElapsedTime();if(k)subs.forEach(S=>{if(S.key===k)S.t0=t+.25+S.idx*.09;});rot=0;aim();},
+    poke(){needs=true;}
+  };
+}
+
+/* ---------- 面板、主題島與子島 ---------- */
+function chips(k,sel){
+  $("p-subs-h").textContent=`島上的小島（${Z[k].subs.length}）`;
+  $("p-subs").innerHTML=Z[k].subs.map((s,i)=>`<button type="button" class="chip${i===sel?" on":""}" data-i="${i}">${s.n}</button>`).join("");
+  $("p-subs").querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>selectSub(k,+b.dataset.i)));
+}
+function renderTheme(k){
+  const z=Z[k];
+  $("p-en").textContent=z.en;
+  $("p-name").textContent=nm(k)+"島";
+  $("p-tag").textContent=z.tag;
+  $("p-scenes").innerHTML=z.scenes.map(s=>`<li>${s}</li>`).join("");
+  $("p-cards").innerHTML=z.cards.map((c,i)=>`<a class="ctype" href="#rules"><i class="mini${i?" solid":""}"></i><span>${c}</span></a>`).join("");
+  $("p-tip").innerHTML=`<b>刷卡眉角</b>${z.tip}`;
+  $("p-reads").innerHTML=z.reads.map(t=>`<li><a href="#faq"><span>${t}</span><span>→</span></a></li>`).join("");
+  chips(k,null);
+}
+function renderSub(k,i){
+  const z=Z[k],s=z.subs[i];
+  $("p-en").textContent=z.en+" / "+nm(k)+"島";
+  $("p-name").textContent=s.n;
+  $("p-tag").textContent=s.t;
+  $("p-tip").innerHTML=`<b>這座島的眉角</b>${z.tip}`;
+  $("p-reads").innerHTML=[`${s.n} 刷哪張卡回饋最高？`,`${s.n} 常見的回饋排除項目`,z.reads[0]].map(t=>`<li><a href="#faq"><span>${t}</span><span>→</span></a></li>`).join("");
+  chips(k,i);
+}
+function setHash(h){try{history.replaceState(null,"",h?"#"+h:location.pathname+location.search);}catch(e){}}
+function select(k){current=k;KEYS.forEach(j=>Z[j].label.classList.toggle("on",j===k));renderTheme(k);if(GL)GL.poke();}
+function openTheme(k,fromHash){
+  if(!Z[k])return;
+  select(k);zoomKey=k;subSel=null;
+  stage.classList.add("zoom");$("back3d").hidden=false;
+  $("isle-b").textContent=nm(k)+"島";$("isle-s").textContent=`${Z[k].subs.length} 座小島`;
+  KEYS.forEach(j=>Z[j].subs.forEach(s=>s.label.classList.remove("on")));
+  if(GL)GL.zoom(k);
+  if(!fromHash)setHash(k);
+}
+function closeTheme(){
+  if(!zoomKey)return;
+  zoomKey=null;subSel=null;
+  stage.classList.remove("zoom");$("back3d").hidden=true;
+  $("isle-b").textContent="回饋島";$("isle-s").textContent="BY i dot CARD";
+  renderTheme(current);
+  if(GL)GL.zoom(null);
+  setHash("");
+}
+function selectSub(k,i){
+  if(zoomKey!==k)openTheme(k);
+  subSel=i;
+  Z[k].subs.forEach((s,j)=>s.label.classList.toggle("on",j===i));
+  if(i===null)renderTheme(k);else renderSub(k,i);
+  if(GL)GL.poke();
+}
+$("back3d").addEventListener("click",closeTheme);
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeTheme();});
+
+/* ---------- 我的搭卡地圖 ---------- */
+const spend=$("spend");
+KEYS.forEach(k=>{
+  const lab=document.createElement("label");
+  lab.innerHTML=`<span>${nm(k)}</span><input id="s-${k}" type="number" min="0" step="500" inputmode="numeric" value="${Z[k].def}" aria-label="${nm(k)}每月花費（新台幣）">`;
+  spend.appendChild(lab);
+});
+const fmt=n=>"NT$"+Math.round(n).toLocaleString("zh-TW");
+function paint(){
+  const rows=KEYS.map(k=>({k,v:Math.max(0,+$("s-"+k).value||0)}));
+  const total=rows.reduce((s,r)=>s+r.v,0),max=Math.max(1,...rows.map(r=>r.v));
+  if(GL){rows.forEach(r=>{GL.islands[r.k].heat=r.v/max;});GL.poke();}
+  const top=[...rows].sort((a,b)=>b.v-a.v);
+  const pct=v=>total?Math.round(v/total*100)+"%":"0%";
+  if(!total){$("t1").textContent="—";$("t2").textContent="—";$("t1v").textContent="";$("t2v").textContent="";
+    $("combo").innerHTML="<span>全部都是 0？這就真的 i don’t care 了。填一個花費試試看。</span>";return;}
+  $("t1").textContent=nm(top[0].k);$("t1v").textContent=fmt(top[0].v)+"・"+pct(top[0].v);
+  $("t2").textContent=top[1].v?nm(top[1].k):"—";$("t2v").textContent=top[1].v?fmt(top[1].v)+"・"+pct(top[1].v):"";
+  const spread=top[0].v/total<0.2;
+  const main=spread?"國內一般消費無上限型":Z[top[0].k].cards[0];
+  let sub=Z[top[1].k].cards[0];if(sub===main)sub=Z[top[1].k].cards[1];
+  $("combo").innerHTML=`<span><i class="mini"></i>主卡：${main}</span><span><i class="mini solid"></i>補位：${sub}</span>`;
+}
+document.querySelectorAll("#spend input").forEach(i=>i.addEventListener("input",paint));
+$("mine").addEventListener("submit",e=>e.preventDefault());
+paint();
+const start=location.hash.slice(1);
+if(Z[start])openTheme(start,true);else select("online");
+window.addEventListener("hashchange",()=>{const h=location.hash.slice(1);if(Z[h])openTheme(h,true);else if(!h)closeTheme();});
+</script>

@@ -1,0 +1,601 @@
+<title>愛搭卡回饋路線圖</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="愛搭卡 i dot CARD：把信用卡消費畫成捷運路線圖。每條線是一種消費，每一站是一個通路，轉乘站就是該搭兩張卡的地方。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600&family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@600;700&display=swap">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","name":"愛搭卡","alternateName":"i dot CARD"},{"@type":"Organization","name":"愛搭卡 i dot CARD"},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"信用卡的回饋上限是什麼？","acceptedAnswer":{"@type":"Answer","text":"加碼回饋多半設有每月或每期上限。超過上限的消費只剩基本回饋，所以月花費高的類別，要看上限換算的「回饋滿額消費金額」，不能只看回饋率。"}},{"@type":"Question","name":"一個人該辦幾張信用卡？","acceptedAnswer":{"@type":"Answer","text":"依消費分布決定。先找出花最多的兩個類別，用一張主卡吃最大的一區，再用一張補位卡補第二區或一般消費。卡越多，年費、帳單和登錄活動越難管理。"}},{"@type":"Question","name":"行動支付綁信用卡，回饋怎麼算？","acceptedAnswer":{"@type":"Answer","text":"綁定後的消費多半依信用卡條款計算回饋，但電子支付儲值、轉帳常被列為排除項目。綁卡前先看發卡銀行公告的排除清單。"}},{"@type":"Question","name":"在海外網站刷卡會被收手續費嗎？","acceptedAnswer":{"@type":"Answer","text":"以外幣計價或在海外清算的交易，多數會收約 1.5% 國外交易服務費，即使結帳畫面顯示台幣也可能被收。訂閱服務和海外電商都要把這筆算進去。"}}]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"首頁"},{"@type":"ListItem","position":2,"name":"信用卡"},{"@type":"ListItem","position":3,"name":"回饋路線圖"}]}]}</script>
+<style>
+/* Layout: 上方主張＋到站看板；中段路線圖（左）＋站點面板（右，黏住）；下方我的通勤路線、快速解答、站點索引、FAQ。 */
+:root{
+  --bg:#ffffff;
+  --ink:#3a2f2c;
+  --ink-soft:#6f625e;
+  --accent:#e0501b;
+  --accent-ink:#ffffff;
+  --surface:#fff6f3;
+  --mapbg:#fbf7f4;
+  --grid:#f1e7e2;
+  --river:#d7e6f8;
+  --rule:#f0d6ce;
+  --sky:#b9cdee;
+  --board:#2b2422;
+  --board-ink:#ffd27a;
+  --f-display:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  --f-label:"Noto Serif TC","Songti TC","PMingLiU",serif;
+  --f-latin:"Jost","Futura","Avenir Next",system-ui,sans-serif;
+  --f-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#1b1513;--ink:#f3e7e2;--ink-soft:#bba9a2;--accent:#ff7443;--accent-ink:#1b1513;--surface:#251c19;
+  --mapbg:#211a18;--grid:#2c2321;--river:#263247;--rule:#43302b;--sky:#6d88b3;--board:#0f0c0b;--board-ink:#ffcf6e;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#1b1513;--ink:#f3e7e2;--ink-soft:#bba9a2;--accent:#ff7443;--accent-ink:#1b1513;--surface:#251c19;
+  --mapbg:#211a18;--grid:#2c2321;--river:#263247;--rule:#43302b;--sky:#6d88b3;--board:#0f0c0b;--board-ink:#ffcf6e;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.7;overflow-x:hidden}
+a{color:inherit}
+[hidden]{display:none!important}
+.wrap{max-width:1280px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.topline{height:2px;background:var(--accent)}
+header.bar{display:flex;align-items:center;justify-content:space-between;padding-block:18px;gap:12px;flex-wrap:wrap}
+nav.crumbs{font-size:13px;color:var(--ink-soft)}
+nav.crumbs a{text-decoration:none}
+.logo{display:inline-flex;align-items:center;gap:12px;text-decoration:none}
+.wm{font-family:var(--f-latin);font-weight:600;font-size:26px;line-height:1;color:var(--ink);display:inline-flex;align-items:baseline;white-space:nowrap}
+.wm .ii{position:relative;display:inline-block}
+.wm .tittle{position:absolute;left:50%;top:-.04em;width:.46em;height:.31em;transform:translateX(-50%) rotate(-14deg);background:var(--accent);border-radius:2px}
+.wm .tittle::after{content:"";position:absolute;left:18%;top:28%;width:28%;height:34%;border-radius:1px;background:var(--sky)}
+.wm .dot{font-weight:500;font-size:.6em;color:var(--ink-soft);margin:0 .22em 0 .14em}
+.wm .cd{color:var(--accent);letter-spacing:.05em}
+.logo .zh{font-family:var(--f-display);font-weight:900;font-size:15px;color:var(--ink);letter-spacing:.16em;border-left:1.5px solid var(--rule);padding-left:12px}
+
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:40px;align-items:center;padding-block:28px 20px}
+.lead{min-width:0}
+.meme{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 14px;font-family:var(--f-latin);font-size:18px;color:var(--ink-soft)}
+.meme s{color:var(--accent);text-decoration-thickness:2px}
+.meme svg{width:30px;height:12px;flex:none;color:var(--accent)}
+.meme b{color:var(--accent);font-weight:600;letter-spacing:.04em}
+h1{font-family:var(--f-display);font-weight:900;color:var(--accent);font-size:clamp(28px,3.5vw,42px);line-height:1.25;margin:0;letter-spacing:.02em;text-wrap:balance;position:relative;display:inline-block;padding-bottom:12px}
+h1 .lat{font-family:var(--f-latin);font-weight:600;letter-spacing:0}
+h1::after{content:"";position:absolute;right:0;bottom:0;height:9px;width:200vw;background:repeating-linear-gradient(115deg,var(--accent) 0 1.5px,transparent 1.5px 6px);opacity:.75}
+.sub{margin:20px 0 0;color:var(--ink-soft);max-width:32em}
+.cta{display:inline-flex;align-items:center;gap:22px;margin-top:28px;padding:16px 34px 16px 44px;border:2px solid var(--accent);border-radius:999px;color:var(--accent);background:var(--bg);text-decoration:none;font-family:var(--f-display);font-weight:900;font-size:19px;letter-spacing:.3em;box-shadow:7px 8px 0 var(--accent);transition:transform .15s,box-shadow .15s}
+.cta svg{width:40px;height:16px;flex:none}
+.cta:hover{transform:translate(3px,4px);box-shadow:4px 4px 0 var(--accent)}
+.cta:focus-visible{outline:3px solid var(--sky);outline-offset:4px}
+
+/* departure board */
+.board{background:var(--board);border-radius:14px;padding:16px 18px;color:var(--board-ink);font-family:var(--f-latin);box-shadow:0 0 0 4px var(--surface),0 0 0 6px var(--rule);min-width:0}
+.board-h{display:flex;justify-content:space-between;font-size:12px;letter-spacing:.3em;opacity:.8}
+.board-h b{font-weight:600;letter-spacing:.12em;font-variant-numeric:tabular-nums}
+.board-row{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;margin-top:12px;font-family:var(--f-display);font-size:18px}
+.board-row .lb{font-size:14px;font-weight:700;color:#fff;padding:3px 10px;border-radius:6px;white-space:nowrap}
+.board-row .dest{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:700}
+.board-row .cnt{font-family:var(--f-latin);font-size:14px;opacity:.85;white-space:nowrap}
+.ticker{margin-top:12px;border-top:1px dashed rgba(255,210,122,.35);padding-top:10px;overflow:hidden;white-space:nowrap;font-family:var(--f-display);font-size:14px}
+.ticker span{display:inline-block;padding-left:100%;animation:tick 16s linear infinite}
+@keyframes tick{to{transform:translateX(-100%)}}
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.lchip{display:inline-flex;align-items:center;gap:7px;border:1.5px solid var(--rule);background:var(--bg);border-radius:999px;padding:4px 12px 4px 8px;font:inherit;font-size:13.5px;font-weight:500;color:var(--ink);cursor:pointer}
+.lchip i{width:22px;height:6px;border-radius:3px;background:var(--c)}
+.lchip:hover{border-color:var(--c)}
+.lchip.on{border-color:var(--c);background:var(--c);color:#fff}
+.lchip.on i{background:#fff}
+.lchip:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
+
+/* metro */
+.metro{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:28px;align-items:start;padding-block:16px 8px}
+.mapcard{background:var(--mapbg);border-radius:20px;border:1.5px solid var(--rule);padding:10px;min-width:0;position:relative}
+.mapscroll{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch}
+#map{display:block;width:100%;height:auto}
+.maphint{display:block;font-size:12px;color:var(--ink-soft);padding:4px 8px 0}
+.ln{fill:none;stroke-linecap:round;stroke-linejoin:round;transition:opacity .25s,stroke-width .25s}
+.ln-hit{fill:none;stroke:transparent;stroke-width:22;cursor:pointer}
+.stn{cursor:pointer}
+.stn circle.dot{fill:var(--bg);stroke-width:3.5;transition:r .2s}
+.stn.x circle.dot{stroke:var(--ink);stroke-width:3.5}
+.stn text{font-family:var(--f-body);font-size:15px;font-weight:500;fill:var(--ink);paint-order:stroke;stroke:var(--mapbg);stroke-width:5px;stroke-linejoin:round}
+.stn.x text{font-weight:700;font-size:16px}
+.stn circle.hit{fill:transparent}
+.stn:hover text{fill:var(--accent)}
+.stn.on circle.dot{fill:var(--accent);stroke:var(--accent)}
+.stn.on text{fill:var(--accent);font-weight:900}
+.ring{fill:none;stroke:var(--accent);stroke-width:2.5;opacity:0;pointer-events:none}
+.stn.on .ring{opacity:1;animation:ring 1.6s ease-out infinite}
+@keyframes ring{from{r:10;opacity:.9}to{r:24;opacity:0}}
+.dim{opacity:.16}
+.dimt{opacity:.35}
+.badge rect{rx:7}
+.badge text{font-family:var(--f-display);font-weight:700;font-size:13px;fill:#fff}
+.badge{cursor:pointer}
+.river{fill:none;stroke:var(--river);stroke-width:44;stroke-linecap:round}
+.river-t{font-family:var(--f-label);font-size:14px;fill:var(--sky);letter-spacing:.4em}
+.grid line{stroke:var(--grid);stroke-width:1}
+#train rect.body{rx:3}
+
+/* panel */
+.panel{position:sticky;top:max(16px,env(safe-area-inset-top,0px));border-top:3px solid var(--pc,var(--accent));padding-top:14px;min-width:0}
+.eyebrow{font-family:var(--f-latin);letter-spacing:.28em;font-size:12px;color:var(--pc,var(--accent));text-transform:uppercase}
+.panel h2{font-family:var(--f-label);font-size:27px;margin:2px 0 4px;letter-spacing:.05em;line-height:1.3}
+.panel .tag{margin:0;color:var(--ink-soft)}
+.plines{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.lbadge{display:inline-block;color:#fff;font-size:12.5px;font-weight:700;padding:2px 9px;border-radius:6px}
+.pbox{margin-top:16px}
+.pbox h3{font-size:13px;letter-spacing:.12em;color:var(--pc,var(--accent));margin:0 0 6px;font-weight:700}
+.pbox ul{margin:0;padding-left:1.1em}
+.cards{display:flex;flex-direction:column;gap:8px}
+.ctype{display:flex;align-items:center;gap:10px;font-weight:500}
+.mini{width:42px;height:27px;border-radius:5px;flex:none;position:relative;border:1.5px solid var(--accent);background:var(--surface);display:inline-block}
+.mini::before{content:"";position:absolute;left:5px;top:8px;width:9px;height:7px;border-radius:2px;background:var(--sky)}
+.mini::after{content:"";position:absolute;left:5px;right:5px;bottom:4px;height:2px;background:var(--accent);opacity:.5}
+.mini.solid{background:var(--accent)}
+.mini.solid::after{background:var(--accent-ink)}
+.transfer{background:var(--surface);border-radius:10px;padding:12px 14px;border:1.5px dashed var(--accent)}
+.transfer b{color:var(--accent)}
+.tip{background:var(--surface);border-radius:6px;padding:10px 14px;margin:16px 0 0}
+.tip b{color:var(--accent);margin-right:6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1.5px solid var(--pc,var(--accent));border-radius:999px;padding:2px 10px;background:var(--bg);color:var(--ink);font:inherit;font-size:13px;cursor:pointer}
+.chip.x{font-weight:700}
+.chip.on{background:var(--pc,var(--accent));color:#fff}
+.chip:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
+.reads ol{list-style:none;padding:0;margin:0}
+.reads a{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px dashed var(--rule);text-decoration:none}
+.reads a:hover{color:var(--accent)}
+.reads a span:last-child{color:var(--accent);flex:none}
+
+/* my route */
+section.band{padding-block:52px 8px}
+.sec-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.sec-head h2{font-family:var(--f-display);font-weight:900;font-size:clamp(22px,2.6vw,30px);margin:0}
+.sec-head .en{font-family:var(--f-latin);letter-spacing:.3em;font-size:12px;color:var(--accent);text-transform:uppercase}
+.mine{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:28px;border:2px solid var(--accent);border-radius:18px;padding:22px;box-shadow:8px 9px 0 var(--accent);background:var(--bg)}
+.mine p.hint{margin:0 0 12px;color:var(--ink-soft);font-size:13.5px}
+.spend{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 16px}
+.spend label{display:grid;grid-template-columns:6.2em minmax(0,1fr);align-items:center;gap:8px;font-size:14px}
+.spend label span{display:inline-flex;align-items:center;gap:6px}
+.spend label span i{width:14px;height:5px;border-radius:3px;background:var(--c)}
+.spend input{width:100%;font:inherit;font-size:15px;padding:6px 10px;border:1.5px solid var(--rule);border-radius:8px;background:var(--surface);color:var(--ink);font-variant-numeric:tabular-nums;text-align:right}
+.spend input:focus{outline:2px solid var(--accent);outline-offset:1px}
+.result{display:grid;gap:12px;align-content:start}
+.top2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.top2 div{background:var(--surface);border-radius:8px;padding:10px 12px;display:grid;gap:2px}
+.top2 small{color:var(--ink-soft);font-size:12px}
+.top2 strong{font-size:17px}
+.top2 em{font-style:normal;color:var(--accent);font-variant-numeric:tabular-nums;font-weight:700}
+.result h3{font-size:13px;letter-spacing:.12em;color:var(--accent);margin:0 0 6px}
+.combo{display:flex;flex-direction:column;gap:8px}
+.combo span{display:inline-flex;align-items:center;gap:8px;font-weight:500}
+.route-note{margin:0;color:var(--ink-soft);font-size:13.5px}
+
+.summary{font-size:17px;line-height:1.85;margin:0 0 22px;max-width:40em}
+.summary strong{color:var(--accent)}
+.rules{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;counter-reset:r}
+.rules li{counter-increment:r;display:grid;gap:8px;align-content:start}
+.rules li::before{content:counter(r);width:36px;height:36px;border-radius:50%;border:1.6px solid var(--accent);color:var(--accent);display:grid;place-items:center;font-family:var(--f-latin);font-weight:600}
+.rules b{display:block}
+.rules span{color:var(--ink-soft)}
+.index{display:grid;gap:10px}
+.index .row{display:grid;grid-template-columns:7.5em minmax(0,1fr);gap:12px;align-items:baseline;border-bottom:1px solid var(--rule);padding-bottom:10px}
+.index .row b{display:inline-flex;align-items:center;gap:8px}
+.index .row b i{width:18px;height:6px;border-radius:3px;background:var(--c)}
+.index .stops{display:flex;flex-wrap:wrap;gap:4px 14px}
+.index button{border:0;background:none;padding:0;font:inherit;color:var(--ink);cursor:pointer;text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:3px}
+.index button.x{font-weight:700}
+.index button:hover{color:var(--accent)}
+.faq{border-top:1px solid var(--rule);max-width:860px}
+.faq details{border-bottom:1px solid var(--rule)}
+.faq summary{cursor:pointer;list-style:none;padding:16px 36px 16px 0;font-weight:700;position:relative}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";position:absolute;right:6px;top:12px;font-family:var(--f-latin);font-size:24px;color:var(--accent);transition:transform .2s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{margin:0 0 16px;color:var(--ink-soft);max-width:60em}
+footer{margin-top:64px;border-top:2px solid var(--accent);padding-block:22px 40px;font-size:12.5px;color:var(--ink-soft);display:grid;gap:6px}
+footer .warn{font-family:var(--f-display);font-weight:900;color:var(--accent);font-size:15px;letter-spacing:.2em}
+
+@media (max-width:1000px){
+  .hero{grid-template-columns:minmax(0,1fr);gap:24px}
+  .metro{grid-template-columns:minmax(0,1fr)}
+  .panel{position:static}
+  .mine{grid-template-columns:minmax(0,1fr)}
+  .rules{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:700px){
+  #map{width:860px;max-width:none}
+  .spend{grid-template-columns:minmax(0,1fr)}
+  .cta{font-size:16px;padding:14px 24px 14px 30px;gap:14px}
+  .mine{padding:18px 16px;box-shadow:5px 6px 0 var(--accent)}
+  .index .row{grid-template-columns:minmax(0,1fr)}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important}
+  .ticker{white-space:normal}.ticker span{padding-left:0}
+}
+</style>
+
+<div class="topline"></div>
+<div class="wrap">
+  <header class="bar">
+    <a class="logo" href="#top" aria-label="愛搭卡 i dot CARD 首頁"><span class="wm" aria-hidden="true"><span class="ii">ı<i class="tittle"></i></span><span class="dot">dot</span><span class="cd">CARD</span></span><span class="zh">愛搭卡</span></a>
+    <nav class="crumbs" aria-label="麵包屑"><a href="#top">首頁</a> ／ <a href="#top">信用卡</a> ／ 回饋路線圖</nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="lead">
+        <p class="meme" aria-label="i don’t care，少打幾個字，變成 i dot CARD"><span>i do<s>n’</s>t car<s>e</s></span><svg viewBox="0 0 30 12" aria-hidden="true"><path d="M0 6H28M22 1l6 5-6 5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><b>i dot CARD</b></p>
+        <h1>什麼都可以 <span class="lat">i don’t care</span><br>刷卡回饋一定要ㄎㄟˊ起來</h1>
+        <p class="sub">愛搭卡把信用卡消費畫成一張捷運路線圖。每條線是一種消費，每一站是一個通路，轉乘站就是該搭兩張卡的地方。</p>
+        <a class="cta" href="#metro">搭上回饋線<svg viewBox="0 0 44 16" aria-hidden="true"><path d="M0 8H42M34 1l8 7-8 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></a>
+      </div>
+      <div>
+        <div class="board" aria-live="polite">
+          <div class="board-h"><span>NEXT TRAIN</span><b id="clock">--:--</b></div>
+          <div class="board-row"><span class="lb" id="b-line">行動支付線</span><span class="dest" id="b-dest">往 台灣 Pay</span><span class="cnt" id="b-cnt">7 站</span></div>
+          <div class="ticker"><span id="b-tick"></span></div>
+        </div>
+        <div class="legend" id="legend" role="group" aria-label="選擇路線"></div>
+      </div>
+    </section>
+
+    <section class="metro" id="metro">
+      <div class="mapcard">
+        <div class="mapscroll" id="mapscroll">
+          <svg id="map" viewBox="0 0 1080 780" role="img" aria-label="愛搭卡回饋路線圖：10 條消費路線與 11 個轉乘站">
+            <g class="grid" id="grid"></g>
+            <path class="river" d="M-40 560 C 180 520, 300 610, 520 600 S 860 470, 1120 500"/>
+            <g id="lines"></g>
+            <g id="train" aria-hidden="true"><rect class="body" x="-13" y="-8" width="26" height="16"/><rect x="-9" y="-4" width="7" height="5" rx="1" fill="#f2c462"/><rect x="-9" y="3" width="18" height="1.6" fill="#fff" opacity=".8"/></g>
+            <g id="stations"></g>
+            <g id="badges"></g>
+          </svg>
+        </div>
+        <span class="maphint">點路線或車站；粗黑框的是轉乘站。手機可以左右滑動地圖。</span>
+      </div>
+
+      <aside class="panel" id="panel" aria-live="polite">
+        <div class="eyebrow" id="p-en"></div>
+        <h2 id="p-name"></h2>
+        <p class="tag" id="p-tag"></p>
+        <div class="plines" id="p-lines"></div>
+        <div class="pbox" id="p-transfer-box"><div class="transfer" id="p-transfer"></div></div>
+        <div class="pbox"><h3>適合卡型</h3><div class="cards" id="p-cards"></div></div>
+        <p class="tip" id="p-tip"></p>
+        <div class="pbox"><h3 id="p-stops-h">停靠站</h3><div class="chips" id="p-stops"></div></div>
+        <div class="pbox reads"><h3>延伸閱讀</h3><ol id="p-reads"></ol></div>
+      </aside>
+    </section>
+
+    <section class="band" id="mine-sec">
+      <div class="sec-head"><h2>我的通勤路線</h2><span class="en">Match my cards</span></div>
+      <form class="mine" id="mine" aria-label="我的通勤路線">
+        <div>
+          <p class="hint">填入每月大概花多少，花越多的路線畫得越粗，並找出你該在哪一站轉乘、搭哪兩張卡。預設為範例數字。</p>
+          <div class="spend" id="spend"></div>
+        </div>
+        <div class="result" aria-live="polite">
+          <div class="top2">
+            <div><small>最常搭</small><strong id="t1">—</strong><em id="t1v"></em></div>
+            <div><small>第二常搭</small><strong id="t2">—</strong><em id="t2v"></em></div>
+          </div>
+          <div><h3>轉乘站</h3><p class="route-note" id="xfer"></p></div>
+          <div><h3>愛搭卡建議搭法</h3><div class="combo" id="combo"></div></div>
+        </div>
+      </form>
+    </section>
+
+    <section class="band" id="rules">
+      <div class="sec-head"><h2>信用卡怎麼挑才不會辦錯？</h2><span class="en">Quick answer</span></div>
+      <p class="summary">挑信用卡先看<strong>自己最常搭的兩條消費路線</strong>，再比較那兩類的實拿回饋和上限。回饋率最高的卡，不一定是你拿最多的卡。</p>
+      <ol class="rules">
+        <li><div><b>先找出最常搭的兩條線</b><span>多數卡只在特定通路加碼。先看清楚錢花在網購、外送還是超市，再找對應的卡。</span></div></li>
+        <li><div><b>看實拿，不看最高</b><span>加碼常有上限、門檻和登錄。月花費超過上限的部分只剩基本回饋。</span></div></li>
+        <li><div><b>轉乘站用兩張卡分工</b><span>同一個通路橫跨兩種消費時，主卡吃最大的一條線，補位卡接手另一條。</span></div></li>
+      </ol>
+    </section>
+
+    <section class="band" id="index">
+      <div class="sec-head"><h2>路線與車站一覽</h2><span class="en">Station index</span></div>
+      <div class="index" id="idx"></div>
+    </section>
+
+    <section class="band" id="faq">
+      <div class="sec-head"><h2>常見問題</h2><span class="en">FAQ</span></div>
+      <div class="faq">
+        <details open><summary>信用卡的回饋上限是什麼？</summary><p>加碼回饋多半設有每月或每期上限。超過上限的消費只剩基本回饋，所以月花費高的類別，要看上限換算的「回饋滿額消費金額」，不能只看回饋率。</p></details>
+        <details><summary>一個人該辦幾張信用卡？</summary><p>依消費分布決定。先找出花最多的兩個類別，用一張主卡吃最大的一區，再用一張補位卡補第二區或一般消費。卡越多，年費、帳單和登錄活動越難管理。</p></details>
+        <details><summary>行動支付綁信用卡，回饋怎麼算？</summary><p>綁定後的消費多半依信用卡條款計算回饋，但電子支付儲值、轉帳常被列為排除項目。綁卡前先看發卡銀行公告的排除清單。</p></details>
+        <details><summary>在海外網站刷卡會被收手續費嗎？</summary><p>以外幣計價或在海外清算的交易，多數會收約 1.5% 國外交易服務費，即使結帳畫面顯示台幣也可能被收。訂閱服務和海外電商都要把這筆算進去。</p></details>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <a class="logo" href="#top" aria-label="愛搭卡 i dot CARD 首頁"><span class="wm" aria-hidden="true"><span class="ii">ı<i class="tittle"></i></span><span class="dot">dot</span><span class="cd">CARD</span></span><span class="zh">愛搭卡</span></a>
+    <span>站名由來：網路迷因把「i don’t care」打成「i dot car」。我們幫它補上一個 D，變成 i dot CARD，中文叫愛搭卡。別的事可以不在乎，刷卡回饋要搭得剛剛好。</span>
+    <span class="warn">謹慎理財　信用至上</span>
+    <span>本頁為網站版型示意：路線、卡型、文章標題與花費預設值皆為範例，實際權益與循環信用利率以各發卡銀行公告為準。</span>
+    <span>合作揭露：本站部分連結為合作推廣連結，透過連結申辦，本站可能獲得分潤，不影響你的申辦條件。</span>
+  </footer>
+</div>
+
+<script>
+/* ---------- 路線（消費主題） ---------- */
+const L={
+  online:{n:"網購線",en:"Online Line",c:"#e0501b",def:6000,badge:[3,14.35],
+    stops:["taobao","kupang","yahoo","pchome","momo","shopee"],
+    tag:"蝦皮、momo、PChome，最常刷，也最常被回饋上限卡住。",
+    cards:["網購指定通路加碼型","電商聯名卡"],
+    tip:"大促檔期的回饋常有活動上限。大額採購拆到兩張卡，比全部押在一張划算。",
+    reads:["網購信用卡怎麼挑？依平台分開比","雙 11 刷卡回饋攻略","在海外網站刷卡會被收手續費嗎？"]},
+  subs:{n:"訂閱線",en:"Subscription Line",c:"#7a5af5",def:800,badge:[4.1,1],
+    stops:["icloud","chatgpt","youtube","spotify","netflix","disney","telecom"],
+    tag:"影音串流、音樂、雲端空間，每月自動扣款的小錢加起來不小。",
+    cards:["數位訂閱加碼型","海外一般消費無上限型"],
+    tip:"不少訂閱服務以外幣扣款，會被收國外交易手續費，挑卡要把手續費一起算。",
+    reads:["訂閱制服務刷哪張卡回饋最高","串流平台扣款算國內還是海外消費？","每月訂閱費整理術"]},
+  travel:{n:"海外線",en:"Overseas Line",c:"#1f6fd1",def:2000,badge:[23.7,3],
+    stops:["taobao","chatgpt","japan","korea","dutyfree","sea","west","flight","hotel"],
+    tag:"機票、訂房、出國刷卡，單筆金額最大的一條線。",
+    cards:["海外一般消費無上限型","航空哩程聯名卡"],
+    tip:"海外刷卡一律選當地貨幣結帳。選台幣結帳會多一道動態貨幣轉換（DCC）匯差。",
+    reads:["日本刷哪張卡最划算","哩程卡還是現金回饋卡？看你一年飛幾趟","信用卡旅平險怎麼啟用"]},
+  delivery:{n:"外送線",en:"Delivery Line",c:"#e39b00",def:3000,badge:[15.25,8.2],
+    stops:["ubereats","foodpanda","fresh","uber"],
+    tag:"外送、叫車、生鮮快送，天天點的人最該挑對卡。",
+    cards:["外送平台回饋型","行動支付綁定型"],
+    tip:"外送常搭配平台會員方案。先算一個月點幾次，再決定要不要買會員搭配回饋卡。",
+    reads:["外送信用卡怎麼挑","外送平台刷卡回饋比較","外送平台會員划算嗎"]},
+  dining:{n:"美食線",en:"Dining Line",c:"#d6336c",def:4000,badge:[11,4.15],
+    stops:["cafe","restaurant","ubereats","drink","foodcourt","buffet"],
+    tag:"餐廳、咖啡、手搖飲，小額多筆，最考驗回饋門檻。",
+    cards:["餐飲通路加碼型","行動支付綁定型"],
+    tip:"飯店 Buffet 常有合作銀行的信用卡優惠，訂位前先查，有時比回饋更划算。",
+    reads:["餐廳刷哪張卡回饋最高","飯店 Buffet 信用卡優惠整理","手搖飲用行動支付還是刷卡"]},
+  dept:{n:"百貨線",en:"Department Line",c:"#9c5fa0",def:1500,badge:[7.8,12.15],
+    stops:["dutyfree","fareast","breeze","sogo","foodcourt","skm","outlet"],
+    tag:"週年慶、Outlet、精品，一年一次的大額消費高峰。",
+    cards:["百貨聯名卡","分期零利率型"],
+    tip:"週年慶的滿額贈和刷卡回饋通常可以疊加，先算好門檻再結帳。",
+    reads:["百貨週年慶刷卡攻略","百貨聯名卡值得辦嗎","分期零利率怎麼看才不吃虧"]},
+  mobile:{n:"行動支付線",en:"Mobile Pay Line",c:"#0f9a8e",def:2500,badge:[24.6,12.85],
+    stops:["applepay","linepay","jko","pxpay","cvs","allpay","taiwanpay"],
+    tag:"手機感應、電子支付，綁對卡等於多一層回饋。",
+    cards:["行動支付綁定型","電子支付聯名卡"],
+    tip:"電子支付儲值和轉帳多半不算一般消費，綁卡前先看排除項目。",
+    reads:["行動支付綁哪張卡最划算","手機感應支付的刷卡回饋一樣嗎","電子支付儲值有回饋嗎"]},
+  grocery:{n:"超市線",en:"Supermarket Line",c:"#4c9a2a",def:5000,badge:[16,4.15],
+    stops:["carrefour","costco","fresh","pxmart","cvs","simple"],
+    tag:"超市、量販、會員倉儲，家庭開銷的固定大宗。",
+    cards:["量販超市聯名卡","國內一般消費無上限型"],
+    tip:"有些會員倉儲賣場只收特定卡別，出門前先確認手上那張能不能用。",
+    reads:["超市量販刷哪張卡","會員倉儲賣場可以用哪些信用卡","家庭開銷信用卡怎麼分配"]},
+  transit:{n:"交通線",en:"Transport Line",c:"#5b6676",def:2500,badge:[22.7,1],
+    stops:["parking","flight","hsr","mrt","uber","fpcc","cpc"],
+    tag:"加油、高鐵、停車、交通卡，通勤族每月的固定支出。",
+    cards:["加油聯名卡","交通通路加碼型"],
+    tip:"交通卡自動加值多半不計回饋，通勤族要另外看交通類加碼。",
+    reads:["加油信用卡怎麼挑","高鐵刷卡回饋比較","交通卡自動加值有回饋嗎"]},
+  bills:{n:"繳費線",en:"Bills Line",c:"#a0522d",def:3000,badge:[1.35,17],
+    stops:["tuition","telecom","utility","insurance","taiwanpay","tax"],
+    tag:"保費、稅款、水電瓦斯，金額大，但回饋常被排除。",
+    cards:["保費回饋型","分期零利率型"],
+    tip:"多數卡片繳稅、繳費沒有回饋或回饋較低。保費要找有明列保費回饋的卡。",
+    reads:["保費刷哪張卡回饋最高","繳稅用信用卡划算嗎","水電費自動扣繳綁信用卡有回饋嗎"]}
+};
+/* ---------- 車站（通路）：座標以 40px 為一格 ---------- */
+const S={
+  taobao:["淘寶",3,3,"t","海外電商，以外幣計價或在海外清算時可能被收國外交易手續費。"],
+  kupang:["酷澎",3,5,"l","有會員訂閱方案，會員費、運費和刷卡回饋一起算才準。"],
+  yahoo:["Yahoo購物",3,7,"l","滿額折扣和刷卡回饋常可疊加，回饋以折扣後金額計算。","Yahoo奇摩購物中心"],
+  pchome:["PChome 24h",3,9,"l","3C、日用品大宗採購多，分期付款多半不計回饋。"],
+  momo:["momo",3,11,"l","有平台聯名卡，也常被列入網購加碼通路，兩種一起比實拿。","momo購物網"],
+  shopee:["蝦皮購物",3,13,"l","大促檔期常有銀行合作加碼，記得先看活動上限和是否要登錄。"],
+  icloud:["iCloud",6,1,"r","透過 Apple 帳號扣款，綁哪張卡就照那張卡的條件計算。"],
+  chatgpt:["ChatGPT",6,3,"tr","以美元計價，多數卡片會收國外交易手續費。"],
+  youtube:["YouTube",6,5.5,"r","透過 App 內購付款時，交易通路會變成應用程式商店。","YouTube Premium"],
+  spotify:["Spotify",6,8,"r","金額小但每月都扣，適合綁在有數位訂閱加碼的卡。"],
+  netflix:["Netflix",6,10.5,"r","每月固定扣款，部分卡片會把這類數位服務算成海外消費。"],
+  disney:["Disney+",6,14.5,"r","年繳通常比月繳便宜，一次刷年費也比較容易吃到加碼。"],
+  telecom:["電信費",6,17,"b","部分卡片有電信費自動扣繳的回饋或優惠；串流方案常一起綁在電信帳單上。"],
+  japan:["日本",9.1,3,"t","台灣旅客最常去的國家，指定通路加碼和一般海外回饋要分開看。"],
+  korea:["韓國",11,3,"t","結帳時若被問要不要用台幣，記得選韓元。"],
+  dutyfree:["免稅店",13,3,"t","機場和市區免稅店常有銀行合作折扣，外幣結帳記得把手續費算進去。"],
+  sea:["東南亞",15,3,"t","小店現金比例高，大額的住宿和機票再交給回饋卡。"],
+  west:["歐美",17,3,"t","單筆金額大，海外無上限型的卡比較不怕撞到回饋上限。"],
+  flight:["機票",19,3,"tr","用哪張卡刷機票，通常決定旅平險跟著哪張卡。"],
+  hotel:["訂房網站",21.5,3,"t","外幣計價或海外清算時會被收國外交易手續費，結帳幣別要看清楚。"],
+  cafe:["咖啡廳",11,5,"l","小額高頻，綁行動支付的卡常比直接刷卡回饋高。"],
+  restaurant:["餐廳",11,7,"l","聚餐常由一人先刷，單筆金額大，先看回饋上限。"],
+  ubereats:["Uber Eats",11,9,"l","常有平台會員方案，點越多越要把會員費和回饋一起算。"],
+  drink:["手搖飲",11,11,"l","不少店只收行動支付或現金，先確認店家支援的付款方式。"],
+  foodcourt:["百貨美食街",11,13,"r","在百貨美食街消費，可能被算成百貨通路，也可能算餐飲，依店家登記的類別而定。"],
+  buffet:["飯店 Buffet",11,15,"l","合作銀行的折扣常比回饋划算，訂位時就要報卡別。"],
+  fareast:["遠東百貨",13,5,"r","會員點數、聯名卡回饋和銀行活動可能同時適用，看清楚疊加條件。"],
+  breeze:["微風",13,7,"r","精品比例高，單筆金額大，留意分期和回饋只能擇一的規定。"],
+  sogo:["SOGO",13,11,"r","週年慶檔期集中，先算好滿額門檻再決定拆單或合併結帳。"],
+  skm:["新光三越",9.4,13,"b","有百貨聯名卡，週年慶的滿額贈和刷卡回饋多半分開計算。"],
+  outlet:["Outlet",7.8,13,"b","折扣後的金額才是回饋計算基礎，回饋上限比較不容易用完。"],
+  foodpanda:["foodpanda",14.5,9,"b","會員方案和銀行合作活動常一起出現，先看活動是否需要登錄。"],
+  fresh:["生鮮快送",16,9,"br","量販、超市的快送服務，可能被歸類在超市通路而不是外送。"],
+  uber:["Uber 叫車",19,9,"r","叫車和外送可能被歸在同一個通路，加碼上限也可能共用。"],
+  carrefour:["家樂福",16,5,"r","量販大宗採購，有聯名卡，也常被列入超市加碼通路。"],
+  costco:["好市多",16,7,"r","只收特定卡別，出門前先確認手上的卡能不能用。"],
+  pxmart:["全聯",16,11.5,"r","搭配 PX Pay 常有加碼，直接刷卡和綁支付的回饋可能不同。"],
+  cvs:["便利商店",16,14,"tr","小額高頻，常見行動支付加碼，直接刷卡不一定有。"],
+  simple:["美廉社",17.5,15.5,"r","社區型超市，小額消費多，適合綁行動支付的卡。"],
+  applepay:["Apple Pay",24.6,14,"b","手機感應付款，回饋多半照該卡的一般消費計算。"],
+  linepay:["LINE Pay",22.5,14,"b","綁卡付款時，平台點數活動和信用卡回饋要分開看。"],
+  jko:["街口支付",20.4,14,"b","可綁卡或用帳戶餘額付款，儲值多半不計信用卡回饋。"],
+  pxpay:["PX Pay",18.5,14,"b","全聯的自家支付，在全聯綁卡付款常有加碼活動。"],
+  allpay:["全支付",14.5,15.5,"l","電子支付帳戶，綁卡付款和儲值的回饋規則不同。"],
+  taiwanpay:["台灣 Pay",13,17,"b","銀行端的掃碼支付，也能拿來繳費，常見發卡銀行自家加碼。"],
+  parking:["停車費",19,1,"r","代收停車費、停車場繳費可能被排除在回饋之外。"],
+  hsr:["高鐵",19,5,"r","線上訂票刷卡，部分卡片把高鐵列入交通類加碼。"],
+  mrt:["捷運",19,7,"r","交通卡自動加值多半不計回饋，通勤要另外看交通加碼。","捷運與悠遊卡"],
+  fpcc:["台塑石化",19,10.5,"r","加油站常有銀行合作，自助加油和人工加油的優惠可能不同。"],
+  cpc:["中油",19,12,"r","加油聯名卡常是每公升折抵，要換算成回饋率再和現金回饋卡比。"],
+  tuition:["學費",3,17,"b","金額大，部分學校可以刷卡繳費，留意是否計入回饋。"],
+  utility:["水電瓦斯",8.4,17,"b","代扣繳費常不計回饋，綁定前先看排除項目。"],
+  insurance:["保費",10.4,17,"b","找有明列保費回饋，或提供保費分期零利率的卡。"],
+  tax:["繳稅",18,17,"b","繳稅多半沒有回饋，部分卡片提供分期零利率。"]
+};
+const KEYS=Object.keys(L),$=id=>document.getElementById(id);
+const P=(x,y)=>[30+x*40,30+y*40];
+Object.entries(S).forEach(([id,a])=>{S[id]={id,n:a[0],x:a[1],y:a[2],lp:a[3],t:a[4],f:a[5]||a[0],lines:KEYS.filter(k=>L[k].stops.includes(id))};});
+const isX=id=>S[id].lines.length>1;
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+let curLine="mobile",curStn=null;
+
+/* ---------- 畫地圖 ---------- */
+const NS="http://www.w3.org/2000/svg";
+const el=(t,a,p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;};
+const grid=$("grid");
+for(let x=0;x<=1080;x+=40)el("line",{x1:x+30,y1:0,x2:x+30,y2:780},grid);
+for(let y=0;y<=780;y+=40)el("line",{x1:0,y1:y+30,x2:1080,y2:y+30},grid);
+const linesG=$("lines"),stnG=$("stations"),badgeG=$("badges");
+KEYS.forEach(k=>{
+  const d="M"+L[k].stops.map(id=>P(S[id].x,S[id].y).join(" ")).join("L");
+  const g=el("g",{"data-l":k},linesG);
+  L[k].path=el("path",{class:"ln",d,stroke:L[k].c,"stroke-width":9},g);
+  const hit=el("path",{class:"ln-hit",d},g);
+  hit.addEventListener("click",()=>selectLine(k));
+  L[k].g=g;
+  const [bx,by]=P(...L[k].badge),w=L[k].n.length*13+18;
+  const b=el("g",{class:"badge",transform:`translate(${bx-w/2},${by-12})`},badgeG);
+  el("rect",{width:w,height:24,fill:L[k].c},b);
+  const t=el("text",{x:w/2,y:17,"text-anchor":"middle"},b);t.textContent=L[k].n;
+  b.addEventListener("click",()=>selectLine(k));L[k].badgeEl=b;
+});
+const LP={t:[0,-15,"middle"],b:[0,26,"middle"],l:[-15,5,"end"],r:[15,5,"start"],tr:[11,-13,"start"],tl:[-11,-13,"end"],br:[11,24,"start"],bl:[-11,24,"end"]};
+Object.values(S).forEach(s=>{
+  const [x,y]=P(s.x,s.y),x2=isX(s.id);
+  const g=el("g",{class:"stn"+(x2?" x":""),"data-s":s.id,transform:`translate(${x},${y})`},stnG);
+  el("circle",{class:"ring",r:10},g);
+  el("circle",{class:"dot",r:x2?9.5:6.5,stroke:x2?"":L[s.lines[0]].c},g);
+  el("circle",{class:"hit",r:16},g);
+  const [dx,dy,an]=LP[s.lp];
+  const t=el("text",{x:dx,y:dy,"text-anchor":an},g);t.textContent=s.n;
+  g.addEventListener("click",()=>selectStation(s.id));
+  s.g=g;
+});
+
+/* ---------- 列車：一張小卡片沿著選取路線來回跑 ---------- */
+const train=$("train");let tStart=performance.now();
+function runTrain(now){
+  requestAnimationFrame(runTrain);
+  const p=L[curLine].path,len=p.getTotalLength(),dur=Math.max(5000,len*9);
+  let u=((now-tStart)%(dur*2))/dur;if(u>1)u=2-u;
+  const a=p.getPointAtLength(u*len),b=p.getPointAtLength(Math.min(len,u*len+1));
+  const ang=Math.atan2(b.y-a.y,b.x-a.x)*180/Math.PI;
+  train.setAttribute("transform",`translate(${a.x},${a.y}) rotate(${ang})`);
+}
+train.querySelector("rect.body").setAttribute("fill",L[curLine].c);
+if(!reduce)requestAnimationFrame(runTrain);else train.hidden=true;
+
+/* ---------- 圖例、站點索引 ---------- */
+const legend=$("legend"),idx=$("idx");
+KEYS.forEach(k=>{
+  const b=document.createElement("button");b.type="button";b.className="lchip";b.style.setProperty("--c",L[k].c);
+  b.innerHTML=`<i></i>${L[k].n}`;b.addEventListener("click",()=>{selectLine(k);$("metro").scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});});
+  legend.appendChild(b);L[k].chip=b;
+  const row=document.createElement("div");row.className="row";row.style.setProperty("--c",L[k].c);
+  row.innerHTML=`<b><i></i>${L[k].n}</b><div class="stops">${L[k].stops.map(id=>`<button type="button" class="${isX(id)?"x":""}" data-s="${id}">${S[id].f}</button>`).join("")}</div>`;
+  row.querySelectorAll("button").forEach(btn=>btn.addEventListener("click",()=>{selectStation(btn.dataset.s,k);$("metro").scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});}));
+  idx.appendChild(row);
+});
+
+/* ---------- 選取路線／車站 ---------- */
+const badge=k=>`<span class="lbadge" style="background:${L[k].c}">${L[k].n}</span>`;
+function highlight(){
+  KEYS.forEach(k=>{L[k].g.classList.toggle("dim",k!==curLine);L[k].badgeEl.classList.toggle("dim",k!==curLine);L[k].chip.classList.toggle("on",k===curLine);});
+  Object.values(S).forEach(s=>{
+    const onLine=s.lines.includes(curLine);
+    s.g.classList.toggle("dimt",!onLine);s.g.classList.toggle("on",s.id===curStn);
+  });
+  linesG.appendChild(L[curLine].g); // 選取的路線畫在最上層
+  train.querySelector("rect.body").setAttribute("fill",L[curLine].c);tStart=performance.now();
+  $("panel").style.setProperty("--pc",L[curLine].c);
+  // 看板
+  const ln=L[curLine],last=S[ln.stops[ln.stops.length-1]];
+  $("b-line").textContent=ln.n;$("b-line").style.background=ln.c;
+  $("b-dest").textContent=curStn?`本站 ${S[curStn].f}`:`往 ${last.f}`;
+  $("b-cnt").textContent=`${ln.stops.length} 站`;
+  $("b-tick").textContent=curStn?`${S[curStn].f}：${S[curStn].t}`:`${ln.n}：${ln.tip}`;
+}
+function stopsChips(k){
+  $("p-stops-h").textContent=`${L[k].n}停靠站（${L[k].stops.length}）`;
+  $("p-stops").innerHTML=L[k].stops.map(id=>`<button type="button" class="chip${isX(id)?" x":""}${id===curStn?" on":""}" data-s="${id}">${S[id].n}</button>`).join("");
+  $("p-stops").querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>selectStation(b.dataset.s,k)));
+}
+const readsHTML=a=>a.map(t=>`<li><a href="#faq"><span>${t}</span><span>→</span></a></li>`).join("");
+const cardsHTML=a=>a.map((c,i)=>`<div class="ctype"><i class="mini${i?" solid":""}"></i><span>${c}</span></div>`).join("");
+function selectLine(k,fromHash){
+  curLine=k;curStn=null;const ln=L[k];
+  $("p-en").textContent=ln.en;$("p-name").textContent=ln.n;$("p-tag").textContent=ln.tag;
+  const xs=ln.stops.filter(isX);
+  $("p-lines").innerHTML=badge(k);
+  $("p-transfer-box").hidden=!xs.length;
+  $("p-transfer").innerHTML=`這條線有 <b>${xs.length}</b> 個轉乘站：${xs.map(id=>S[id].n).join("、")}。轉乘站代表這個通路同時屬於兩種消費，適合用兩張卡分工。`;
+  $("p-cards").innerHTML=cardsHTML(ln.cards);
+  $("p-tip").innerHTML=`<b>刷卡眉角</b>${ln.tip}`;
+  $("p-reads").innerHTML=readsHTML(ln.reads);
+  stopsChips(k);highlight();
+  if(!fromHash){try{history.replaceState(null,"","#"+k);}catch(e){}}
+}
+function selectStation(id,via){
+  const s=S[id];
+  if(!s.lines.includes(curLine)||via)curLine=via&&s.lines.includes(via)?via:(s.lines.includes(curLine)?curLine:s.lines[0]);
+  curStn=id;const ln=L[curLine];
+  $("p-en").textContent=`Station · ${ln.n}`;$("p-name").textContent=s.f;$("p-tag").textContent=s.t;
+  $("p-lines").innerHTML=s.lines.map(badge).join("");
+  if(s.lines.length>1){
+    const [a,b]=s.lines;
+    $("p-transfer-box").hidden=false;
+    $("p-transfer").innerHTML=`<b>轉乘站</b>：${L[a].n} × ${L[b].n}。這個通路橫跨兩種消費，建議主卡用「${L[a].cards[0]}」，補位卡用「${L[b].cards[0]===L[a].cards[0]?L[b].cards[1]:L[b].cards[0]}」，看哪張在這裡的條件比較好就刷哪張。`;
+  }else $("p-transfer-box").hidden=true;
+  $("p-cards").innerHTML=cardsHTML(ln.cards);
+  $("p-tip").innerHTML=`<b>${ln.n}的眉角</b>${ln.tip}`;
+  const third=s.lines.length>1?`${L[s.lines[0]].n.replace("線","")}卡 × ${L[s.lines[1]].n.replace("線","")}卡：兩張怎麼搭`:ln.reads[0];
+  $("p-reads").innerHTML=readsHTML([`${s.f} 刷哪張卡回饋最高？`,`${s.f} 常見的回饋排除項目`,third]);
+  stopsChips(curLine);highlight();
+}
+
+/* ---------- 我的通勤路線 ---------- */
+const spend=$("spend");
+KEYS.forEach(k=>{
+  const lab=document.createElement("label");lab.style.setProperty("--c",L[k].c);
+  lab.innerHTML=`<span><i></i>${L[k].n}</span><input id="s-${k}" type="number" min="0" step="500" inputmode="numeric" value="${L[k].def}" aria-label="${L[k].n}每月花費（新台幣）">`;
+  spend.appendChild(lab);
+});
+const fmt=n=>"NT$"+Math.round(n).toLocaleString("zh-TW");
+function paint(){
+  const rows=KEYS.map(k=>({k,v:Math.max(0,+$("s-"+k).value||0)}));
+  const total=rows.reduce((s,r)=>s+r.v,0),max=Math.max(1,...rows.map(r=>r.v));
+  rows.forEach(r=>L[r.k].path.setAttribute("stroke-width",(6+9*r.v/max).toFixed(1)));
+  const top=[...rows].sort((a,b)=>b.v-a.v),pct=v=>total?Math.round(v/total*100)+"%":"0%";
+  if(!total){["t1","t2","t1v","t2v"].forEach(i=>$(i).textContent=i.length===2?"—":"");$("xfer").textContent="";
+    $("combo").innerHTML="<span>全部都是 0？這就真的 i don’t care 了。填一個花費試試看。</span>";return;}
+  const a=top[0].k,b=top[1].k;
+  $("t1").textContent=L[a].n;$("t1v").textContent=fmt(top[0].v)+"・"+pct(top[0].v);
+  $("t2").textContent=top[1].v?L[b].n:"—";$("t2v").textContent=top[1].v?fmt(top[1].v)+"・"+pct(top[1].v):"";
+  const shared=L[a].stops.filter(id=>L[b].stops.includes(id));
+  $("xfer").innerHTML=shared.length?`在「<b>${shared.map(id=>S[id].f).join("、")}</b>」轉乘：這裡同時屬於${L[a].n}和${L[b].n}，兩張卡比一下條件再刷。`:`${L[a].n}和${L[b].n}沒有共用的轉乘站，兩張卡各管一條線就好。`;
+  const main=top[0].v/total<0.2?"國內一般消費無上限型":L[a].cards[0];
+  let sub=L[b].cards[0];if(sub===main)sub=L[b].cards[1];
+  $("combo").innerHTML=`<span><i class="mini"></i>主卡：${main}</span><span><i class="mini solid"></i>補位：${sub}</span>`;
+}
+document.querySelectorAll("#spend input").forEach(i=>i.addEventListener("input",paint));
+$("mine").addEventListener("submit",e=>e.preventDefault());
+
+/* ---------- 啟動 ---------- */
+function tickClock(){const d=new Date();$("clock").textContent=String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");}
+tickClock();setInterval(tickClock,15000);
+paint();
+const h=location.hash.slice(1);selectLine(L[h]?h:"mobile",true);
+window.addEventListener("hashchange",()=>{const k=location.hash.slice(1);if(L[k])selectLine(k,true);});
+// 手機版：把地圖捲到選取路線附近
+const ms=$("mapscroll");if(ms.scrollWidth>ms.clientWidth){const xs=L[curLine].stops.map(id=>S[id].x),cx=30+(Math.min(...xs)+Math.max(...xs))/2*40;ms.scrollLeft=Math.max(0,cx*(ms.scrollWidth/1080)-ms.clientWidth/2);}
+</script>
