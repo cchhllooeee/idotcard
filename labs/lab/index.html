@@ -438,6 +438,27 @@ function result(a,b){
   return {type:"mix",s:"Mx",n:"混合物",c1:F[ea.f].c,c2:F[eb.f].c,t:`${F[ea.f].n}和${F[eb.f].n}沒有共同的加碼通路，放在一起反應不明顯。兩張卡各管一族就好。`};
 }
 const TYPE={cmp:"化合反應：合成新元素",iso:"同位素：同一族消費",mix:"混合物：反應不明顯"};
+/* 延伸閱讀：連到愛搭卡網站上真實存在的頁面（相對路徑，本機與 GitHub Pages 子路徑都適用）。
+   優先用元素專屬頁，其次用消費族的預設頁，最後補試算器與推薦排行。 */
+const PG={
+  japan:{t:"日本旅遊信用卡推薦：4 張卡回饋、上限與交通卡攻略（2026）",u:"../../articles/japan-travel-credit-card/"},
+  overseas:{t:"海外消費信用卡指南：推薦卡片與完整攻略",u:"../../topics/overseas/"},
+  online:{t:"網購信用卡指南：推薦卡片與完整攻略",u:"../../topics/online-shopping/"},
+  delivery:{t:"外送平台刷什麼卡？綁卡回饋與上限整理",u:"../../articles/food-delivery-credit-card/"},
+  grocery:{t:"超市刷什麼卡？量販超市回饋最大化的 3 個方法",u:"../../articles/supermarket-credit-card-tips/"},
+  mobile:{t:"行動支付綁卡回饋怎麼算？通路認定與加碼條件說明",u:"../../articles/line-pay-binding-rewards/"},
+  choose:{t:"現金回饋信用卡怎麼選？4 個步驟算出最適合你的卡",u:"../../articles/how-to-choose-cashback-card/"},
+  cap:{t:"回饋上限是什麼？一次看懂「最高 5%」背後的計算",u:"../../articles/cashback-cap-explained/"},
+  basics:{t:"信用卡基礎知識主題：帳單、循環利息、額度與聯徵",u:"../../topics/basics/"},
+  best:{t:"現金回饋信用卡推薦：依消費習慣挑選的最佳選擇",u:"../../best/cashback-cards/"},
+  calc:{t:"信用卡回饋試算器：輸入月消費算出實拿回饋",u:"../../tools/rewards-calculator/"},
+};
+const PG_EL={Jp:"japan",Ft:"japan",Ue:"delivery",Fp:"delivery",Ub:"choose",Lp:"mobile",Ap:"mobile"};
+const PG_FAM={travel:"overseas",online:"online",delivery:"delivery",dining:"best",dept:"best",grocery:"grocery",transit:"choose",bills:"basics",subs:"cap",mobile:"mobile"};
+const reads=(ea,eb)=>{
+  const keys=[PG_EL[ea.s]||PG_FAM[ea.f],PG_EL[eb.s]||PG_FAM[eb.f],"calc","best","choose"];
+  return [...new Set(keys)].slice(0,3).map(k=>PG[k]);
+};
 const sp=s=>`<span class="s" style="background:${F[EL[s].f].c}">${s}</span>`;
 function cardsFor(fa,fb,iso){
   if(iso)return [F[fa].cards[0],F[fa].cards[1]];
@@ -458,7 +479,7 @@ function react(animated){
     <div class="rp-sec"><h3>觀察</h3><p>${res.t}</p></div>
     <div class="rp-sec"><h3>結論：愛搭卡建議搭法</h3><div class="combo"><span><i class="mini"></i>主卡：${m}</span><span><i class="mini solid"></i>補位：${s}</span></div></div>
     <div class="rp-sec"><h3>注意事項</h3><ul><li>${ea.n}：${ea.t}</li>${ea.s!==eb.s?`<li>${eb.n}：${eb.t}</li>`:""}</ul></div>
-    <div class="rp-sec reads"><h3>延伸閱讀</h3><ol>${[`${ea.n}和${eb.n}一起刷，哪張卡最划算？`,`${res.n}：刷卡回饋怎麼算`,`${F[ea.f].n.replace("族","")}卡 × ${F[eb.f].n.replace("族","")}卡：兩張怎麼搭`].map(x=>`<li><a href="#faq"><span>${x}</span><span>→</span></a></li>`).join("")}</ol></div>`;
+    <div class="rp-sec reads"><h3>延伸閱讀</h3><ol>${reads(ea,eb).map(p=>`<li><a href="${p.u}"><span>${p.t}</span><span>→</span></a></li>`).join("")}</ol></div>`;
   if(animated&&matchMedia("(max-width:1000px)").matches)$("report").scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});
 }
 function elementCard(s){
